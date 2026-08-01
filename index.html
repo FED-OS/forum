@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FED Hub · Forum + Edu + Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    * { scroll-behavior: smooth; }
+    body { background: #0b0e14; color: #e5e9f0; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); justify-content: center; align-items: center; z-index: 1000; }
+    .modal.active { display: flex; }
+    .modal-card { background: #1a1f2b; border-radius: 1.5rem; max-width: 420px; width: 100%; padding: 2rem; box-shadow: 0 25px 60px rgba(0,0,0,0.6); border: 1px solid #2a2f3b; }
+    .close { float: right; font-size: 1.5rem; cursor: pointer; color: #6b7280; transition: color 0.2s; }
+    .close:hover { color: #e5e9f0; }
+
+    .sidebar { background: #11161f; border-right: 1px solid #1e2633; height: 100vh; position: sticky; top: 0; overflow-y: auto; width: 200px; flex-shrink: 0; }
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #2a2f3b; border-radius: 4px; }
+    .nav-link { display: flex; align-items: center; gap: 0.75rem; padding: 0.6rem 1rem; border-radius: 0.5rem; color: #9ca3af; transition: all 0.2s; cursor: pointer; font-size: 0.875rem; }
+    .nav-link:hover { background: #1e2633; color: #e5e9f0; }
+    .nav-link.active { background: #2a2f3b; color: #a78bfa; }
+    .nav-link i { width: 1.25rem; text-align: center; }
+
+    .content-card { background: #141b26; border-radius: 1rem; padding: 1.5rem; border: 1px solid #1e2633; }
+    .content-card .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; color: #e5e9f0; }
+
+    .input-dark { background: #1a1f2b; border: 1px solid #2a2f3b; color: #e5e9f0; border-radius: 0.5rem; padding: 0.5rem 0.75rem; width: 100%; }
+    .input-dark:focus { outline: none; border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(167,139,250,0.15); }
+    .btn-primary { background: #a78bfa; color: #0b0e14; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary:hover { background: #8b5cf6; transform: translateY(-1px); }
+    .btn-secondary { background: #1e2633; color: #e5e9f0; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 500; transition: all 0.2s; border: 1px solid #2a2f3b; cursor: pointer; }
+    .btn-secondary:hover { background: #2a2f3b; }
+    .btn-success { background: #10b981; color: #0b0e14; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-success:hover { background: #059669; }
+    .btn-danger { background: #ef4444; color: white; padding: 0.5rem 1.25rem; border-radius: 0.5rem; font-weight: 600; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-danger:hover { background: #dc2626; }
+
+    .hidden { display: none !important; }
+    .text-muted { color: #6b7280; }
+    .tier-badge { padding: 0.2rem 0.75rem; border-radius: 9999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tier-explorer { background: #1e3a5f; color: #60a5fa; }
+    .tier-builder { background: #1e3a2a; color: #34d399; }
+    .tier-vip { background: #4a1942; color: #c084fc; }
+
+    /* Forum */
+    .topic-card { transition: all 0.2s; cursor: pointer; }
+    .topic-card:hover { background: #1e2633; border-color: #3a3f4b; }
+    .reply-item { border-left: 3px solid #2a2f3b; padding-left: 1rem; }
+
+    /* Edu */
+    .cert-card { border-left: 4px solid #a78bfa; }
+    .unlock-timeline { position: relative; }
+    .unlock-timeline::before { content: ''; position: absolute; left: 0.5rem; top: 0; bottom: 0; width: 2px; background: #1e2633; }
+    .unlock-item { padding-left: 2rem; position: relative; }
+    .unlock-item::before { content: ''; position: absolute; left: 0.25rem; top: 0.5rem; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: #2a2f3b; border: 2px solid #a78bfa; }
+    .unlock-item.unlocked::before { background: #10b981; border-color: #10b981; }
+    .unlock-item.locked::before { background: #ef4444; border-color: #ef4444; }
+
+    /* Tags */
+    .tag-badge { background: #2a2f3b; color: #a78bfa; padding: 0.15rem 0.6rem; border-radius: 9999px; font-size: 0.65rem; font-weight: 500; margin-right: 0.25rem; display: inline-block; }
+    .tag-checkbox { display: inline-flex; align-items: center; margin-right: 0.5rem; margin-bottom: 0.25rem; background: #1a1f2b; padding: 0.2rem 0.6rem; border-radius: 9999px; border: 1px solid #2a2f3b; }
+    .tag-checkbox input { margin-right: 0.3rem; }
+
+    /* Attachment preview */
+    .attachment-preview { max-width: 100%; max-height: 300px; border-radius: 0.5rem; margin-top: 0.5rem; }
+    .attachment-link { color: #a78bfa; text-decoration: underline; }
+
+    @media (max-width: 768px) {
+      .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid #1e2633; }
+      .sidebar nav { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+      .sidebar .nav-link { padding: 0.4rem 0.75rem; font-size: 0.75rem; }
+      .dashboard-layout { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="loginScreen" class="min-h-screen flex items-center justify-center bg-[#0b0e14]">
+  <div class="text-center">
+    <div class="mb-6">
+      <span class="text-5xl">🧠</span>
+      <h1 class="text-3xl font-bold text-white mt-2">FED Hub</h1>
+      <p class="text-gray-400 text-sm">Forum · Education · Sovereignty</p>
+    </div>
+    <button id="loginBtn" class="bg-white hover:bg-gray-200 text-purple-600 font-bold py-3 px-10 rounded-full text-lg shadow-lg transition">Enter</button>
+  </div>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-card">
+      <span class="close" id="closeModal">&times;</span>
+      <h2 class="text-2xl font-bold mb-1 text-white" id="formTitle">Sign In</h2>
+      <p class="text-gray-400 text-sm mb-5" id="formSubtitle">Enter your credentials</p>
+      <form id="loginForm">
+        <div class="mb-3">
+          <label class="block text-sm font-medium text-gray-300">Email</label>
+          <input type="email" id="email" class="input-dark mt-1" placeholder="you@example.com" required />
+        </div>
+        <div class="mb-3">
+          <label class="block text-sm font-medium text-gray-300">Password</label>
+          <input type="password" id="password" class="input-dark mt-1" placeholder="••••••••" required minlength="6" />
+        </div>
+        <button type="submit" class="btn-primary w-full py-2.5">Sign In</button>
+      </form>
+      <div class="text-right mt-2">
+        <button id="forgotBtn" class="text-sm text-purple-400 hover:underline">Forgot password?</button>
+      </div>
+      <p id="message" class="text-sm mt-3 hidden text-center"></p>
+      <p class="text-sm text-center mt-4 text-gray-400">
+        <span id="toggleText">New citizen?</span>
+        <button id="toggleMode" class="text-purple-400 hover:underline font-medium">Sign Up</button>
+      </p>
+      <div class="mt-4 pt-4 border-t border-[#1e2633] text-center">
+        <p class="text-xs text-gray-500">🔐 Zero‑knowledge · FED‑Passkey ready</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== DASHBOARD ===== -->
+<div id="dashboardScreen" class="hidden min-h-screen bg-[#0b0e14]">
+
+  <div class="dashboard-layout flex">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="p-4 border-b border-[#1e2633]">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">🧠</span>
+          <span class="font-bold text-white text-sm">FED Hub</span>
+        </div>
+        <div class="flex items-center gap-2 mt-1">
+          <span class="text-xs text-gray-400" id="sidebarUserDisplay">user@domain</span>
+          <span class="tier-badge tier-explorer" id="sidebarTierBadge">Explorer</span>
+        </div>
+      </div>
+      <nav class="p-3">
+        <div class="nav-link active" id="forumNavLink" data-tab="forum">
+          <i class="fas fa-comments"></i> Forum
+        </div>
+        <div class="nav-link" id="eduNavLink" data-tab="edu">
+          <i class="fas fa-graduation-cap"></i> FED‑Edu
+        </div>
+        <div class="nav-link" id="profileNavLink" data-tab="profile">
+          <i class="fas fa-user-cog"></i> Profile
+        </div>
+      </nav>
+      <div class="p-3 border-t border-[#1e2633] mt-auto">
+        <button id="logoutBtn" class="nav-link w-full text-red-400 hover:text-red-300 hover:bg-[#1e2633]">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 p-6 overflow-y-auto max-h-screen">
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h1 class="text-2xl font-bold text-white" id="pageTitle">Forum</h1>
+          <p class="text-gray-400 text-sm" id="pageSubtitle">Discuss tech, AI, and sovereignty.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-gray-500" id="clockDisplay"></span>
+        </div>
+      </div>
+
+      <!-- ===== TAB: FORUM ===== -->
+      <div id="tab-forum" class="tab-content">
+        <div class="content-card">
+          <div class="flex flex-wrap items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold flex items-center gap-2"><i class="fas fa-comments text-purple-400"></i> Tech Forum</h2>
+            <button id="newTopicBtn" class="btn-primary flex items-center gap-2">
+              <i class="fas fa-plus"></i> New Topic
+            </button>
+          </div>
+
+          <div id="forumList" class="space-y-3">
+            <p class="text-gray-400 text-center py-8">Loading topics...</p>
+          </div>
+
+          <!-- New Topic Form -->
+          <div id="newTopicForm" class="hidden mt-6 border-t border-[#1e2633] pt-6">
+            <h3 class="text-lg font-semibold mb-3 text-white">Create a New Topic</h3>
+            <form id="createTopicForm" enctype="multipart/form-data">
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-300">Title</label>
+                <input type="text" id="topicTitle" class="input-dark" placeholder="What's on your mind?" required />
+              </div>
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-300">Content</label>
+                <textarea id="topicContent" rows="4" class="input-dark" placeholder="Share your thoughts..." required></textarea>
+              </div>
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-300">Tags (choose up to 5)</label>
+                <div id="tagCheckboxes" class="flex flex-wrap gap-1 mt-1"></div>
+              </div>
+              <div class="mb-3">
+                <label class="block text-sm font-medium text-gray-300">Attach file (image, video, or zip)</label>
+                <input type="file" id="topicAttachment" class="input-dark" accept="image/*,video/*,.zip" />
+                <p class="text-xs text-muted mt-1">Max size: 10MB · Bucket: <strong>forum-attachments</strong> (must be public)</p>
+                <p id="uploadError" class="text-xs text-red-400 mt-1 hidden"></p>
+              </div>
+              <div class="flex gap-3">
+                <button type="submit" class="btn-primary">Post Topic</button>
+                <button type="button" id="cancelTopicBtn" class="btn-secondary">Cancel</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Single Topic View -->
+          <div id="singleTopicView" class="hidden mt-6 border-t border-[#1e2633] pt-6">
+            <button id="backToForumBtn" class="text-purple-400 hover:underline mb-4 flex items-center gap-1"><i class="fas fa-arrow-left"></i> Back to forum</button>
+            <div id="topicDetail">
+              <h3 id="detailTitle" class="text-2xl font-bold text-white"></h3>
+              <p id="detailMeta" class="text-sm text-gray-400 mb-4"></p>
+              <div id="detailAttachment" class="mb-4"></div>
+              <div id="detailTags" class="mb-3 flex flex-wrap gap-1"></div>
+              <div id="detailContent" class="bg-[#1a1f2b] p-4 rounded-lg mb-4 whitespace-pre-wrap text-white"></div>
+              <h4 class="font-semibold mb-3 text-white">Replies</h4>
+              <div id="repliesList" class="space-y-3 mb-6"></div>
+              <form id="replyForm" class="mt-4">
+                <div class="flex gap-3">
+                  <textarea id="replyContent" rows="2" class="input-dark flex-1" placeholder="Write a reply..." required></textarea>
+                  <button type="submit" class="btn-primary self-end">Reply</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: FED-EDU TRACKER ===== -->
+      <div id="tab-edu" class="tab-content hidden">
+        <div class="space-y-6">
+          <div class="content-card">
+            <h3 class="card-title flex items-center gap-2"><i class="fas fa-certificate text-purple-400"></i> Certificates of Completion</h3>
+            <p class="text-sm text-muted mb-4">FED4Kids · FED‑ED · FED‑U — Digital Street Smarts</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="cert-card bg-[#1a1f2b] p-4 rounded-lg border border-[#1e2633]">
+                <div class="flex items-center justify-between"><span class="font-medium text-white">FED4Kids</span><span class="text-xs text-green-400">✅ Completed</span></div>
+                <p class="text-xs text-muted mt-1">Digital Citizenship · 2026-06-15</p>
+                <button class="btn-secondary text-xs mt-2" onclick="alert('Certificate PDF downloaded.')"><i class="fas fa-download"></i> Download</button>
+              </div>
+              <div class="cert-card bg-[#1a1f2b] p-4 rounded-lg border border-[#1e2633]">
+                <div class="flex items-center justify-between"><span class="font-medium text-white">FED‑ED</span><span class="text-xs text-yellow-400">🔄 In Progress</span></div>
+                <p class="text-xs text-muted mt-1">Core Protocol · 72% complete</p>
+                <div class="w-full bg-[#0b0e14] rounded-full h-1.5 mt-2"><div class="bg-purple-400 h-1.5 rounded-full" style="width:72%"></div></div>
+              </div>
+              <div class="cert-card bg-[#1a1f2b] p-4 rounded-lg border border-[#1e2633]">
+                <div class="flex items-center justify-between"><span class="font-medium text-white">FED‑U</span><span class="text-xs text-gray-500">🔒 Locked</span></div>
+                <p class="text-xs text-muted mt-1">Advanced Sovereignty · Tier 2+</p>
+                <button class="btn-secondary text-xs mt-2 opacity-50 cursor-not-allowed" disabled><i class="fas fa-lock"></i> Upgrade to Builder</button>
+              </div>
+            </div>
+          </div>
+          <div class="content-card">
+            <h3 class="card-title flex items-center gap-2"><i class="fas fa-road text-blue-400"></i> Digital Street Smarts — Progress</h3>
+            <div class="space-y-2">
+              <div><span class="text-sm text-gray-300">Lesson 1: Zero‑Knowledge Basics</span><span class="float-right text-xs text-green-400">✅</span></div>
+              <div><span class="text-sm text-gray-300">Lesson 2: Cryptography for Kids</span><span class="float-right text-xs text-green-400">✅</span></div>
+              <div><span class="text-sm text-gray-300">Lesson 3: Decentralized Identity</span><span class="float-right text-xs text-yellow-400">🔄 60%</span></div>
+              <div><span class="text-sm text-gray-300">Lesson 4: Smart Contracts 101</span><span class="float-right text-xs text-gray-500">🔒</span></div>
+              <div><span class="text-sm text-gray-300">Lesson 5: Sovereign Data Storage</span><span class="float-right text-xs text-gray-500">🔒</span></div>
+            </div>
+            <div class="mt-3 p-2 bg-[#1a1f2b] rounded-lg border border-[#1e2633] text-xs text-gray-400">
+              <i class="fas fa-info-circle"></i> Next lesson unlocks in 12 days (Slow Unlock System)
+            </div>
+          </div>
+          <div class="content-card">
+            <h3 class="card-title flex items-center gap-2"><i class="fas fa-calendar-alt text-blue-400"></i> FED Event Calendar</h3>
+            <p class="text-sm text-muted mb-4">Live schedule · Office hours · Community calls</p>
+            <div class="bg-[#0b0e14] rounded-lg border border-[#1e2633] overflow-hidden" style="height:300px;">
+              <iframe src="https://calendar.google.com/calendar/embed?src=fed.community%40gmail.com&ctz=UTC" style="border:0;width:100%;height:100%;" frameborder="0" scrolling="no"></iframe>
+            </div>
+            <p class="text-xs text-muted mt-2"><i class="fas fa-sync-alt"></i> Syncs with your FED‑Passkey calendar</p>
+          </div>
+          <div class="content-card">
+            <h3 class="card-title flex items-center gap-2"><i class="fas fa-crown text-yellow-400"></i> Subscription & Access</h3>
+            <p class="text-sm text-muted mb-4">Your current tier: <span class="font-medium text-purple-400" id="eduTierDisplay">Explorer</span></p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="bg-[#1a1f2b] p-4 rounded-lg border border-[#1e2633]">
+                <div class="flex items-center gap-2"><span class="font-bold text-white">Explorer</span><span class="tier-badge tier-explorer">FREE</span></div>
+                <ul class="text-xs text-gray-300 mt-2 space-y-1">
+                  <li>✓ Early access to videos</li>
+                  <li>✓ Discord / Matrix channels</li>
+                  <li>✓ Basic dashboard</li>
+                </ul>
+                <button class="btn-secondary text-xs mt-3 w-full" disabled>Current</button>
+              </div>
+              <div class="bg-[#1a1f2b] p-4 rounded-lg border border-[#1e2633]">
+                <div class="flex items-center gap-2"><span class="font-bold text-white">Builder</span><span class="tier-badge tier-builder">$19/mo</span></div>
+                <ul class="text-xs text-gray-300 mt-2 space-y-1">
+                  <li>✓ All Explorer perks</li>
+                  <li>✓ Code Vault access</li>
+                  <li>✓ Beta studio tools</li>
+                  <li>✓ AI Sports Simulator</li>
+                </ul>
+                <button class="btn-primary text-xs mt-3 w-full" onclick="upgradeTier('builder')">Upgrade</button>
+              </div>
+              <div class="bg-[#1a1f2b] p-4 rounded-lg border border-purple-500/50">
+                <div class="flex items-center gap-2"><span class="font-bold text-white">VIP</span><span class="tier-badge tier-vip">$49/mo</span></div>
+                <ul class="text-xs text-gray-300 mt-2 space-y-1">
+                  <li>✓ All Builder perks</li>
+                  <li>✓ Full commercial rights</li>
+                  <li>✓ Automated trend strategies</li>
+                  <li>✓ FED‑OS alpha access</li>
+                </ul>
+                <button class="btn-primary text-xs mt-3 w-full" onclick="upgradeTier('vip')">Upgrade</button>
+              </div>
+            </div>
+          </div>
+          <div class="content-card">
+            <h3 class="card-title flex items-center gap-2"><i class="fas fa-clock text-purple-400"></i> Slow Unlock System</h3>
+            <p class="text-sm text-muted mb-4">New content packets unlock every 30 days to maximize retention.</p>
+            <div class="unlock-timeline pl-4 space-y-3">
+              <div class="unlock-item unlocked">
+                <span class="font-medium text-white">Packet 1: Foundations</span>
+                <span class="text-xs text-green-400 ml-2">✅ Unlocked</span>
+                <p class="text-xs text-muted">Videos · Discord access · Basic dashboard</p>
+              </div>
+              <div class="unlock-item unlocked">
+                <span class="font-medium text-white">Packet 2: Builder Tools</span>
+                <span class="text-xs text-green-400 ml-2">✅ Unlocked</span>
+                <p class="text-xs text-muted">Code Vault · Beta studio tools</p>
+              </div>
+              <div class="unlock-item locked">
+                <span class="font-medium text-white">Packet 3: AI & Automation</span>
+                <span class="text-xs text-red-400 ml-2">🔒 12 days</span>
+                <p class="text-xs text-muted">AI Sports Sim · Predictive formulas</p>
+              </div>
+              <div class="unlock-item locked">
+                <span class="font-medium text-white">Packet 4: Sovereign Suite</span>
+                <span class="text-xs text-red-400 ml-2">🔒 42 days</span>
+                <p class="text-xs text-muted">FED‑OS alpha · Commercial rights</p>
+              </div>
+            </div>
+            <div class="mt-4 p-3 bg-[#1a1f2b] rounded-lg border border-[#1e2633] text-sm">
+              <i class="fas fa-rocket text-purple-400"></i> <span class="text-gray-300">Next unlock in <span class="text-white font-bold">12 days</span> — stay active to accelerate!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== TAB: PROFILE ===== -->
+      <div id="tab-profile" class="tab-content hidden">
+        <div class="content-card">
+          <h3 class="card-title flex items-center gap-2"><i class="fas fa-user-edit text-purple-400"></i> Your Profile</h3>
+          <p class="text-sm text-muted mb-4">Choose a username (publicly visible) and manage your account.</p>
+          <form id="profileForm" class="space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-300">Username</label>
+              <input type="text" id="profileUsername" class="input-dark" placeholder="Choose a unique username" />
+              <p class="text-xs text-muted mt-1">This will be shown in forum posts instead of your email.</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-300">Email (read-only)</label>
+              <input type="email" id="profileEmail" class="input-dark opacity-50 cursor-not-allowed" disabled />
+            </div>
+            <button type="submit" class="btn-primary">Update Profile</button>
+          </form>
+          <div id="profileMessage" class="text-sm mt-3 hidden"></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<script>
+  // ================================================================
+  // 1. SUPABASE INIT
+  // ================================================================
+  const SUPABASE_URL = 'https://qyuczfpgydgqywgthgrz.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2NLEuDREplLS9DgUXeA8Tw_f8MJOhCq';
+  const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+  // ================================================================
+  // 2. STATE
+  // ================================================================
+  let currentUser = null;
+  let currentUserTier = 'explorer';
+  let currentTopicId = null;
+  let topicsSubscription = null;
+  let repliesSubscription = null;
+  let isSignUp = false;
+  let currentTab = 'forum';
+
+  // ================================================================
+  // 3. DOM REFS
+  // ================================================================
+  const loginScreen = document.getElementById('loginScreen');
+  const dashboardScreen = document.getElementById('dashboardScreen');
+  const loginBtn = document.getElementById('loginBtn');
+  const loginModal = document.getElementById('loginModal');
+  const closeModal = document.getElementById('closeModal');
+  const loginForm = document.getElementById('loginForm');
+  const emailInput = document.getElementById('email');
+  const passwordInput = document.getElementById('password');
+  const submitBtn = loginForm.querySelector('button[type="submit"]');
+  const messageEl = document.getElementById('message');
+  const formTitle = document.getElementById('formTitle');
+  const formSubtitle = document.getElementById('formSubtitle');
+  const toggleModeBtn = document.getElementById('toggleMode');
+  const toggleText = document.getElementById('toggleText');
+  const forgotBtn = document.getElementById('forgotBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const sidebarUserDisplay = document.getElementById('sidebarUserDisplay');
+  const sidebarTierBadge = document.getElementById('sidebarTierBadge');
+  const clockDisplay = document.getElementById('clockDisplay');
+  const pageTitle = document.getElementById('pageTitle');
+  const pageSubtitle = document.getElementById('pageSubtitle');
+
+  // Forum
+  const forumList = document.getElementById('forumList');
+  const newTopicBtn = document.getElementById('newTopicBtn');
+  const newTopicForm = document.getElementById('newTopicForm');
+  const createTopicForm = document.getElementById('createTopicForm');
+  const topicTitle = document.getElementById('topicTitle');
+  const topicContent = document.getElementById('topicContent');
+  const topicAttachment = document.getElementById('topicAttachment');
+  const cancelTopicBtn = document.getElementById('cancelTopicBtn');
+  const singleTopicView = document.getElementById('singleTopicView');
+  const backToForumBtn = document.getElementById('backToForumBtn');
+  const detailTitle = document.getElementById('detailTitle');
+  const detailMeta = document.getElementById('detailMeta');
+  const detailContent = document.getElementById('detailContent');
+  const detailAttachment = document.getElementById('detailAttachment');
+  const detailTags = document.getElementById('detailTags');
+  const repliesList = document.getElementById('repliesList');
+  const replyForm = document.getElementById('replyForm');
+  const replyContent = document.getElementById('replyContent');
+
+  // Nav
+  const forumNav = document.getElementById('forumNavLink');
+  const eduNav = document.getElementById('eduNavLink');
+  const profileNav = document.getElementById('profileNavLink');
+  const tabForum = document.getElementById('tab-forum');
+  const tabEdu = document.getElementById('tab-edu');
+  const tabProfile = document.getElementById('tab-profile');
+
+  // Edu
+  const eduTierDisplay = document.getElementById('eduTierDisplay');
+
+  // Profile
+  const profileForm = document.getElementById('profileForm');
+  const profileUsername = document.getElementById('profileUsername');
+  const profileEmail = document.getElementById('profileEmail');
+  const profileMessage = document.getElementById('profileMessage');
+
+  // Tag checkboxes container
+  const tagCheckboxes = document.getElementById('tagCheckboxes');
+
+  // ================================================================
+  // 4. TAG DEFINITIONS (12 AI, coding, tech)
+  // ================================================================
+  const PREDEFINED_TAGS = [
+    'Artificial Intelligence',
+    'Machine Learning',
+    'Deep Learning',
+    'Natural Language Processing',
+    'Computer Vision',
+    'Data Science',
+    'Web Development',
+    'Mobile Development',
+    'Cloud Computing',
+    'Cybersecurity',
+    'Blockchain',
+    'Internet of Things'
+  ];
+
+  // ================================================================
+  // 5. TIER HELPERS (unchanged)
+  // ================================================================
+  function getUserTier() {
+    const stored = localStorage.getItem('fed_user_tier');
+    if (stored && ['explorer','builder','vip'].includes(stored)) return stored;
+    return 'explorer';
+  }
+  function setUserTier(tier) {
+    if (['explorer','builder','vip'].includes(tier)) {
+      localStorage.setItem('fed_user_tier', tier);
+      currentUserTier = tier;
+      updateUIForTier();
+    }
+  }
+  function getTierLabel(t) {
+    const map = { explorer:'Explorer', builder:'Builder', vip:'VIP' };
+    return map[t] || 'Explorer';
+  }
+  function getTierBadge(t) {
+    const map = { explorer:'tier-explorer', builder:'tier-builder', vip:'tier-vip' };
+    return map[t] || 'tier-explorer';
+  }
+  function updateUIForTier() {
+    const label = getTierLabel(currentUserTier);
+    sidebarTierBadge.textContent = label;
+    sidebarTierBadge.className = `tier-badge ${getTierBadge(currentUserTier)}`;
+    if (eduTierDisplay) eduTierDisplay.textContent = label;
+  }
+  function upgradeTier(tier) {
+    if (tier === 'builder' || tier === 'vip') {
+      alert(`⬆️ Upgrade to ${getTierLabel(tier)} initiated. (Demo: tier set in localStorage)`);
+      setUserTier(tier);
+    }
+  }
+  window.upgradeTier = upgradeTier;
+
+  // ================================================================
+  // 6. AUTH
+  // ================================================================
+  async function loadUserProfile() {
+    if (!currentUser) return;
+    const { data, error } = await supabaseClient
+      .from('profiles')
+      .select('username, email')
+      .eq('id', currentUser.id)
+      .single();
+    if (error) {
+      console.error('Error loading profile:', error);
+      return;
+    }
+    if (data) {
+      profileUsername.value = data.username || '';
+      profileEmail.value = data.email;
+      const display = data.username || data.email;
+      sidebarUserDisplay.textContent = display;
+    }
+  }
+
+  function showDashboard(user) {
+    loginScreen.classList.add('hidden');
+    dashboardScreen.classList.remove('hidden');
+    currentUser = user;
+    currentUserTier = getUserTier();
+    updateUIForTier();
+    loadUserProfile().then(() => {});
+    switchTab('forum');
+    loadTopics();
+    startClock();
+  }
+
+  function showLogin() {
+    dashboardScreen.classList.add('hidden');
+    loginScreen.classList.remove('hidden');
+    loginBtn.textContent = 'Login';
+    loginBtn.className = 'bg-white hover:bg-gray-200 text-purple-600 font-bold py-3 px-10 rounded-full text-lg shadow-lg transition';
+    if (topicsSubscription) topicsSubscription.unsubscribe();
+    if (repliesSubscription) repliesSubscription.unsubscribe();
+    stopClock();
+  }
+
+  async function checkSession() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+      showDashboard(session.user);
+    } else {
+      showLogin();
+    }
+  }
+
+  logoutBtn.addEventListener('click', async () => {
+    await supabaseClient.auth.signOut();
+  });
+
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_IN' && session) {
+      showDashboard(session.user);
+      closeModalFunc();
+    }
+    if (event === 'SIGNED_OUT') {
+      showLogin();
+    }
+  });
+
+  // ================================================================
+  // 7. TAB SWITCHING (unchanged)
+  // ================================================================
+  function switchTab(tab) {
+    currentTab = tab;
+    [forumNav, eduNav, profileNav].forEach(el => el.classList.remove('active'));
+    [tabForum, tabEdu, tabProfile].forEach(el => el.classList.add('hidden'));
+    if (tab === 'forum') {
+      forumNav.classList.add('active');
+      tabForum.classList.remove('hidden');
+      pageTitle.textContent = 'Forum';
+      pageSubtitle.textContent = 'Discuss tech, AI, and sovereignty.';
+    } else if (tab === 'edu') {
+      eduNav.classList.add('active');
+      tabEdu.classList.remove('hidden');
+      pageTitle.textContent = 'FED‑Edu Tracker';
+      pageSubtitle.textContent = 'Certificates · Progress · Access · Slow Unlock';
+    } else if (tab === 'profile') {
+      profileNav.classList.add('active');
+      tabProfile.classList.remove('hidden');
+      pageTitle.textContent = 'Profile';
+      pageSubtitle.textContent = 'Manage your username and account.';
+      loadUserProfile();
+    }
+  }
+
+  forumNav.addEventListener('click', () => switchTab('forum'));
+  eduNav.addEventListener('click', () => switchTab('edu'));
+  profileNav.addEventListener('click', () => switchTab('profile'));
+
+  // ================================================================
+  // 8. PROFILE UPDATE (unchanged)
+  // ================================================================
+  profileForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const username = profileUsername.value.trim();
+    if (!username) {
+      showProfileMessage('Username cannot be empty.', 'text-yellow-400');
+      return;
+    }
+    try {
+      const { error } = await supabaseClient
+        .from('profiles')
+        .update({ username })
+        .eq('id', currentUser.id);
+      if (error) throw error;
+      showProfileMessage('✅ Profile updated successfully!', 'text-green-400');
+      const display = username || currentUser.email;
+      sidebarUserDisplay.textContent = display;
+      loadTopics(); // refresh to show new username
+    } catch (err) {
+      showProfileMessage('❌ ' + err.message, 'text-red-400');
+    }
+  });
+
+  function showProfileMessage(msg, className = '') {
+    profileMessage.textContent = msg;
+    profileMessage.className = `text-sm mt-3 ${className}`;
+    profileMessage.classList.remove('hidden');
+    setTimeout(() => profileMessage.classList.add('hidden'), 5000);
+  }
+
+  // ================================================================
+  // 9. FORUM LOAD & DETAIL (no likes)
+  // ================================================================
+  async function loadTopics() {
+    if (!currentUser) return;
+    try {
+      const { data: topics, error } = await supabaseClient
+        .from('topics')
+        .select(`
+          id, title, content, created_at, user_id, attachment_url, tags,
+          profiles ( username, email )
+        `)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      if (topics.length === 0) {
+        forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No topics yet. Be the first to start a discussion!</p>`;
+        return;
+      }
+
+      const topicsWithCounts = await Promise.all(topics.map(async (topic) => {
+        const { count, error } = await supabaseClient
+          .from('replies')
+          .select('*', { count: 'exact', head: true })
+          .eq('topic_id', topic.id);
+        if (error) throw error;
+        return { ...topic, replyCount: count || 0 };
+      }));
+
+      let html = '';
+      topicsWithCounts.forEach(topic => {
+        const displayName = topic.profiles?.username || topic.profiles?.email || 'Unknown';
+        const date = new Date(topic.created_at).toLocaleDateString();
+        const tags = topic.tags || [];
+        const tagHtml = tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+        const attachmentIcon = topic.attachment_url ? '<i class="fas fa-paperclip text-muted ml-1"></i>' : '';
+        html += `
+          <div class="topic-card bg-[#1a1f2b] hover:bg-[#1e2633] p-4 rounded-lg border border-[#1e2633]" data-topic-id="${topic.id}">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-semibold text-lg text-white">${topic.title}</h3>
+                <p class="text-sm text-gray-400">By ${displayName} · ${date} ${attachmentIcon}</p>
+                <div class="mt-1 flex flex-wrap gap-1">${tagHtml}</div>
+              </div>
+              <span class="bg-purple-900 text-purple-300 text-xs px-3 py-1 rounded-full">${topic.replyCount} replies</span>
+            </div>
+            <p class="text-gray-300 mt-1 line-clamp-2">${topic.content}</p>
+          </div>
+        `;
+      });
+      forumList.innerHTML = html;
+
+      // Attach click listeners to each card
+      document.querySelectorAll('.topic-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const topicId = card.dataset.topicId;
+          showTopicDetail(topicId);
+        });
+      });
+
+      if (topicsSubscription) topicsSubscription.unsubscribe();
+      topicsSubscription = supabaseClient
+        .channel('public:topics')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'topics' }, () => loadTopics())
+        .subscribe();
+
+    } catch (err) {
+      console.error('Error loading topics:', err);
+      forumList.innerHTML = `<p class="text-red-400 text-center py-8">Failed to load topics. Please refresh.</p>`;
+    }
+  }
+
+  async function showTopicDetail(topicId) {
+    if (repliesSubscription) repliesSubscription.unsubscribe();
+    currentTopicId = topicId;
+
+    try {
+      const { data: topic, error: topicErr } = await supabaseClient
+        .from('topics')
+        .select(`
+          id, title, content, created_at,
+          user_id, attachment_url, tags,
+          profiles ( username, email )
+        `)
+        .eq('id', topicId)
+        .single();
+
+      if (topicErr) throw topicErr;
+
+      const { data: replies, error: repliesErr } = await supabaseClient
+        .from('replies')
+        .select(`
+          id, content, created_at,
+          user_id,
+          profiles ( username, email )
+        `)
+        .eq('topic_id', topicId)
+        .order('created_at', { ascending: true });
+
+      if (repliesErr) throw repliesErr;
+
+      detailTitle.textContent = topic.title;
+      const displayName = topic.profiles?.username || topic.profiles?.email || 'Unknown';
+      const date = new Date(topic.created_at).toLocaleString();
+      detailMeta.textContent = `By ${displayName} · ${date}`;
+      detailContent.textContent = topic.content;
+
+      // Attachment
+      if (topic.attachment_url) {
+        const url = topic.attachment_url;
+        const ext = url.split('.').pop().toLowerCase();
+        let html = '';
+        if (['jpg','jpeg','png','gif','webp','svg'].includes(ext)) {
+          html = `<img src="${url}" alt="Attachment" class="attachment-preview" />`;
+        } else if (['mp4','webm','ogg'].includes(ext)) {
+          html = `<video controls class="attachment-preview"><source src="${url}" type="video/${ext}"></video>`;
+        } else if (ext === 'zip') {
+          html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file-archive"></i> Download ZIP</a>`;
+        } else {
+          html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file"></i> Download attachment</a>`;
+        }
+        detailAttachment.innerHTML = html;
+      } else {
+        detailAttachment.innerHTML = '';
+      }
+
+      // Tags
+      const tags = topic.tags || [];
+      detailTags.innerHTML = tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+
+      // Render replies
+      if (replies.length === 0) {
+        repliesList.innerHTML = `<p class="text-gray-400 text-sm">No replies yet. Be the first to respond!</p>`;
+      } else {
+        let html = '';
+        replies.forEach(reply => {
+          const replyName = reply.profiles?.username || reply.profiles?.email || 'Unknown';
+          const replyDate = new Date(reply.created_at).toLocaleString();
+          html += `
+            <div class="reply-item bg-[#1a1f2b] p-3 rounded-lg" data-reply-id="${reply.id}">
+              <div class="flex justify-between text-sm text-gray-400">
+                <span class="font-medium text-white">${replyName}</span>
+                <span>${replyDate}</span>
+              </div>
+              <p class="mt-1 text-white">${reply.content}</p>
+            </div>
+          `;
+        });
+        repliesList.innerHTML = html;
+      }
+
+      forumList.classList.add('hidden');
+      newTopicForm.classList.add('hidden');
+      singleTopicView.classList.remove('hidden');
+
+      repliesSubscription = supabaseClient
+        .channel(`public:replies:topic_id=eq.${topicId}`)
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'replies', filter: `topic_id=eq.${topicId}` }, () => {
+          showTopicDetail(topicId);
+        })
+        .subscribe();
+
+    } catch (err) {
+      console.error('Error loading topic detail:', err);
+      alert('Failed to load topic details.');
+    }
+  }
+
+  // ================================================================
+  // 10. BACK TO FORUM
+  // ================================================================
+  backToForumBtn.addEventListener('click', () => {
+    singleTopicView.classList.add('hidden');
+    forumList.classList.remove('hidden');
+    if (repliesSubscription) repliesSubscription.unsubscribe();
+  });
+
+  // ================================================================
+  // 11. CREATE TOPIC
+  // ================================================================
+  function renderTagCheckboxes() {
+    let html = '';
+    PREDEFINED_TAGS.forEach(tag => {
+      html += `
+        <label class="tag-checkbox">
+          <input type="checkbox" name="tags" value="${tag}" />
+          ${tag}
+        </label>
+      `;
+    });
+    tagCheckboxes.innerHTML = html;
+  }
+  renderTagCheckboxes();
+
+  newTopicBtn.addEventListener('click', () => {
+    newTopicForm.classList.toggle('hidden');
+    if (!newTopicForm.classList.contains('hidden')) {
+      topicTitle.focus();
+    }
+  });
+
+  cancelTopicBtn.addEventListener('click', () => {
+    newTopicForm.classList.add('hidden');
+    createTopicForm.reset();
+    document.getElementById('uploadError').classList.add('hidden');
+  });
+
+  createTopicForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const title = topicTitle.value.trim();
+    const content = topicContent.value.trim();
+    const selectedTags = Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(el => el.value);
+    const file = topicAttachment.files[0];
+
+    if (!title || !content) {
+      alert('Title and content are required.');
+      return;
+    }
+
+    const submitButton = createTopicForm.querySelector('button[type="submit"]');
+    submitButton.disabled = true;
+    submitButton.textContent = 'Posting...';
+    const errorEl = document.getElementById('uploadError');
+    errorEl.classList.add('hidden');
+
+    try {
+      let attachmentUrl = null;
+
+      if (file) {
+        if (file.size > 10 * 1024 * 1024) {
+          errorEl.textContent = 'File size exceeds 10MB limit.';
+          errorEl.classList.remove('hidden');
+          submitButton.disabled = false;
+          submitButton.textContent = 'Post Topic';
+          return;
+        }
+
+        const fileExt = file.name.split('.').pop();
+        const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
+        const { error: uploadErr } = await supabaseClient.storage
+          .from('forum-attachments')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+          });
+        if (uploadErr) {
+          if (uploadErr.message.includes('bucket not found')) {
+            errorEl.textContent = 'Storage bucket "forum-attachments" not found. Please create it in Supabase dashboard.';
+            errorEl.classList.remove('hidden');
+            submitButton.disabled = false;
+            submitButton.textContent = 'Post Topic';
+            return;
+          }
+          throw uploadErr;
+        }
+        const { data: urlData } = supabaseClient.storage
+          .from('forum-attachments')
+          .getPublicUrl(filePath);
+        attachmentUrl = urlData.publicUrl;
+      }
+
+      const { error } = await supabaseClient
+        .from('topics')
+        .insert({
+          title,
+          content,
+          user_id: currentUser.id,
+          attachment_url: attachmentUrl,
+          tags: selectedTags.length ? selectedTags : null,
+        });
+
+      if (error) throw error;
+
+      createTopicForm.reset();
+      newTopicForm.classList.add('hidden');
+      loadTopics();
+
+    } catch (err) {
+      console.error('Error creating topic:', err);
+      alert('Failed to create topic: ' + err.message);
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Post Topic';
+    }
+  });
+
+  // ================================================================
+  // 12. POST REPLY
+  // ================================================================
+  replyForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const content = replyContent.value.trim();
+    if (!content || !currentTopicId) return;
+    try {
+      const { error } = await supabaseClient
+        .from('replies')
+        .insert({ topic_id: currentTopicId, content, user_id: currentUser.id });
+      if (error) throw error;
+      replyContent.value = '';
+      showTopicDetail(currentTopicId);
+    } catch (err) {
+      console.error('Error posting reply:', err);
+      alert('Failed to post reply: ' + err.message);
+    }
+  });
+
+  // ================================================================
+  // 13. CLOCK
+  // ================================================================
+  let clockInterval = null;
+  function startClock() {
+    if (clockInterval) clearInterval(clockInterval);
+    clockInterval = setInterval(() => {
+      if (clockDisplay) clockDisplay.textContent = new Date().toLocaleTimeString();
+    }, 1000);
+  }
+  function stopClock() {
+    if (clockInterval) { clearInterval(clockInterval); clockInterval = null; }
+  }
+
+  // ================================================================
+  // 14. MODAL CONTROLS
+  // ================================================================
+  function openModalFunc() {
+    loginModal.classList.add('active');
+    messageEl.classList.add('hidden');
+    messageEl.textContent = '';
+    loginForm.reset();
+    if (isSignUp) toggleModeFunc();
+    emailInput.focus();
+  }
+  function closeModalFunc() {
+    loginModal.classList.remove('active');
+    messageEl.classList.add('hidden');
+    messageEl.textContent = '';
+    loginBtn.focus();
+  }
+
+  loginBtn.addEventListener('click', openModalFunc);
+  closeModal.addEventListener('click', closeModalFunc);
+  loginModal.addEventListener('click', (e) => { if (e.target === loginModal) closeModalFunc(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && loginModal.classList.contains('active')) closeModalFunc();
+  });
+
+  function toggleModeFunc() {
+    isSignUp = !isSignUp;
+    if (isSignUp) {
+      formTitle.textContent = 'Create Account';
+      formSubtitle.textContent = 'Join the community';
+      submitBtn.textContent = 'Sign Up';
+      toggleModeBtn.textContent = 'Sign In';
+      toggleText.textContent = 'Already a citizen?';
+    } else {
+      formTitle.textContent = 'Sign In';
+      formSubtitle.textContent = 'Enter your credentials';
+      submitBtn.textContent = 'Sign In';
+      toggleModeBtn.textContent = 'Sign Up';
+      toggleText.textContent = 'New citizen?';
+    }
+    messageEl.classList.add('hidden');
+    messageEl.textContent = '';
+    loginForm.reset();
+  }
+  toggleModeBtn.addEventListener('click', toggleModeFunc);
+
+  // ================================================================
+  // 15. FORGOT PASSWORD
+  // ================================================================
+  forgotBtn.addEventListener('click', async () => {
+    const email = emailInput.value.trim();
+    if (!email) {
+      messageEl.textContent = 'Please enter your email address first.';
+      messageEl.className = 'text-sm mt-3 text-center text-yellow-400';
+      messageEl.classList.remove('hidden');
+      return;
+    }
+    try {
+      const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + window.location.pathname,
+      });
+      if (error) throw error;
+      messageEl.textContent = '📧 Password reset email sent! Check your inbox.';
+      messageEl.className = 'text-sm mt-3 text-center text-blue-400';
+      messageEl.classList.remove('hidden');
+    } catch (err) {
+      messageEl.textContent = err.message || 'Failed to send reset email.';
+      messageEl.className = 'text-sm mt-3 text-center text-red-400';
+      messageEl.classList.remove('hidden');
+    }
+  });
+
+  // ================================================================
+  // 16. LOGIN / SIGNUP
+  // ================================================================
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = emailInput.value.trim();
+    const password = passwordInput.value;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = isSignUp ? 'Creating...' : 'Signing in...';
+    messageEl.classList.add('hidden');
+    messageEl.textContent = '';
+
+    try {
+      let response;
+      if (isSignUp) {
+        response = await supabaseClient.auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: window.location.origin + window.location.pathname }
+        });
+        if (response.error) throw response.error;
+        if (!response.data.session) {
+          messageEl.textContent = '📧 Please check your email to confirm your account.';
+          messageEl.className = 'text-sm mt-3 text-center text-blue-400';
+          messageEl.classList.remove('hidden');
+        } else {
+          messageEl.textContent = '✅ Account created! You are now signed in.';
+          messageEl.className = 'text-sm mt-3 text-center text-green-400';
+          messageEl.classList.remove('hidden');
+          setUserTier('explorer');
+        }
+      } else {
+        response = await supabaseClient.auth.signInWithPassword({ email, password });
+        if (response.error) throw response.error;
+        messageEl.textContent = `✅ Logged in as ${response.data.user.email}`;
+        messageEl.className = 'text-sm mt-3 text-center text-green-400';
+        messageEl.classList.remove('hidden');
+        setTimeout(closeModalFunc, 1500);
+      }
+    } catch (err) {
+      let errorMsg = err.message;
+      if (err.message.includes('Email not confirmed')) errorMsg = 'Please verify your email address before logging in. Check your inbox.';
+      else if (err.message.includes('Invalid login credentials')) errorMsg = 'Invalid email or password.';
+      else if (err.message.includes('User already registered')) errorMsg = 'This email is already registered. Please sign in instead.';
+      messageEl.textContent = errorMsg;
+      messageEl.className = 'text-sm mt-3 text-center text-red-400';
+      messageEl.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In';
+    }
+  });
+
+  // ================================================================
+  // 17. INIT
+  // ================================================================
+  checkSession();
+
+  console.log('🧠 FED Hub · Forum + Edu + Profile (no likes)');
+  console.log(`🔐 Tier: ${getUserTier()}`);
+</script>
+</body>
+</html>
