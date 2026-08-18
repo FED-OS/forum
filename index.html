@@ -75,8 +75,21 @@
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
             min-height: 100vh;
-            background-image: var(--body-radial);
             transition: background 0.4s ease, color 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Water Background Canvas ── */
+        #waterBg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            display: block;
         }
 
         a {
@@ -705,6 +718,8 @@
         .forum-main {
             padding: 32px 0 60px;
             min-height: calc(100vh - 80px);
+            position: relative;
+            z-index: 2;
         }
 
         /* ── Page Head ── */
@@ -808,6 +823,65 @@
             transition: width 0.1s linear;
             border-radius: 0 2px 2px 0;
             box-shadow: 0 0 20px rgba(139, 108, 247, 0.3);
+        }
+
+        /* ── Global Marquee ── */
+        .global-marquee {
+            background: var(--bg-card);
+            backdrop-filter: var(--glass-blur);
+            border: 1px solid var(--border-light);
+            border-radius: var(--radius);
+            padding: 8px 0;
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+        .global-marquee .marquee-icon {
+            padding: 0 16px;
+            color: #f472b6;
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: marqueeScroll 80s linear infinite;
+            width: max-content;
+        }
+        .marquee-track span {
+            padding: 0 48px;
+            position: relative;
+            color: var(--text-primary);
+        }
+        .marquee-track span::after {
+            content: "•";
+            position: absolute;
+            right: -4px;
+            color: #f472b6;
+            opacity: 0.6;
+            font-size: 1.2rem;
+        }
+        .marquee-track span:last-child::after {
+            display: none;
+        }
+
+        .global-marquee:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
         }
 
         /* ── Carousel + Shop Row ── */
@@ -1304,21 +1378,21 @@
             margin-left: 4px;
         }
 
-        /* ── Image Preview in Topic Card ── */
+        /* ── Image Preview in Topic Card (Wider) ── */
         .topic-card .image-preview {
-            margin-top: 10px;
+            margin-top: 12px;
             border-radius: 12px;
             overflow: hidden;
             position: relative;
             background: var(--bg-body);
             border: 1px solid var(--border-light);
             transition: var(--transition);
-            max-height: 160px;
-            cursor: pointer;
+            width: 100%;
+            max-height: 260px;
         }
         .topic-card .image-preview img {
             width: 100%;
-            height: 160px;
+            height: 260px;
             object-fit: cover;
             transition: var(--transition);
             display: block;
@@ -1908,6 +1982,12 @@
             .shop-item .item-icon i {
                 font-size: 1.6rem;
             }
+            .topic-card .image-preview {
+                max-height: 180px;
+            }
+            .topic-card .image-preview img {
+                height: 180px;
+            }
         }
 
         @media (max-width: 640px) {
@@ -1942,10 +2022,10 @@
                 padding: 14px 16px;
             }
             .topic-card .image-preview {
-                max-height: 120px;
+                max-height: 140px;
             }
             .topic-card .image-preview img {
-                height: 120px;
+                height: 140px;
             }
             .modal-card {
                 padding: 1.5rem;
@@ -2084,17 +2164,15 @@
             width: 60%;
         }
         @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
+
+    <!-- ─── Water Background ─── -->
+    <canvas id="waterBg"></canvas>
 
     <!-- ─── Reading Progress ─── -->
     <div class="reading-progress" id="readingProgress">
@@ -2214,6 +2292,40 @@
                     <button id="newTopicBtn" class="btn-primary" style="padding:10px 24px; font-size:0.95rem; white-space:nowrap;">
                         <i class="fas fa-plus"></i> New Topic
                     </button>
+                    <!-- ─── Discord Badge ─── -->
+                    <div id="discord-count" style="
+                        display: inline-flex;
+                        align-items: center;
+                        gap: 8px;
+                        background: #1e1f22;
+                        color: white;
+                        padding: 8px 16px;
+                        border-radius: 40px;
+                        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                        font-size: 14px;
+                        font-weight: bold;
+                        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+                        border-left: 3px solid #23a55a;
+                    ">
+                        <span>🟢</span>
+                        <span id="online-number">Loading...</span>
+                        <span>online</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ─── Ko-fi Subscribe Button (Higher Up) ─── -->
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 16px;">
+                <a href="https://ko-fi.com/fedpromptly" target="_blank" class="btn-secondary" style="padding: 10px 24px; font-size: 0.95rem; display: inline-flex; align-items: center; gap: 8px; text-decoration: none;">
+                    <i class="fas fa-mug-hot"></i> Support on Ko-fi
+                </a>
+            </div>
+
+            <!-- ─── Global Marquee (Infinite Scroll) ─── -->
+            <div id="globalMarquee" class="global-marquee">
+                <div class="marquee-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="marquee-track" id="marqueeTrack">
+                    <!-- populated by JS -->
                 </div>
             </div>
 
@@ -2364,7 +2476,175 @@
         <kbd>N</kbd> New topic &nbsp;·&nbsp; <kbd>R</kbd> Reply &nbsp;·&nbsp; <kbd>?</kbd> Help
     </div>
 
-    <!-- ─── Script ─── -->
+    <!-- ─── Water Background Script ─── -->
+    <script>
+        (function() {
+            const canvas = document.getElementById('waterBg');
+            const ctx = canvas.getContext('2d');
+
+            let width, height;
+            let waterLevel = 0;
+            let targetWaterLevel = 0;
+            let time = 0;
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                targetWaterLevel = height * 0.5;
+                waterLevel = targetWaterLevel;
+            }
+            window.addEventListener('resize', resize);
+
+            function lerp(a, b, t) {
+                return a + (b - a) * t;
+            }
+
+            function lerpColor(c1, c2, t) {
+                return {
+                    r: Math.round(lerp(c1.r, c2.r, t)),
+                    g: Math.round(lerp(c1.g, c2.g, t)),
+                    b: Math.round(lerp(c1.b, c2.b, t))
+                };
+            }
+
+            function getWaterColor(percent) {
+                // percent: 0 = bottom, 1 = top
+                const colors = [
+                    { r: 5, g: 5, b: 30 }, // 0.00
+                    { r: 20, g: 8, b: 50 }, // 0.20
+                    { r: 60, g: 15, b: 70 }, // 0.40
+                    { r: 120, g: 25, b: 90 }, // 0.60
+                    { r: 200, g: 50, b: 120 }, // 0.80
+                    { r: 255, g: 80, b: 180 } // 1.00
+                ];
+                let totalSegments = colors.length - 1;
+                let segment = Math.min(percent * totalSegments, totalSegments - 0.001);
+                let idx = Math.floor(segment);
+                let t = segment - idx;
+                let c1 = colors[idx];
+                let c2 = colors[idx + 1];
+                return lerpColor(c1, c2, t);
+            }
+
+            function drawWater() {
+                ctx.clearRect(0, 0, width, height);
+
+                // Background gradient (sky/atmosphere)
+                let skyGrad = ctx.createLinearGradient(0, 0, 0, height);
+                skyGrad.addColorStop(0, '#0a0a12');
+                skyGrad.addColorStop(1, '#1a0a2e');
+                ctx.fillStyle = skyGrad;
+                ctx.fillRect(0, 0, width, height);
+
+                // Calculate wave surface with multiple sine/cosine waves for realistic water
+                const surfaceY = waterLevel;
+                const percent = Math.min(1 - (waterLevel / height), 1);
+
+                const topColor = getWaterColor(percent);
+                const bottomColor = { r: 5, g: 5, b: 20 };
+
+                // Draw the water body
+                ctx.beginPath();
+                ctx.moveTo(0, height);
+                ctx.lineTo(0, surfaceY);
+
+                for (let x = 0; x <= width; x += 1.5) {
+                    const y1 = Math.sin(x * 0.008 + time * 0.025) * 22;
+                    const y2 = Math.sin(x * 0.015 + time * 0.035 + 1.2) * 14;
+                    const y3 = Math.cos(x * 0.025 + time * 0.045 + 2.4) * 8;
+                    const y4 = Math.sin(x * 0.005 + time * 0.015 + 3.8) * 6;
+                    const y = surfaceY + y1 + y2 + y3 + y4;
+                    ctx.lineTo(x, y);
+                }
+
+                ctx.lineTo(width, height);
+                ctx.closePath();
+
+                // Water gradient
+                const grad = ctx.createLinearGradient(0, height, 0, surfaceY);
+                grad.addColorStop(0, `rgb(${bottomColor.r}, ${bottomColor.g}, ${bottomColor.b})`);
+                grad.addColorStop(1, `rgb(${topColor.r}, ${topColor.g}, ${topColor.b})`);
+
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Glowing edge / light reflection on the water surface (smooth, no random balls)
+                ctx.shadowColor = `rgba(255, 80, 180, ${0.15 + percent * 0.25})`;
+                ctx.shadowBlur = 45;
+                ctx.beginPath();
+                for (let x = 0; x <= width; x += 3) {
+                    const y1 = Math.sin(x * 0.008 + time * 0.025) * 22;
+                    const y2 = Math.sin(x * 0.015 + time * 0.035 + 1.2) * 14;
+                    const y3 = Math.cos(x * 0.025 + time * 0.045 + 2.4) * 8;
+                    const y4 = Math.sin(x * 0.005 + time * 0.015 + 3.8) * 6;
+                    const y = surfaceY + y1 + y2 + y3 + y4;
+                    if (x === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                }
+                ctx.strokeStyle = `rgba(255, 255, 255, ${0.08 + percent * 0.12})`;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // Add a subtle, smooth gradient highlight on the water surface
+                ctx.shadowBlur = 0;
+                for (let x = 0; x < width; x += 8) {
+                    const y1 = Math.sin(x * 0.008 + time * 0.025) * 22;
+                    const y2 = Math.sin(x * 0.015 + time * 0.035 + 1.2) * 14;
+                    const y3 = Math.cos(x * 0.025 + time * 0.045 + 2.4) * 8;
+                    const y4 = Math.sin(x * 0.005 + time * 0.015 + 3.8) * 6;
+                    const y = surfaceY + y1 + y2 + y3 + y4;
+                    // Soft glow spots
+                    ctx.beginPath();
+                    ctx.arc(x, y - 1, 4 + Math.sin(x * 0.1 + time * 0.05) * 2, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 200, 255, ${0.03 + (percent * 0.08)})`;
+                    ctx.fill();
+                }
+            }
+
+            function updateTarget() {
+                const minLevel = height * 0.12;
+                const maxLevel = height * 0.88;
+                targetWaterLevel = Math.random() * (maxLevel - minLevel) + minLevel;
+            }
+
+            function animate() {
+                time += 0.5;
+
+                // Smoothly follow target with a slow, natural lerp
+                waterLevel += (targetWaterLevel - waterLevel) * 0.005;
+
+                drawWater();
+                requestAnimationFrame(animate);
+            }
+
+            resize();
+            // Randomly change target every 3-7 seconds
+            setInterval(updateTarget, Math.random() * 4000 + 3000);
+            animate();
+        })();
+    </script>
+
+    <!-- ─── Discord Online Count Script ─── -->
+    <script>
+        const SERVER_ID = '1400235929154879490';
+        
+        async function getOnlineCount() {
+            try {
+                const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+                const data = await response.json();
+                const count = data.presence_count || 0;
+                document.getElementById('online-number').innerText = count;
+            } catch(error) {
+                document.getElementById('online-number').innerText = '?';
+            }
+        }
+        
+        getOnlineCount();
+        setInterval(getOnlineCount, 60000);
+    </script>
+
+    <!-- ─── Main Forum Script ─── -->
     <script>
         const SUPABASE_URL = 'https://qyuczfpgydgqywgthgrz.supabase.co';
         const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2NLEuDREplLS9DgUXeA8Tw_f8MJOhCq';
@@ -2469,6 +2749,12 @@
         const shopModal = document.getElementById('shopModal');
         const shopModalClose = document.getElementById('shopModalClose');
         const shopItemPoster = document.getElementById('shopItemPoster');
+
+        // ─── Note: Subscribe button was removed and replaced with Ko-fi button ───
+
+        // Marquee elements
+        const globalMarquee = document.getElementById('globalMarquee');
+        const marqueeTrack = document.getElementById('marqueeTrack');
 
         const PREDEFINED_TAGS = [
             'Artificial Intelligence', 'Machine Learning', 'Deep Learning',
@@ -2917,6 +3203,84 @@
             });
         }
 
+        // ─── Marquee Logic ───
+        let postSnippets = [];
+
+        function loadSnippets() {
+            const stored = localStorage.getItem('fedos_post_snippets');
+            if (stored) {
+                try {
+                    postSnippets = JSON.parse(stored);
+                } catch (e) {
+                    postSnippets = [];
+                }
+            }
+            // If empty or only default messages, seed with real topics or defaults
+            if (postSnippets.length === 0 || (postSnippets.length === 1 && postSnippets[0].includes('Welcome'))) {
+                // If we have real topics loaded, use them
+                if (allTopics && allTopics.length > 0) {
+                    seedMarqueeWithTopics(allTopics);
+                    return;
+                } else {
+                    postSnippets = [
+                        '🚀 Welcome to FEDPromptly!',
+                        '💡 Share your thoughts with the community!',
+                        '📢 Stay tuned for the latest updates!',
+                        '✨ Post a topic to see it scroll here!'
+                    ];
+                    saveSnippets();
+                }
+            }
+            updateMarquee();
+        }
+
+        function saveSnippets() {
+            localStorage.setItem('fedos_post_snippets', JSON.stringify(postSnippets));
+        }
+
+        function addSnippet(snippet) {
+            // Avoid duplicates
+            if (postSnippets.includes(snippet)) return;
+            postSnippets.unshift(snippet);
+            if (postSnippets.length > 500) {
+                postSnippets = postSnippets.slice(0, 400);
+            }
+            saveSnippets();
+            updateMarquee();
+        }
+
+        function seedMarqueeWithTopics(topics) {
+            if (!topics || topics.length === 0) return;
+            // Check if we already have real topics in the marquee
+            const hasRealTopic = postSnippets.some(s => s.includes(' posted: "'));
+            if (hasRealTopic) return;
+
+            const newSnippets = topics.slice(0, 10).map(t => {
+                const name = t.profiles?.username || t.profiles?.email || 'Someone';
+                return `${name} posted: "${t.title}"`;
+            });
+            // Filter out any undefined or null
+            const filtered = newSnippets.filter(s => s && !s.includes('undefined'));
+            if (filtered.length > 0) {
+                postSnippets = filtered;
+                postSnippets.push('🚀 Welcome to FEDPromptly!');
+                saveSnippets();
+                updateMarquee();
+            }
+        }
+
+        function updateMarquee() {
+            if (postSnippets.length === 0) {
+                globalMarquee.classList.add('hidden');
+                return;
+            }
+            globalMarquee.classList.remove('hidden');
+            // Create content with separators
+            let content = postSnippets.map(s => `<span>${s}</span>`).join('');
+            // Duplicate for seamless looping
+            marqueeTrack.innerHTML = content + content;
+        }
+
         // ─── Carousel ───
         function buildCarousel(topics) {
             const sorted = [...topics].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -2998,10 +3362,8 @@
 
         function resetAutoSlide() { startAutoSlide(); }
 
-        carouselNext.addEventListener('click', (e) => { e.stopPropagation();
-            nextSlide(); });
-        carouselPrev.addEventListener('click', (e) => { e.stopPropagation();
-            prevSlide(); });
+        carouselNext.addEventListener('click', (e) => { e.stopPropagation(); nextSlide(); });
+        carouselPrev.addEventListener('click', (e) => { e.stopPropagation(); prevSlide(); });
         carouselContainer.addEventListener('mouseenter', stopAutoSlide);
         carouselContainer.addEventListener('mouseleave', startAutoSlide);
 
@@ -3216,6 +3578,8 @@
             loadMoreBtn.textContent = hasMore ? 'Load more' : 'No more topics';
             if (!append && !searchQuery && allTopics.length) {
                 buildCarousel(allTopics);
+                // Seed marquee with topics if it's still empty or just defaults
+                seedMarqueeWithTopics(allTopics);
             }
             updateMetrics(allTopics);
         }
@@ -3432,8 +3796,7 @@
             e.preventDefault();
             const title = topicTitle.value.trim();
             const content = topicContent.value.trim();
-            const selectedTags = Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(el => el
-            .value);
+            const selectedTags = Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(el => el.value);
             const file = topicAttachment.files[0];
             if (!title || !content) {
                 alert('Title and content are required.');
@@ -3497,6 +3860,11 @@
                         origin: { y: 0.6 }
                     });
                 }
+
+                // ─── Add to marquee ───
+                const snippet = `${currentUser.email.split('@')[0]} posted: "${title}"`;
+                addSnippet(snippet);
+
                 createTopicForm.reset();
                 newTopicForm.classList.add('hidden');
                 clearDrafts();
@@ -3611,8 +3979,7 @@
                 stickyNewTopic.classList.remove('visible');
 
                 copyLinkBtn.onclick = function() {
-                    navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?topic=' +
-                        topicId)
+                    navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?topic=' + topicId)
                         .then(() => alert('Link copied!'))
                         .catch(() => alert('Copy failed.'));
                 };
@@ -3638,8 +4005,7 @@
 
                 window.repliesSubscription = supabaseClient
                     .channel(`public:replies:topic_id=eq.${topicId}`)
-                    .on('postgres_changes', { event: '*', schema: 'public', table: 'replies',
-                        filter: `topic_id=eq.${topicId}` }, () => {
+                    .on('postgres_changes', { event: '*', schema: 'public', table: 'replies', filter: `topic_id=eq.${topicId}` }, () => {
                         showTopicDetail(topicId);
                     })
                     .subscribe();
@@ -3884,6 +4250,7 @@
 
         refreshForumViewCount();
         loadDrafts();
+        loadSnippets(); // Load marquee snippets
         updateCharCounter(topicContent, topicCharCounter, 10000);
         updateCharCounter(replyContent, replyCharCounter, 5000);
 
@@ -3892,7 +4259,7 @@
             setTimeout(() => keyboardHelp.classList.remove('visible'), 3000);
         }, 2000);
 
-        console.log('💬 FEDPromptly – modernized with compact carousel + mini SaaS shop.');
+        console.log('💬 FEDPromptly – modernized with wider images, global ticker, and improved water waves.');
     </script>
 </body>
 </html>
