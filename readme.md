@@ -1,3 +1,5 @@
+<img width="2560" height="1440" alt="fed_poster_new_3" src="https://github.com/user-attachments/assets/84939463-b34d-4854-a7fa-e8aad6f42dc2" />
+
 # 🚀 FEDPromptly
 
 **Building the future of open-source social publishing and affordable connectivity.**
