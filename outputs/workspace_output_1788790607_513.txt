@@ -1,0 +1,31 @@
+                if (ch === 'icons' && topic.attachment_url) {
+                    iconDownloadHtml = `<button class="icon-download-btn" data-download-url="${encodeURI(topic.attachment_url)}" data-download-name="${escapeHtml(topic.title.replace(/"/g, ''))}"><i class="fas fa-download"></i> Download Icon</button>`;
+                }""",
+"iconDownloadHtml XSS fix")
+
+rep("""                html += `<div class="topic-card" data-topic-id="${topic.id}"><div class="flex-row"><div><div class="title">${topic.title}<button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" data-topic-id="${topic.id}" title="Bookmark"><i class="${bookmarked ? 'fas' : 'far'} fa-bookmark"></i></button></div><div class="meta"><i class="fas fa-user" style="font-size:0.68rem;"></i><a href="#" class="profile-link" data-user-id="${topic.user_id}">${displayName}</a><i class="fas fa-calendar-alt" style="font-size:0.68rem; margin-left:4px;"></i> ${date}<span class="time-ago"><i class="fas fa-clock"></i> ${ago}</span>${readingLabel ? `<span class="reading-time">\u00b7 ${readingLabel}</span>` : ''}${channelBadgeHtml}${priceBadgeHtml}${catBadge}</div><div class="tags">${tagHtml}</div></div><div class="stats-col"><span class="reply-count"><i class="fas fa-reply"></i> ${replyCount}</span><span class="views-badge"><i class="fas fa-eye"></i> ${views}</span></div></div><div class="excerpt">${topic.content}</div>${imageHtml}${iconDownloadHtml}</div>`;""",
+"""                const canEditTopic = isAdmin || (currentUser && topic.user_id === currentUser.id);
+                html += `<div class="topic-card" data-topic-id="${topic.id}" data-user-id="${topic.user_id}"><div class="flex-row"><div><div class="title">${escapeHtml(topic.title)}<button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" data-topic-id="${topic.id}" title="Bookmark"><i class="${bookmarked ? 'fas' : 'far'} fa-bookmark"></i></button></div><div class="meta"><i class="fas fa-user" style="font-size:0.64rem;"></i><a href="#" class="profile-link" data-user-id="${topic.user_id}">${displayName}</a><i class="fas fa-calendar-alt" style="font-size:0.64rem; margin-left:4px;"></i> ${date}<span class="time-now time-ago"><i class="fas fa-clock"></i> ${ago}</span>${readingLabel ? `<span class="reading-time">\u00b7 ${readingLabel}</span>` : ''}${channelBadgeHtml}${priceBadgeHtml}${catBadge}</div><div class="tags">${tagHtml}</div></div><div class="stats-col">${likeBtnHtml(topic, likeCount)}<span class="reply-count"><i class="fas fa-reply"></i> ${replyCount}</span><span class="views-badge"><i class="fas fa-eye"></i> ${views}</span></div></div><div class="excerpt" data-fulltext="${topic.id}">${highlightQuery(topic.content, searchQuery)}</div>${imageHtml}${iconDownloadHtml}${canEditTopic ? `<div class="mod-actions"><button class="btn-icon edit-topic" data-topic-id="${topic.id}"><i class="fas fa-pen"></i> Edit</button><button class="btn-icon danger delete-topic" data-topic-id="${topic.id}"><i class="fas fa-trash"></i> Delete</button></div>` : ''}</div>`;""",
+"topic card: escaped title/content + like button + edit/delete")
+
+# fix accidental class typo
+h = h.replace('<span class="time-now time-ago">', '<span class="time-ago">')
+
+# like button + edit/delete wiring on topic cards
+rep("""            forumList.querySelectorAll('.icon-download-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); downloadIcon(btn.dataset.downloadUrl, btn.dataset.downloadName); }));
+            forumTopicCard();
+            forumList.querySelectorAll('.topic-card').forEach(card => card.addEventListener('click', () => showTopicDetail(card.dataset.topicId)));""",
+"""            forumList.querySelectorAll('.icon-download-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); downloadIcon(btn.dataset.downloadUrl, btn.dataset.downloadName); }));
+            wireModActions();
+            forumList.querySelectorAll('.topic-card').forEach(card => card.addEventListener('click', () => showTopicDetail(card.dataset.topicId)));""",
+"replace bogus forumTopicCard() with wireModActions()")
+
+# 4b. Edit/delete wiring helpers (added right before renderTopicList definition)
+rep("""        function renderTopicList(topics, append = false) {""",
+"""        // ═══════════ FED-OS UPGRADE: edit / delete wiring ═══════════
+        function wireModActions() {
+            forumList.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.topic-card');
+                if (card && card.dataset.topicId) toggleLike(card.dataset.topicId, btn.querySelector('.like-count'), btn);
+            }));

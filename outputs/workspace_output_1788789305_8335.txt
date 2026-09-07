@@ -1,0 +1,38 @@
+3276:            <div id="singleTopicView" class="card hidden mt-4">
+3302:                    <div id="repliesList" class="space-y-3 mb-6"></div>
+3303:                    <form id="replyForm" class="mt-4">
+3333:                        <a class="footer-social" href="https://discord.com" target="_blank" rel="noopener" title="Discord"><i class="fab fa-discord"></i></a>
+3334:                        <a class="footer-social" href="https://twitter.com" target="_blank" rel="noopener" title="Twitter / X"><i class="fab fa-twitter"></i></a>
+3335:                        <a class="footer-social" href="https://github.com" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+3542:                    <a class="about-link" href="https://discord.com" target="_blank" rel="noopener"><i class="fab fa-discord"></i> Join our Discord</a>
+3569:                const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+4090:        const singleTopicView = document.getElementById('singleTopicView');
+4098:        const repliesList = document.getElementById('repliesList');
+4099:        const replyForm = document.getElementById('replyForm');
+4525:            if (singleTopicView.classList.contains('hidden')) { readingProgress.classList.remove('visible'); return; }
+4775:                html += `<div class="topic-card" data-topic-id="${topic.id}"><div class="flex-row"><div><div class="title">${topic.title}<button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" data-topic-id="${topic.id}" title="Bookmark"><i class="${bookmarked ? 'fas' : 'far'} fa-bookmark"></i></button></div><div class="meta"><i class="fas fa-user" style="font-size:0.68rem;"></i><a href="#" class="profile-link" data-user-id="${topic.user_id}">${displayName}</a><i class="fas fa-calendar-alt" style="font-size:0.68rem; margin-left:4px;"></i> ${date}<span class="time-ago"><i class="fas fa-clock"></i> ${ago}</span>${readingLabel ? `<span class="reading-time">· ${readingLabel}</span>` : ''}${channelBadgeHtml}${priceBadgeHtml}${catBadge}</div><div class="tags">${tagHtml}</div></div><div class="stats-col"><span class="reply-count"><i class="fas fa-reply"></i> ${replyCount}</span><span class="views-badge"><i class="fas fa-eye"></i> ${views}</span></div></div><div class="excerpt">${topic.content}</div>${imageHtml}${iconDownloadHtml}</div>`;
+5083:                if (replies.length === 0) repliesList.innerHTML = `<p class="text-gray-400 text-sm">No replies yet. Be the first to respond!</p>`;
+5091:                    repliesList.innerHTML = html;
+5096:                singleTopicView.classList.remove('hidden');
+5116:            singleTopicView.classList.add('hidden');
+5125:        replyForm.addEventListener('submit', async (e) => {
+5135:                setTimeout(() => document.getElementById('repliesList').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+5152:                        html += `<div class="topic-card" data-topic-id="${t.id}"><div class="flex-row"><div><div class="title">${t.title}</div><div class="meta">${new Date(t.created_at).toLocaleDateString()} · ${t.views || 0} views</div></div><span class="reply-count"><i class="fas fa-reply"></i> ${count}</span></div></div>`;
+5164:                singleTopicView.classList.add('hidden');
+5198:            const isDetail = !singleTopicView.classList.contains('hidden');
+5215:            if ((e.key === 'r' || e.key === 'R') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); replyContent.focus(); }
+===FOOTER===
+123:3333:                        <a class="footer-social" href="https://discord.com" target="_blank" rel="noopener" title="Discord"><i class="fab fa-discord"></i></a>
+124:3334:                        <a class="footer-social" href="https://twitter.com" target="_blank" rel="noopener" title="Twitter / X"><i class="fab fa-twitter"></i></a>
+125:3335:                        <a class="footer-social" href="https://github.com" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>
+126:3336:                        <a class="footer-social" href="https://ko-fi.com/fedpromptly" target="_blank" rel="noopener" title="Ko-fi"><i class="fas fa-mug-hot"></i></a>
+132:3342:                        <li><a href="#" data-footer-action="trending"><i class="fas fa-fire"></i> Trending</a></li>
+133:3343:                        <li><a href="#" data-footer-action="guides"><i class="fas fa-book-open"></i> Guides</a></li>
+134:3344:                        <li><a href="#" data-footer-action="questions"><i class="fas fa-question-circle"></i> Questions</a></li>
+135:3345:                        <li><a href="#" data-footer-action="bookmarks"><i class="fas fa-bookmark"></i> Bookmarks</a></li>
+141:3351:                        <li><a href="#" id="footerSettings"><i class="fas fa-cog"></i> Settings</a></li>
+142:3352:                        <li><a href="#" data-footer-action="newtopic"><i class="fas fa-pen"></i> New Topic</a></li>
+143:3353:                        <li><a href="#" id="footerShortcuts"><i class="fas fa-keyboard"></i> Shortcuts</a></li>
+144:3354-                        <li><a href="https://ko-fi.com/fedpromptly" target="_blank" rel="noopener"><i class="fas fa-heart"></i> Support us</a></li>
+163:3375-                    <a href="#">Privacy</a>
+164:3376-                    <a href="#">Terms</a>

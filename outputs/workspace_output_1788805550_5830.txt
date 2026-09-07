@@ -1,0 +1,8 @@
+# FEDPromptly Forum — Gap-Fix Upgrade
+
+## Goal
+Apply the "what is it missing?" gap analysis to the user's actual FEDPromptly forum HTML
+(recovered to fedpromptly-frontend/index_original.html) and produce an upgraded,
+production-ready single-file build plus the required Supabase migration.
+
+## Tasks

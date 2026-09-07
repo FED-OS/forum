@@ -1,0 +1,23 @@
+/workspace:
+total 104
+drwxr-xr-x  8 user user  4096 Sep  7 14:14 .
+drwxr-xr-x 20 root root  4096 Jun 22 03:39 ..
+drwxr-xr-x  4 user user  4096 Jun 19 10:20 .agent_hooks
+drwxr-xr-x 10 root root  4096 Sep  7 13:53 .browser_data
+drwxr-xr-x  3 root root  4096 Jun 22 03:37 .psiphon_data
+-rw-r--r--  1 root root  1668 Sep  7 13:54 extract_html.py
+drwxr-xr-x  2 root root  4096 Sep  7 13:56 fedpromptly-frontend
+drwxr-xr-x  2 root root  4096 Sep  7 14:16 outputs
+-rw-r--r--  1 root root 63750 Sep  7 14:14 patch_forum.py
+drwxr-xr-x  2 root root  4096 Sep  7 14:16 summarized_conversations
+-rw-r--r--  1 root root  1866 Sep  7 13:56 todo.md
+
+/workspace/fedpromptly-frontend:
+total 512
+drwxr-xr-x 2 root root   4096 Sep  7 13:56 .
+drwxr-xr-x 8 user user   4096 Sep  7 14:14 ..
+-rw-r--r-- 1 root root 254967 Sep  7 13:56 index.html
+-rw-r--r-- 1 root root 254967 Sep  7 13:54 index_original.html
+---
+445:            forumTopicCard();
+450:"replace bogus forumTopicCard() with wireModActions()")

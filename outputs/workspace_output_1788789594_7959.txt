@@ -1,0 +1,141 @@
+        backFromProfileBtn.addEventListener('click', () => {
+            profileView.classList.add('hidden');
+            forumList.style.display = 'block';
+            carouselContainer.classList.remove('hidden');
+            if (allTopics.length) renderTopicList(allTopics, false);
+            updateStickyVisibility();
+        });
+
+        sortSelect.addEventListener('change', () => {
+            currentSort = sortSelect.value; localStorage.setItem('forum_sort', currentSort);
+            if (allTopics.length) { filterByCategory(currentCategory); }
+        });
+        loadMoreBtn.addEventListener('click', () => { if (!isLoading && hasMore) { currentPage++; loadTopics(currentPage, true); } });
+
+        // Category tab handlers
+        document.querySelectorAll('.cat-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                searchQuery = ''; searchInput.value = '';
+                filterByCategory(tab.dataset.cat);
+            });
+        });
+
+        function updateStickyVisibility() {
+            const isDetail = !singleTopicView.classList.contains('hidden');
+            const isProfile = !profileView.classList.contains('hidden');
+            if (isDetail || isProfile) { stickyNewTopic.classList.remove('visible'); return; }
+            if (window.scrollY > 300) stickyNewTopic.classList.add('visible');
+            else stickyNewTopic.classList.remove('visible');
+        }
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) backToTopBtn.classList.add('visible');
+            else backToTopBtn.classList.remove('visible');
+            updateStickyVisibility(); updateReadingProgress();
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'n' || e.key === 'N') { e.preventDefault(); if (!currentUser) { openModal(); return; } newTopicBtn.click(); }
+            if ((e.key === 'r' || e.key === 'R') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); replyContent.focus(); }
+            if (e.key === '?' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); keyboardHelp.classList.toggle('visible'); setTimeout(() => keyboardHelp.classList.remove('visible'), 3000); }
+            if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) closeLightboxFn();
+            if (e.key === 'Escape' && shopModal.classList.contains('active')) closeShopModal();
+        });
+
+        if (window.topicsSubscription) window.topicsSubscription.unsubscribe();
+        window.topicsSubscription = supabaseClient.channel('public:topics').on('postgres_changes', { event: '*', schema: 'public', table: 'topics' }, () => { sessionStorage.removeItem(CACHE_KEY); resetAndLoad(); }).subscribe();
+
+        const savedSort = localStorage.getItem('forum_sort') || 'hot';
+        sortSelect.value = savedSort; currentSort = savedSort;
+        // Restore active category tab
+        const savedCategory = localStorage.getItem('fedos_category') || 'all';
+        currentCategory = savedCategory;
+        document.querySelectorAll('.cat-tab').forEach(tab => {
+            tab.classList.toggle('active', tab.dataset.cat === savedCategory);
+        });
+        refreshForumViewCount(); loadDrafts(); loadSnippets();
+        updateCharCounter(topicContent, topicCharCounter, 10000);
+        updateCharCounter(replyContent, replyCharCounter, 5000);
+        setTimeout(() => { keyboardHelp.classList.add('visible'); setTimeout(() => keyboardHelp.classList.remove('visible'), 3000); }, 2000);
+
+        // Apply pending settings now that forum functions exist
+        (function() {
+            const s = window.__pendingSettings || {};
+            if (s.carouselAutoplay !== undefined) { if (s.carouselAutoplay) startAutoSlide(); else stopAutoSlide(); }
+            if (s.realtime === false && window.topicsSubscription) { try { window.topicsSubscription.unsubscribe(); } catch(e){} }
+            if (s.kbdHint === false) { const kh = document.getElementById('keyboardHelp'); if (kh) kh.classList.remove('visible'); }
+        })();
+
+        // ---- Footer interactions ----
+        (function() {
+            document.getElementById('footerYear').textContent = new Date().getFullYear();
+            const newsletter = document.getElementById('footerNewsletter');
+            if (newsletter) newsletter.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const input = newsletter.querySelector('input');
+                const btn = newsletter.querySelector('button');
+                btn.innerHTML = '<i class="fas fa-check"></i>';
+                btn.style.background = 'linear-gradient(135deg,#10b981,#06b6d4)';
+                input.value = '';
+                input.placeholder = 'Subscribed! 🎉';
+                setTimeout(() => { btn.innerHTML = '<i class="fas fa-paper-plane"></i>'; btn.style.background = ''; input.placeholder = 'you@example.com'; }, 2500);
+            });
+            const footerSettings = document.getElementById('footerSettings');
+            if (footerSettings) footerSettings.addEventListener('click', (e) => { e.preventDefault(); const b = document.getElementById('settingsBtn'); if (b) b.click(); });
+            const footerShortcuts = document.getElementById('footerShortcuts');
+            if (footerShortcuts) footerShortcuts.addEventListener('click', (e) => { e.preventDefault(); keyboardHelp.classList.add('visible'); setTimeout(() => keyboardHelp.classList.remove('visible'), 3000); });
+            document.querySelectorAll('[data-footer-action]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const action = a.dataset.footerAction;
+                    if (action === 'newtopic') { const b = document.getElementById('stickyNewTopic'); if (b) b.click(); return; }
+                    const tab = document.querySelector('.cat-tab[data-cat="' + action + '"]');
+                    if (tab) { tab.click(); window.scrollTo({ top: document.querySelector('.category-tabs').offsetTop - 80, behavior: 'smooth' }); }
+                });
+            });
+            // Footer stats
+            const ft = document.getElementById('footerStatTopics');
+            const fr = document.getElementById('footerStatReplies');
+            const fm = document.getElementById('footerStatMembers');
+            const onlineNum = document.getElementById('online-number');
+            function updateFooterStats() {
+                if (ft) ft.textContent = allTopics.length || '—';
+                if (fr) fr.textContent = allTopics.reduce((s, t) => s + (t.replyCount || 0), 0) || '—';
+                if (fm && onlineNum) fm.textContent = onlineNum.textContent || '—';
+            }
+            updateFooterStats();
+            setInterval(updateFooterStats, 5000);
+            window.updateFooterStats = updateFooterStats;
+        })();
+
+        console.log('💬 FEDPromptly — redesigned with a calmer, more focused aesthetic.');
+    </script>
+</body>
+===Z-INDEX===
+249:            z-index: 0;
+261:            z-index: 0;
+303:            z-index: 100;
+462:            z-index: 200;
+745:            z-index: 50;
+821:            z-index: 101;
+837:            z-index: 2;
+1094:            z-index: 0;
+1096:        .carousel-container > * { position: relative; z-index: 1; }
+1251:            z-index: 5;
+1288:            z-index: 1;
+1311:            z-index: 1;
+1430:            z-index: 2;
+2030:            z-index: 999;
+2040:            z-index: 998;
+===downloadIcon===
+4371:        function downloadIcon(url, name) {
+4372-            if (!url) return;
+4373-            const a = document.createElement('a');
+4374-            a.href = url;
+4375-            a.download = name ? name.replace(/[^a-z0-9_\-\.]/gi, '_') : 'icon';
+4376-            a.target = '_blank';
+4377-            a.rel = 'noopener';
+4378-            document.body.appendChild(a);
+4379-            a.click();

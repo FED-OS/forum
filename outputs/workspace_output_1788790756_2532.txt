@@ -1,0 +1,19 @@
+        let searchHitsNote = null;
+        function filterTopics(query) {""",
+"searchHitsNote declaration")
+
+# clear hit counter when leaving search
+rep("""        function filterByCategory(cat) {
+            localStorage.setItem('fedos_category', cat);""",
+"""        function filterByCategory(cat) {
+            if (searchHitsNote) searchHitsNote.style.display = 'none';
+            localStorage.setItem('fedos_category', cat);""",
+"hide hits note on category change")
+=== ACTUAL 4594-4600 ===
+        function filterByCategory(cat) {$
+            currentCategory = cat;$
+            localStorage.setItem('fedos_category', cat);$
+            document.querySelectorAll('.cat-tab').forEach(tab => {$
+                tab.classList.toggle('active', tab.dataset.cat === cat);$
+            });$
+$

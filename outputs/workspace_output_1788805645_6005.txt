@@ -1,0 +1,10 @@
+2053:        .keyboard-help {
+2069:        .keyboard-help.visible { opacity: 1; }
+2070:        .keyboard-help kbd {
+2632:            .keyboard-help { display: none; }
+3519:                        <li><a href="#" id="footerShortcuts"><i class="fas fa-keyboard"></i> Shortcuts</a></li>
+3709:                    <a class="about-link" href="#" id="aboutShortcuts"><i class="fas fa-keyboard"></i> Keyboard shortcuts (N · R · ?)</a>
+3726:    <div class="keyboard-help" id="keyboardHelp">
+3944:        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && settingsOverlay.classList.contains('active')) closeSettings(); });
+4139:            const kh = document.getElementById('keyboardHelp');
+4392:            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && confirmModal.classList.contains('active')) { confirmModal.classList.remove('active'); confirmAction = null; } });

@@ -1,0 +1,15 @@
+Found 4 inline script blocks
+  block_00.js: 1988 chars, 35 lines
+  block_01.js: 4857 chars, 124 lines
+  block_02.js: 17107 chars, 315 lines
+  block_03.js: 110818 chars, 1651 lines
+JS CHECK DONE
+4285:        const schemaCompat = {
+4319:        async function fetchTopicsCompat(from, to) {
+4320:            const upgraded = await schemaCompat.probe();
+4323:                schemaCompat.hasUpgradeColumns = false; schemaCompat.probed = true;
+4329:            const upgraded = await schemaCompat.probe();
+4332:                schemaCompat.hasUpgradeColumns = false; schemaCompat.probed = true;
+4338:            const upgraded = await schemaCompat.probe();
+4341:                schemaCompat.hasUpgradeColumns = false; schemaCompat.probed = true;
+293439 fedpromptly-frontend/index.html

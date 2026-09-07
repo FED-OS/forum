@@ -1,0 +1,91 @@
+        async function showProfile(userId) {
+            try {
+                const { data: user, error } = await supabaseClient.from('profiles').select('*').eq('id', userId).single();
+                if (error) throw error;
+                const { data: topics, error: tErr } = await supabaseClient.from('topics').select('id, title, created_at, views, reply_count:replies(count)').eq('user_id', userId).order('created_at', { ascending: false });
+                if (tErr) throw tErr;
+                const { data: replies, error: rErr } = await supabaseClient.from('replies').select('id, content, created_at, topic_id, topics(title)').eq('user_id', userId).order('created_at', { ascending: false }).limit(10);
+                if (rErr) throw rErr;
+
+                let html = `<div class="profile-card"><div class="avatar">${user.username?.charAt(0).toUpperCase() || '?'}</div><h2>${user.username || 'Anonymous'}</h2><p style="color:var(--text-2); margin-top:4px;">${user.email || ''}</p><p style="color:var(--text-3); margin-top:8px; font-size:0.85rem;">Joined ${new Date(user.created_at).toLocaleDateString()}</p></div><h3 class="section-h" style="margin-bottom:14px;">Topics (${topics.length})</h3>`;
+                if (topics.length) {
+                    topics.forEach(t => {
+                        const count = t.reply_count?.[0]?.count || 0;
+                        html += `<div class="topic-card" data-topic-id="${t.id}"><div class="flex-row"><div><div class="title">${t.title}</div><div class="meta">${new Date(t.created_at).toLocaleDateString()} · ${t.views || 0} views</div></div><span class="reply-count"><i class="fas fa-reply"></i> ${count}</span></div></div>`;
+                    });
+                } else html += `<p class="text-gray-400">No topics yet.</p>`;
+                html += `<h3 class="section-h" style="margin:24px 0 14px;">Recent Replies</h3>`;
+                if (replies.length) {
+                    replies.forEach(r => {
+                        html += `<div class="reply-item"><div class="reply-meta"><span>Replied to <a href="#" class="text-purple-600 topic-link" data-topic-id="${r.topic_id}">${r.topics?.title || 'a topic'}</a></span><span>${new Date(r.created_at).toLocaleDateString()}</span></div><div class="reply-body">${r.content}</div></div>`;
+                    });
+                } else html += `<p class="text-gray-400">No replies yet.</p>`;
+
+                profileContent.innerHTML = html;
+                forumList.style.display = 'none';
+                singleTopicView.classList.add('hidden');
+                profileView.classList.remove('hidden');
+                carouselContainer.classList.add('hidden');
+                stickyNewTopic.classList.remove('visible');
+                readingProgress.classList.remove('visible');
+
+                document.querySelectorAll('#profileContent .topic-card').forEach(card => card.addEventListener('click', () => showTopicDetail(card.dataset.topicId)));
+                document.querySelectorAll('#profileContent .topic-link').forEach(link => link.addEventListener('click', (e) => { e.preventDefault(); showTopicDetail(link.dataset.topicId); }));
+            } catch (err) { console.error('Profile load error:', err); alert('Could not load profile.'); }
+        }
+
+        backFromProfileBtn.addEventListener('click', () => {
+===SEARCH INPUT===
+3059:                        <input type="text" id="searchInput" placeholder="Search topics..." aria-label="Search topics" />
+4123:        const searchInput = document.getElementById('searchInput');
+4428:            document.querySelectorAll('.tag-cloud-item').forEach(el => { el.addEventListener('click', () => { searchInput.value = el.dataset.tag; filterTopics(el.dataset.tag); }); });
+4515:        searchInput.addEventListener('input', debounce(function() { filterTopics(this.value); }, 300));
+4827:            currentPage = 0; hasMore = true; searchQuery = ''; searchInput.value = '';
+5192:                searchQuery = ''; searchInput.value = '';
+===UPLOAD===
+            if (selectedChannel === 'icons' && !file) {
+                alert('Icon posts require an image attachment. Please attach an image file.');
+                uploadError.textContent = 'Icons channel requires an image attachment.'; uploadError.classList.add('show');
+                return;
+            }
+            if (selectedChannel === 'icons' && file && !file.type.startsWith('image/')) {
+                alert('Icon posts require an image file (PNG, JPG, SVG, etc.).');
+                uploadError.textContent = 'Please attach an image file for the Icons channel.'; uploadError.classList.add('show');
+                return;
+            }
+
+            // Determine price label for Icons channel
+            let priceLabel = null;
+            if (selectedChannel === 'icons') {
+                const priceRadio = document.querySelector('input[name="price_label"]:checked');
+                const basePrice = priceRadio ? priceRadio.value : 'Free';
+                if (basePrice === 'Paid' && priceCustomInput && priceCustomInput.value.trim()) {
+                    priceLabel = priceCustomInput.value.trim();
+                } else {
+                    priceLabel = basePrice;
+                }
+            }
+
+            const submitButton = createTopicForm.querySelector('button[type="submit"]');
+            submitButton.disabled = true; submitButton.textContent = 'Posting...';
+            uploadError.classList.remove('show'); uploadError.textContent = '';
+            try {
+                let attachmentUrl = null;
+                if (file) {
+                    if (file.size > 10 * 1024 * 1024) { uploadError.textContent = 'File size exceeds 10MB limit.'; uploadError.classList.add('show'); submitButton.disabled = false; submitButton.textContent = 'Post Topic'; return; }
+                    const fileExt = file.name.split('.').pop();
+                    const filePath = `${currentUser.id}/${Date.now()}.${fileExt}`;
+                    const { error: uploadErr } = await supabaseClient.storage.from('forum-attachments').upload(filePath, file, { cacheControl: '3600', upsert: false });
+                    if (uploadErr) { if (uploadErr.message.includes('bucket not found')) { uploadError.textContent = 'Storage bucket "forum-attachments" not found. Please create it in Supabase dashboard.'; uploadError.classList.add('show'); submitButton.disabled = false; submitButton.textContent = 'Post Topic'; return; } throw uploadErr; }
+                    const { data: urlData } = supabaseClient.storage.from('forum-attachments').getPublicUrl(filePath);
+                    attachmentUrl = urlData.publicUrl;
+                }
+                const { error } = await supabaseClient.from('topics').insert({ title, content, user_id: currentUser.id, attachment_url: attachmentUrl, tags: selectedTags.length ? selectedTags : null, channel: selectedChannel, price_label: priceLabel });
+                if (error) throw error;
+                if (window.confetti) window.confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                addSnippet(`${currentUser.email.split('@')[0]} posted: "${title}"`);
+                createTopicForm.reset(); newTopicForm.classList.add('hidden'); clearDrafts(); resetChannelForm(); sessionStorage.removeItem(CACHE_KEY); resetAndLoad();
+            } catch (err) { console.error('Error creating topic:', err); alert('Failed to create topic: ' + err.message); }
+            finally { submitButton.disabled = false; submitButton.textContent = 'Post Topic'; }
+        });
+

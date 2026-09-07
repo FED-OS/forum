@@ -1,0 +1,28 @@
+861:        .forum-stats {
+870:        .forum-stats span { font-weight: 600; color: var(--text); }
+871:        .forum-stats i { color: var(--brand); font-size: 0.8rem; }
+3214:                    <div id="forumStats" class="forum-stats">
+3901:        const DEFAULT_SETTINGS = {
+3919:        let settings = Object.assign({}, DEFAULT_SETTINGS, JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'));
+4129:            settings = Object.assign({}, DEFAULT_SETTINGS);
+        const DEFAULT_SETTINGS = {
+            accent: 'default',
+            density: 'comfortable',
+            fontSize: 16,
+            liquidBg: true,
+            reducedMotion: false,
+            carouselAutoplay: true,
+            carouselSpeed: 5000,
+            showEta: true,
+            showMarquee: true,
+            showTagCloud: true,
+            defaultSort: 'hot',
+            realtime: true,
+            sound: false,
+            desktopNotif: false,
+            kbdHint: true
+        };
+
+        let settings = Object.assign({}, DEFAULT_SETTINGS, JSON.parse(localStorage.getItem(SETTINGS_KEY) || '{}'));
+
+        function saveSettings() { localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings)); }

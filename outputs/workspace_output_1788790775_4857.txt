@@ -1,0 +1,21 @@
+=== FEATURE CHECK ===
+escapeHtml:            23
+function toast:        1
+like-btn:              17
+toggleLike:            3
+confirmDialog:         3
+rateLimiter:           6
+searchHitsNote:        6
+highlightQuery:        3
+wireModActions:        2
+startEditTopic:        2
+deleteTopic:           2
+startEditReply:        2
+deleteReply:           2
+FED_SOCIAL:            4
+detailLikeBar:         4
+toastHost:             3
+
+=== alert( remaining (excluding override) ===
+4249:        // Backwards compatibility: alert() now routes to toast, never blocks
+(count: 1)

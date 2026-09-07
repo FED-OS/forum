@@ -1,0 +1,3 @@
+fixed line 4778
+4778:        // ─────────── FED-OS UPGRADE: like button HTML helper ───────────
+ALL JS STILL VALID

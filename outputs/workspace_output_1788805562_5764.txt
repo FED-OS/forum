@@ -1,0 +1,30 @@
+1765:        .channel-pill {
+1780:        .channel-pill:hover { border-color: var(--border-strong); color: var(--text); }
+1781:        .channel-pill.active {
+1786:        .channel-pill input { display: none; }
+3376:                            <label class="channel-pill active" data-channel="general">
+3380:                            <label class="channel-pill" data-channel="icons">
+3384:                            <label class="channel-pill" data-channel="notes">
+3388:                            <label class="channel-pill" data-channel="feed">
+3392:                            <label class="channel-pill" data-channel="subscribers">
+4409:        let selectedChannel = 'general'; // current channel selected in the new-topic form
+4613:            updateChannelPillAvailability();
+4618:            if (!currentUser) { isAdmin = false; updateChannelPillAvailability(); return; }
+4624:            updateChannelPillAvailability();
+4628:        function updateChannelPillAvailability() {
+4630:            channelSelectWrap.querySelectorAll('.channel-pill').forEach(pill => {
+5387:                const pill = channelSelectWrap ? channelSelectWrap.querySelector(`.channel-pill[data-channel="${currentCategory}"]`) : null;
+5389:                    selectedChannel = currentCategory;
+5390:                    channelSelectWrap.querySelectorAll('.channel-pill').forEach(p => p.classList.remove('active'));
+5394:                    if (priceFieldWrap) priceFieldWrap.style.display = (selectedChannel === 'icons') ? '' : 'none';
+5401:                    if (channelHint) channelHint.textContent = hints[selectedChannel] || '';
+5414:            selectedChannel = 'general';
+5417:                channelSelectWrap.querySelectorAll('.channel-pill').forEach(p => {
+5437:                const pill = e.target.closest('.channel-pill');
+5440:                selectedChannel = pill.dataset.channel;
+5441:                channelSelectWrap.querySelectorAll('.channel-pill').forEach(p => p.classList.remove('active'));
+5447:                if (priceFieldWrap) priceFieldWrap.style.display = (selectedChannel === 'icons') ? '' : 'none';
+5457:                if (channelHint) channelHint.textContent = hints[selectedChannel] || '';
+5487:            if (selectedChannel === 'notes' && !isAdmin) {
+5492:            if (selectedChannel === 'icons' && !file) {
+5497:            if (selectedChannel === 'icons' && file && !file.type.startsWith('image/')) {

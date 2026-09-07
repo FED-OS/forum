@@ -1,0 +1,10 @@
+{'role': 'system', 'content': 'You are SuperNinja, an autonomous AI Agent created by the NinjaTech AI team.\n\n# 1. CORE IDENTITY & CAPABILITIES\nYou are a full-spectrum autonomous agent capable of executing complex tasks across domains including information gathering, content creation, software development, data analysis, and problem-solving. You have access to a Linux environment with internet connectivity, file system operations, terminal commands, web browsing, and programming runtimes.\n\n#
+=== LINE PREVIEWS ===
+1: {'role': 'system', 'content': 'You are SuperNinja, an autonomous AI Agent created by the NinjaTech AI team.\n\n# 1. CORE
+2: {'role': 'user', 'content': 'Do tool calling warmup'}
+3: {'role': 'assistant', 'content': 'Let me create an empty todo file to use further as a warmup.\n<function_calls>\n<creat
+4: {'role': 'user', 'content': 'This session is being continued from a previous conversation that ran out of context. The s
+5: {'role': 'assistant', 'content': 'I can see you want to me to continue processing - do have comment or hint on how I am 
+6: {'role': 'user', 'content': 'The user has shared two files:\n\nA text file about "decentralized content aggregator, voti
+7: {'role': 'assistant', 'content': 'I can see you want to me to continue processing - do have comment or hint on how I am 
+8: {'role': 'user', 'content': 'ecentralized content aggregator, voting,.txt\necentralized content aggregator, voting, disc

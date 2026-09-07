@@ -1,0 +1,55 @@
+            <div id="newTopicForm" class="card hidden mt-4">
+                <h3 class="section-h"><i class="fas fa-pen-fancy"></i> Create a New Topic</h3>
+                <form id="createTopicForm" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="text-sm font-semibold text-gray-700" style="display:block; margin-bottom:8px;">Post to channel</label>
+                        <div class="channel-select-wrap" id="channelSelectWrap">
+                            <label class="channel-pill active" data-channel="general">
+                                <input type="radio" name="channel" value="general" checked />
+                                <i class="fas fa-layer-group"></i> General
+                            </label>
+                            <label class="channel-pill" data-channel="icons">
+                                <input type="radio" name="channel" value="icons" />
+                                <i class="fas fa-icons"></i> Icons
+                            </label>
+                            <label class="channel-pill" data-channel="notes">
+                                <input type="radio" name="channel" value="notes" />
+                                <i class="fas fa-sticky-note"></i> Notes
+                            </label>
+                            <label class="channel-pill" data-channel="feed">
+                                <input type="radio" name="channel" value="feed" />
+                                <i class="fas fa-rss"></i> Feed
+                            </label>
+                            <label class="channel-pill" data-channel="subscribers">
+                                <input type="radio" name="channel" value="subscribers" />
+                                <i class="fas fa-lock"></i> Subscribers
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-500" style="margin-top:6px;" id="channelHint">General posts appear in the main forum for everyone.</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-sm font-semibold text-gray-700" for="topicTitle" style="display:block; margin-bottom:6px;">Title</label>
+=== availability fn ===
+        function updateChannelPillAvailability() {
+            if (!channelSelectWrap) return;
+            channelSelectWrap.querySelectorAll('.channel-pill').forEach(pill => {
+                const ch = pill.dataset.channel;
+                // Notes channel requires admin
+                if (ch === 'notes' && !isAdmin) {
+                    pill.classList.add('disabled');
+                    pill.style.opacity = '0.45';
+                    pill.style.cursor = 'not-allowed';
+                    pill.title = 'Only admins can post to Notes';
+                } else {
+                    pill.classList.remove('disabled');
+                    pill.style.opacity = '';
+                    pill.style.cursor = '';
+                    pill.title = '';
+                }
+            });
+        }
+        async function handleLogout() {
+            try { await supabaseClient.auth.signOut(); currentUser = null; updateUIForUser(null); resetAndLoad(); } catch (err) { console.error('Logout error:', err); }
+        }
+        loginBtn.addEventListener('click', function() { if (currentUser) { if (confirm('Logout?')) handleLogout(); return; } openModal(); });
+        closeModal.addEventListener('click', closeModalFunc);

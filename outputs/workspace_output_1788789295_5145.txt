@@ -1,0 +1,110 @@
+        async function showTopicDetail(topicId) {
+            if (window.repliesSubscription) window.repliesSubscription.unsubscribe();
+            currentTopicId = topicId;
+            try {
+                const { data: topic, error: topicErr } = await supabaseClient.from('topics').select(`id, title, content, created_at, user_id, attachment_url, tags, views, channel, price_label, profiles ( username, email )`).eq('id', topicId).single();
+                if (topicErr) throw topicErr;
+                const { data: replies, error: repliesErr } = await supabaseClient.from('replies').select(`id, content, created_at, user_id, profiles ( username, email )`).eq('topic_id', topicId).order('created_at', { ascending: true });
+                if (repliesErr) throw repliesErr;
+
+                detailTitle.textContent = topic.title;
+                const displayName = topic.profiles?.username || topic.profiles?.email || 'Unknown';
+                const date = new Date(topic.created_at).toLocaleString();
+                const views = topic.views || 0;
+                // Build channel & price badges for detail view
+                let detailBadges = '';
+                if (topic.channel && topic.channel !== 'general') {
+                    const chLabels = { icons: 'Icons', notes: 'Notes', feed: 'Feed', subscribers: 'Subscribers' };
+                    const chIcons = { icons: 'fa-icons', notes: 'fa-sticky-note', feed: 'fa-rss', subscribers: 'fa-lock' };
+                    detailBadges += ` <span class="channel-badge ch-${topic.channel}"><i class="fas ${chIcons[topic.channel] || 'fa-tag'}"></i> ${chLabels[topic.channel] || topic.channel}</span>`;
+                }
+                if (topic.channel === 'icons' && topic.price_label) {
+                    const isFree = topic.price_label.toLowerCase() === 'free';
+                    detailBadges += ` <span class="price-badge ${isFree ? 'free' : 'paid'}"><i class="fas ${isFree ? 'fa-gift' : 'fa-dollar-sign'}"></i> ${topic.price_label}</span>`;
+                }
+                detailMeta.innerHTML = `By ${displayName} · ${date} · 👁️ <span id="topicViewCount">${views}</span> views${detailBadges}`;
+                detailContent.textContent = topic.content;
+                const { words, mins } = getReadingTime(topic.content);
+                wordCountDisplay.textContent = `📝 ${words} words`;
+                readingTimeDisplay.textContent = `⏱️ ${mins > 0 ? mins : '<1'} min read`;
+                breadcrumbTopic.textContent = topic.title.length > 30 ? topic.title.slice(0, 30) + '…' : topic.title;
+                breadcrumbReplies.style.display = replies.length > 0 ? 'inline' : 'none';
+                breadcrumbSepReplies.style.display = replies.length > 0 ? 'inline' : 'none';
+                breadcrumbReplies.textContent = `${replies.length} replies`;
+                document.getElementById('breadcrumbForum').addEventListener('click', (e) => { e.preventDefault(); backToForumBtn.click(); });
+
+                if (topic.attachment_url) {
+                    const url = topic.attachment_url; const ext = url.split('.').pop().toLowerCase(); let html = '';
+                    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext)) html = `<img src="${url}" alt="Attachment" class="attachment-preview" loading="lazy" style="cursor:pointer;" onclick="openLightbox('${url}')" />`;
+                    else if (['mp4', 'webm', 'ogg'].includes(ext)) html = `<video controls class="attachment-preview" preload="metadata"><source src="${url}" type="video/${ext}"></video>`;
+                    else if (ext === 'zip') html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file-archive"></i> Download ZIP</a>`;
+                    else html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file"></i> Download attachment</a>`;
+                    // Add download button for Icons channel
+                    if (topic.channel === 'icons') {
+                        const dlName = topic.title.replace(/"/g, '').replace(/[^a-z0-9_\-\.]/gi, '_');
+                        html += `<button class="icon-download-btn" style="margin-top:12px; max-width:240px;" onclick="downloadIcon('${url}', '${dlName}')"><i class="fas fa-download"></i> Download Icon</button>`;
+                    }
+                    detailAttachment.innerHTML = html;
+                } else detailAttachment.innerHTML = '';
+
+                const tags = topic.tags || [];
+                detailTags.innerHTML = tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+
+                if (replies.length === 0) repliesList.innerHTML = `<p class="text-gray-400 text-sm">No replies yet. Be the first to respond!</p>`;
+                else {
+                    let html = '';
+                    replies.forEach(reply => {
+                        const replyName = reply.profiles?.username || reply.profiles?.email || 'Unknown';
+                        const replyDate = new Date(reply.created_at).toLocaleString();
+                        html += `<div class="reply-item" data-reply-id="${reply.id}"><div class="reply-meta"><span class="name">${replyName}</span><span>${replyDate}</span></div><div class="reply-body">${reply.content}</div></div>`;
+                    });
+                    repliesList.innerHTML = html;
+                }
+
+                forumList.style.display = 'none';
+                newTopicForm.classList.add('hidden');
+                singleTopicView.classList.remove('hidden');
+                profileView.classList.add('hidden');
+                carouselContainer.classList.add('hidden');
+                stickyNewTopic.classList.remove('visible');
+
+                copyLinkBtn.onclick = function() { navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?topic=' + topicId).then(() => alert('Link copied!')).catch(() => alert('Copy failed.')); };
+                shareBtn.onclick = function() {
+                    const shareData = { title: topic.title, text: topic.content.slice(0, 200) + '…', url: window.location.origin + window.location.pathname + '?topic=' + topicId };
+                    if (navigator.share) navigator.share(shareData).catch(() => {});
+                    else navigator.clipboard.writeText(shareData.url).then(() => alert('Link copied!'));
+                };
+
+                await countTopicView(topicId);
+                setTimeout(() => { readingProgress.classList.add('visible'); updateReadingProgress(); }, 100);
+
+                window.repliesSubscription = supabaseClient.channel(`public:replies:topic_id=eq.${topicId}`).on('postgres_changes', { event: '*', schema: 'public', table: 'replies', filter: `topic_id=eq.${topicId}` }, () => showTopicDetail(topicId)).subscribe();
+            } catch (err) { console.error('Error loading topic detail:', err); alert('Failed to load topic details.'); }
+        }
+
+        backToForumBtn.addEventListener('click', () => {
+            singleTopicView.classList.add('hidden');
+            forumList.style.display = 'block';
+            carouselContainer.classList.remove('hidden');
+            readingProgress.classList.remove('visible');
+            if (window.repliesSubscription) window.repliesSubscription.unsubscribe();
+            if (allTopics.length) renderTopicList(allTopics, false);
+            updateStickyVisibility();
+        });
+
+        replyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const content = replyContent.value.trim();
+            if (!content || !currentTopicId) return;
+            if (!currentUser) { alert('You must be logged in to reply.'); openModal(); return; }
+            try {
+                const { error } = await supabaseClient.from('replies').insert({ topic_id: currentTopicId, content, user_id: currentUser.id });
+                if (error) throw error;
+                replyContent.value = ''; localStorage.removeItem(REPLY_DRAFT_KEY);
+                showTopicDetail(currentTopicId);
+                setTimeout(() => document.getElementById('repliesList').scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+            } catch (err) { console.error('Error posting reply:', err); alert('Failed to post reply: ' + err.message); }
+        });
+
+        async function showProfile(userId) {
+            try {

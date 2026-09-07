@@ -1,0 +1,62 @@
+541:        .cat-tab {
+558:        .cat-tab:hover {
+562:        .cat-tab.active {
+566:        .cat-tab.active:hover {
+569:        .cat-tab i {
+572:        .cat-tab .cat-count {
+579:        .cat-tab.active .cat-count {
+582:        .cat-tab:not(.active) .cat-count {
+587:        .cat-tab.cat-locked i.fa-lock { color: var(--amber); }
+588:        .cat-tab.cat-locked:not(.active):hover { color: var(--amber); }
+703:            .cat-tab { padding: 7px 11px; font-size: 0.78rem; }
+704:            .cat-tab .cat-count { display: none; }
+2838:        body.density-compact .cat-tab { padding: 5px 12px; font-size: 0.8rem; }
+2896:        .cat-tab.active {
+3346:                <button class="cat-tab active" data-cat="all"><i class="fas fa-layer-group"></i> All <span class="cat-count" id="catCountAll">0</span></button>
+3347:                <button class="cat-tab" data-cat="trending"><i class="fas fa-fire"></i> Trending <span class="cat-count" id="catCountTrending">0</span></button>
+3348:                <button class="cat-tab" data-cat="announcements"><i class="fas fa-bullhorn"></i> Announcements <span class="cat-count" id="catCountAnnouncements">0</span></button>
+3349:                <button class="cat-tab" data-cat="questions"><i class="fas fa-question-circle"></i> Questions <span class="cat-count" id="catCountQuestions">0</span></button>
+3350:                <button class="cat-tab" data-cat="guides"><i class="fas fa-book-open"></i> Guides <span class="cat-count" id="catCountGuides">0</span></button>
+3351:                <button class="cat-tab" data-cat="icons"><i class="fas fa-icons"></i> Icons <span class="cat-count" id="catCountIcons">0</span></button>
+=== filterByCategory ===
+
+        forgotPassword.addEventListener('click', async function() {
+            const email = loginEmail.value.trim();
+            if (!email) { showMessage('Please enter your email address first.', 'error'); return; }
+            try {
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname });
+                if (error) throw error;
+                showMessage('📧 Password reset email sent! Check your inbox.', 'info');
+            } catch (err) { showMessage(err.message || 'Failed to send reset email.', 'error'); }
+        });
+
+        async function handleLogin(email, password) {
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                showMessage(`✅ Welcome back, ${email.split('@')[0]}!`, 'success');
+                currentUser = data.user; updateUIForUser(currentUser);
+                setTimeout(closeModalFunc, 1000); resetAndLoad();
+            } catch (err) {
+                let msg = err.message;
+                if (err.message.includes('Invalid login credentials')) msg = 'Invalid email or password.';
+                else if (err.message.includes('Email not confirmed')) msg = 'Please verify your email address first.';
+                showMessage(msg, 'error'); throw err;
+            }
+        }
+        async function handleSignUp(email, password) {
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + window.location.pathname } });
+                if (error) throw error;
+                if (data.user && data.user.identities && data.user.identities.length === 0) { showMessage('This email is already registered. Please sign in.', 'error'); return; }
+                if (!data.session) { showMessage('📧 Please check your email to confirm your account.', 'info'); }
+                else { showMessage(`✅ Account created! Welcome, ${email.split('@')[0]}!`, 'success'); currentUser = data.user; updateUIForUser(currentUser); setTimeout(closeModalFunc, 1000); resetAndLoad(); }
+            } catch (err) {
+                let msg = err.message;
+                if (err.message.includes('User already registered')) msg = 'This email is already registered. Please sign in.';
+                showMessage(msg, 'error'); throw err;
+            }
+        }
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();

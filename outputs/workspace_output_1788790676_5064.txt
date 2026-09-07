@@ -1,0 +1,9 @@
+            tagCloud.classList.remove('hidden');$
+            tagCloudContent.innerHTML = sorted.map(([tag, count]) => `<span class="tag-cloud-item" data-tag="${tag}">${tag} <span class="tag-count">(${count})</span></span>`).join('');$
+            document.querySelectorAll('.tag-cloud-item').forEach(el => { el.addEventListener('click', () => { searchInput.value = el.dataset.tag; filterTopics(el.dataset.tag); }); });$
+        }$
+$
+        // Marquee$
+        let postSnippets = [];$
+        function loadSnippets() {$
+            const stored = localStorage.getItem('fedos_post_snippets');$

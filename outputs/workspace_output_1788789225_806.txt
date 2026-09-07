@@ -1,0 +1,18 @@
+total 28
+drwxr-xr-x  7 user user 4096 Sep  7 13:53 .
+drwxr-xr-x 20 root root 4096 Jun 22 03:39 ..
+drwxr-xr-x  4 user user 4096 Jun 19 10:20 .agent_hooks
+drwxr-xr-x 10 root root 4096 Sep  7 13:53 .browser_data
+drwxr-xr-x  3 root root 4096 Jun 22 03:37 .psiphon_data
+drwxr-xr-x  2 root root 4096 Sep  7 13:53 outputs
+drwxr-xr-x  2 root root 4096 Sep  7 13:53 summarized_conversations
+---
+total 888
+drwxr-xr-x 2 root root   4096 Sep  7 13:53 .
+drwxr-xr-x 7 user user   4096 Sep  7 13:53 ..
+-rw-r--r-- 1 root root 387056 Sep  7 13:51 original_conversation_1788789093_9130.txt
+-rw-r--r-- 1 root root 510746 Sep  7 13:53 original_conversation_1788789203_5684.txt
+---
+     3 summarized_conversations/original_conversation_1788789093_9130.txt
+     7 summarized_conversations/original_conversation_1788789203_5684.txt
+    10 total

@@ -1,0 +1,12 @@
+4264:        function escapeHtml(str) {
+4273:        function highlightQuery(text, query) {
+4282:        const rateLimiter = {
+            const t = document.documentElement.getAttribute('data-theme') || 'dark';
+            document.querySelectorAll('.settings-theme-card').forEach(c => c.classList.toggle('active', c.dataset.themeVal === t));
+        });
+        obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+        console.log('⚙️ Settings panel initialized.');
+    })();
+    </script>
+

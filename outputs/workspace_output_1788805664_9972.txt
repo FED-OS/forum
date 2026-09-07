@@ -1,0 +1,96 @@
+            <!-- Global Marquee -->
+            <div id="globalMarquee" class="global-marquee hidden">
+                <div class="marquee-icon"><i class="fas fa-bullhorn"></i></div>
+                <div class="marquee-viewport">
+                    <div class="marquee-track" id="marqueeTrack"></div>
+                </div>
+            </div>
+
+            <!-- ETA / Activity Panel -->
+            <div class="eta-panel" id="etaPanel">
+                <div class="eta-card">
+                    <div class="eta-icon brand"><i class="fas fa-clock"></i></div>
+                    <div class="eta-body">
+                        <div class="eta-value" id="etaLatestPost">—</div>
+                        <div class="eta-label">Latest post</div>
+                    </div>
+                </div>
+                <div class="eta-card">
+                    <div class="eta-icon accent"><i class="fas fa-bolt"></i></div>
+                    <div class="eta-body">
+                        <div class="eta-value" id="etaActivity">—</div>
+                        <div class="eta-label">Activity level</div>
+                    </div>
+                </div>
+                <div class="eta-card">
+                    <div class="eta-icon green"><i class="fas fa-comments"></i></div>
+                    <div class="eta-body">
+                        <div class="eta-value" id="etaTotalReplies">—</div>
+                        <div class="eta-label">Total replies</div>
+                    </div>
+                </div>
+                <div class="eta-card">
+                    <div class="eta-icon amber"><i class="fas fa-chart-line"></i></div>
+                    <div class="eta-body">
+                        <div class="eta-value" id="etaAvgRead">—</div>
+                        <div class="eta-label">Avg read time</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Featured Row: Trending + Shop -->
+            <div class="featured-row">
+                <!-- Carousel / Trending -->
+                <div id="carouselContainer" class="panel carousel-container hidden">
+                    <div class="panel-head">
+                        <i class="fas fa-fire ph-icon"></i>
+                        <span class="ph-title">Trending Now</span>
+                        <span class="trending-badge"><i class="fas fa-bolt"></i> Live</span>
+                    </div>
+                    <div class="carousel-track-wrap">
+                        <div class="carousel-track" id="carouselTrack"></div>
+                        <button class="carousel-arrow prev" id="carouselPrev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+                        <button class="carousel-arrow next" id="carouselNext" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                    <div class="carousel-dots" id="carouselDots"></div>
+                </div>
+
+                <!-- Shop Panel -->
+                <div class="panel shop-panel">
+                    <div class="panel-head">
+                        <i class="fas fa-store-alt ph-icon" style="color: var(--accent);"></i>
+                        <span class="ph-title">Mini SaaS Shop</span>
+                        <span class="ph-badge"><i class="fas fa-bolt"></i> Hot</span>
+                    </div>
+                    <div class="shop-hero" id="shopItemPoster">
+                        <div class="shop-banner">
+                            <i class="fas fa-paint-brush"></i>
+                            <div class="banner-shine"></div>
+                        </div>
+                        <div class="shop-product-head">
+                            <div class="item-title">FED-Poster V1</div>
+                            <span class="shop-version-tag">v1.0</span>
+                        </div>
+                        <div class="shop-product-desc">Generate stunning social media posters with AI — built for FED-OS.</div>
+                        <div class="shop-features">
+                            <div class="shop-feature"><i class="fas fa-check"></i> AI-powered poster generation</div>
+                            <div class="shop-feature"><i class="fas fa-check"></i> FED-OS native integration</div>
+                            <div class="shop-feature"><i class="fas fa-check"></i> One-click export to PNG</div>
+                        </div>
+                        <div class="shop-footer-row">
+                            <div class="shop-price">
+                                <span class="price-amount">$4.99</span>
+                                <span class="price-label">one-time</span>
+                            </div>
+                            <button class="shop-cta-btn">
+                                <i class="fas fa-eye"></i> Preview &amp; Get
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                        <span class="shop-coming-badge"><i class="fas fa-check-circle"></i> Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs" id="categoryTabs">

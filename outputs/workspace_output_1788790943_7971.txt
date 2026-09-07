@@ -1,0 +1,9 @@
+5120:                    const { error } = await supabaseClient.from('topics').update({ title: newTitle, content: newContent, updated_at: new Date().toISOString() }).eq('id', topicId);
+5121-                    if (error) throw error;
+5122-                    window.toastSuccess('Topic updated');
+5123-                    sessionStorage.removeItem(CACHE_KEY);
+=== edited badge logic ===
+2990:        .edited-badge {
+5492:                const editedSuffix = topic.updated_at ? ` <span class="edited-badge">(edited ${new Date(topic.updated_at).toLocaleDateString()})</span>` : '';
+5493:                detailMeta.innerHTML = `By ${displayName} · ${date}${editedSuffix} · 👁️ <span id="topicViewCount">${views}</span> views${detailBadges}`;
+5535:                        const replyEdited = reply.updated_at ? ` <span class="edited-badge">(edited)</span>` : '';

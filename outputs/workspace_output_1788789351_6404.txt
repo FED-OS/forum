@@ -1,0 +1,29 @@
+        async function refreshForumViewCount() {
+            try { const { data, error } = await supabaseClient.from('forum_stats').select('total_views').eq('id', 1).single(); if (error) throw error; const el = document.getElementById('forumViewCount'); if (el) el.textContent = data.total_views || 0; } catch (err) { console.warn('Forum views fetch failed:', err); }
+        }
+        async function countForumView() {
+            if (sessionStorage.getItem('forum_viewed_session')) return;
+            try { const { data, error } = await supabaseClient.rpc('increment_forum_views'); if (error) throw error; sessionStorage.setItem('forum_viewed_session', 'true'); const el = document.getElementById('forumViewCount'); if (el) el.textContent = data ?? 0; } catch (err) { console.error('Forum view increment failed:', err); }
+        }
+        async function countTopicView(topicId) {
+            const key = `topic_viewed_${topicId}`;
+            if (sessionStorage.getItem(key)) return;
+            try { const { data, error } = await supabaseClient.rpc('increment_topic_views', { p_topic_id: topicId }); if (error) throw error; sessionStorage.setItem(key, 'true'); const viewEl = document.getElementById('topicViewCount'); if (viewEl) viewEl.textContent = data ?? 0; updateTopicListViews(topicId, data ?? 0); } catch (err) { console.error('Topic view increment failed:', err); }
+        }
+        function updateTopicListViews(topicId, newCount) {
+            const cards = document.querySelectorAll('.topic-card');
+            for (const card of cards) { if (card.dataset.topicId == topicId) { const badge = card.querySelector('.views-badge'); if (badge) badge.innerHTML = `<i class="fas fa-eye"></i> ${newCount}`; break; } }
+        }
+
+===TOPICS SUBSCRIPTION===
+5111:                window.repliesSubscription = supabaseClient.channel(`public:replies:topic_id=eq.${topicId}`).on('postgres_changes', { event: '*', schema: 'public', table: 'replies', filter: `topic_id=eq.${topicId}` }, () => showTopicDetail(topicId)).subscribe();
+5222:        window.topicsSubscription = supabaseClient.channel('public:topics').on('postgres_changes', { event: '*', schema: 'public', table: 'topics' }, () => { sessionStorage.removeItem(CACHE_KEY); resetAndLoad(); }).subscribe();
+===MARQUEE===
+        function seedMarqueeWithTopics(topics) {
+            if (!topics || topics.length === 0) return;
+            const hasRealTopic = postSnippets.some(s => s.includes(' posted: "'));
+            if (hasRealTopic) return;
+            const newSnippets = topics.slice(0, 10).map(t => { const name = t.profiles?.username || t.profiles?.email || 'Someone'; return `${name} posted: "${t.title}"`; });
+            const filtered = newSnippets.filter(s => s && !s.includes('undefined'));
+            if (filtered.length > 0) { postSnippets = filtered; postSnippets.push('🚀 Welcome to FEDPromptly!'); saveSnippets(); updateMarquee(); }
+        }

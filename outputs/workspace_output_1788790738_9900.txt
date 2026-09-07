@@ -1,0 +1,16 @@
+5077:                    detailAttachment.innerHTML = html;
+5078:                } else detailAttachment.innerHTML = '';
+                    }$
+                    detailAttachment.innerHTML = html;$
+                } else detailAttachment.innerHTML = '';$
+$
+                const tags = topic.tags || [];$
+=== PATCH anchor ===
+rep("""                    detailAttachment.innerHTML = html;$
+                } else detailAttachment.innerHTML = '';""",$
+"""                    detailAttachment.innerHTML = html;$
+                } else detailAttachment.innerHTML = '';$
+$
+                // M-bM-^TM-^@M-bM-^TM-^@ FED-OS UPGRADE: like button in detail header M-bM-^TM-^@M-bM-^TM-^@$
+                const likeBar = document.getElementById('detailLikeBar');$
+                if (likeBar) {$

@@ -1,0 +1,27 @@
+        function escapeHtml(str) {
+            return String(str == null ? '' : str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        window.escapeHtml = escapeHtml;
+        function highlightQuery(text, query) {
+            const safe = escapeHtml(text);
+            if (!query) return safe;
+            const escQuery = escapeHtml(query).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            try { return safe.replace(new RegExp(escQuery, 'gi'), (m) => `<mark>${m}</mark>`); } catch (e) { return safe; }
+        }
+        window.highlightQuery = highlightQuery;
+
+        // ═══════════ FED-OS UPGRADE: rate limiter ═══════════
+        const rateLimiter = {
+            last: {},
+            check(key, windowMs, message) {
+                const now = Date.now();
+                const last = this.last[key] || 0;
+                if (now - last < windowMs) {
+                    const wait = Math.ceil((windowMs - (now - last)) / 1000);
+                    if (message) window.toast(`${message} Try again in ${wait}s.`, 'warning');
+                    return false;

@@ -1,0 +1,16 @@
+=== PATCH ANCHOR (expected) ===
+375-        // ── Marquee
+376-        let postSnippets = [];""",
+377:"likes system before marquee")
+
+=== ACTUAL in original HTML ===
+983:        /* ── Marquee (cleaner, no heavy card) ── */
+984:        .global-marquee {
+995:        .global-marquee .marquee-icon {
+1005:        .marquee-viewport {
+1011:        .marquee-track {
+1014:            animation: marqueeScroll 90s linear infinite;
+1017:        .marquee-track span {
+1023:        .marquee-track span::after {
+1029:        .marquee-track span:last-child::after { display: none; }
+1030:        .global-marquee:hover .marquee-track { animation-play-state: paused; }

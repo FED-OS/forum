@@ -1,0 +1,40 @@
+3263:                        <div class="eta-value" id="etaLatestPost">—</div>
+3270:                        <div class="eta-value" id="etaActivity">—</div>
+4441:        const etaLatestPost = document.getElementById('etaLatestPost');
+4442:        const etaActivity = document.getElementById('etaActivity');
+5121:                etaLatestPost.textContent = '—';
+5122:                etaActivity.textContent = '—';
+5129:            etaLatestPost.textContent = timeAgo(latest.created_at);
+5137:            etaActivity.textContent = level;
+=== tag cloud build ===
+        }
+
+        function buildTagCloud(topics) {
+            const tagCounts = {};
+            topics.forEach(t => { if (t.tags) t.tags.forEach(tag => tagCounts[tag] = (tagCounts[tag] || 0) + 1); });
+            const sorted = Object.entries(tagCounts).sort((a, b) => b[1] - a[1]).slice(0, 20);
+            if (sorted.length < 2) { tagCloud.classList.add('hidden'); return; }
+            tagCloud.classList.remove('hidden');
+            tagCloudContent.innerHTML = sorted.map(([tag, count]) => `<span class="tag-cloud-item" data-tag="${escapeHtml(tag)}">${escapeHtml(tag)} <span class="tag-count">(${count})</span></span>`).join('');
+            document.querySelectorAll('.tag-cloud-item').forEach(el => { el.addEventListener('click', () => { searchInput.value = el.dataset.tag; filterTopics(el.dataset.tag); }); });
+        }
+
+        // ═══════════ FED-OS UPGRADE: topic likes (vote) system ═══════════
+        // Requires topic_likes table + toggle_topic_like RPC (see upgrade migration).
+=== seedMarquee ===
+        function seedMarqueeWithTopics(topics) {
+            if (!topics || topics.length === 0) return;
+            const hasRealTopic = postSnippets.some(s => s.includes(' posted: "'));
+            if (hasRealTopic) return;
+            const newSnippets = topics.slice(0, 10).map(t => { const name = t.profiles?.username || t.profiles?.email || 'Someone'; return `${name} posted: "${t.title}"`; });
+            const filtered = newSnippets.filter(s => s && !s.includes('undefined'));
+            if (filtered.length > 0) { postSnippets = filtered; postSnippets.push('🚀 Welcome to FEDPromptly!'); saveSnippets(); updateMarquee(); }
+        }
+        function updateMarquee() {
+            if (postSnippets.length === 0) { globalMarquee.classList.add('hidden'); return; }
+            globalMarquee.classList.remove('hidden');
+            let content = postSnippets.map(s => `<span>${escapeHtml(s)}</span>`).join('');
+            marqueeTrack.innerHTML = content + content;
+        }
+
+        // Carousel

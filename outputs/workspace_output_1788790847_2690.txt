@@ -1,0 +1,51 @@
+                console.warn('[likes] RPC not available — like buttons disabled.', e.message);
+                return false;
+            }
+        }
+        let myLikes = new Set();
+        window.myLikes = myLikes;
+        async function toggleLike(topicId, countEl, btnEl) {
+            if (!currentUser) { window.toast('Please log in to like posts.', 'info'); openModal(); return; }
+            if (!await likesAvailable()) return;
+            if (!rateLimiter.check('like:' + topicId, 800, 'Slow down —')) return;
+            const wasLiked = myLikes.has(topicId);
+            const current = parseInt(countEl.textContent, 10) || 0;
+            const nextCount = wasLiked ? current - 1 : current + 1;
+            // optimistic UI
+            myLikes[wasLiked ? 'delete' : 'add'](topicId);
+            btnEl.classList.add('pending');
+            countEl.textContent = nextCount;
+            btnEl.classList.toggle('liked', !wasLiked);
+            try {
+                const { data, error } = await supabaseClient.rpc('toggle_topic_like', { p_topic_id: topicId });
+                if (error) throw error;
+                if (typeof data === 'number') countEl.textContent = data;
+                if (typeof data === 'object' && data && 'like_count' in data) countEl.textContent = data.like_count;
+                // reflect in allTopics cache
+                const t = allTopics.find(x => x.id === topicId);
+                if (t) t.like_count = parseInt(countEl.textContent, 10) || t.like_count || 0;
+                window.toast(wasLiked ? 'Like removed' : 'Liked \u2764\ufe0f', 'success', 1600);
+            } catch (err) {
+                // rollback
+                myLikes[wasLiked ? 'add' : 'delete'](topicId);
+                countEl.textContent = current;
+                btnEl.classList.toggle('liked', wasLiked);
+                window.toast('Could not save your like: ' + err.message, 'error');
+            } finally {
+                btnEl.classList.remove('pending');
+            }
+        }
+
+        // ═══════════ FED-QUICK VIEW BADGE (hidden counts) ═══════════
+        function likeBtnHtml(topic, likeCount) {
+            const liked = myLikes.has(topic.id);
+            return `<button class="like-btn ${liked ? 'liked' : ''}" data-topic-id="${topic.id}" title="${liked ? 'Unlike' : 'Like this topic'}" aria-label="${liked ? 'Unlike topic' : 'Like topic'}" aria-pressed="${liked}"><i class="fas fa-heart"></i> <span class="like-count">${likeCount}</span></button>`;
+        }
+
+        // Marquee
+        let postSnippets = [];
+        function loadSnippets() {
+            const stored = localStorage.getItem('fedos_post_snippets');
+            if (stored) { try { postSnippets = JSON.parse(stored); } catch (e) { postSnippets = []; } }
+            if (postSnippets.length === 0 || (postSnippets.length === 1 && postSnippets[0].includes('Welcome'))) {
+                if (allTopics && allTopics.length > 0) { seedMarqueeWithTopics(allTopics); return; }

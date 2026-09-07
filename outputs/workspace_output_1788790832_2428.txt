@@ -1,0 +1,12 @@
+4548:        async function checkAdminStatus() {
+4549-            if (!currentUser) { isAdmin = false; updateChannelPillAvailability(); return; }
+4550-            try {
+4551-                const { data, error } = await supabaseClient.from('profiles').select('is_admin').eq('id', currentUser.id).single();
+4552-                if (error) { isAdmin = false; }
+4553-                else { isAdmin = !!(data && data.is_admin); }
+4554-            } catch (e) { isAdmin = false; }
+4555-            updateChannelPillAvailability();
+4556-        }
+=== profiles queries ===
+4551:                const { data, error } = await supabaseClient.from('profiles').select('is_admin').eq('id', currentUser.id).single();
+5637:                const { data: user, error } = await supabaseClient.from('profiles').select('*').eq('id', userId).single();

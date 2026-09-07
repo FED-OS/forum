@@ -1,0 +1,11 @@
+4700:                case 'top': sorted.sort((a, b) => (b.like_count || 0) - (a.like_count || 0)); break;
+4702:                case 'hot': default: sorted.sort((a, b) => { const aAge = (now - new Date(a.created_at).getTime()) / (1000 * 60 * 60); const bAge = (now - new Date(b.created_at).getTime()) / (1000 * 60 * 60); const aScore = (a.like_count || 0) + (a.views || 0) / 10 - aAge / 4; const bScore = (b.like_count || 0) + (b.views || 0) / 10 - bAge / 4; return bScore - aScore; }); break;
+4762:                if (typeof data === 'object' && data && 'like_count' in data) countEl.textContent = data.like_count;
+4765:                if (t) t.like_count = parseInt(countEl.textContent, 10) || t.like_count || 0;
+5170:                const likeCount = topic.like_count || 0;
+5243:                const { data: topics, error } = await supabaseClient.from('topics').select(`id, title, content, created_at, updated_at, user_id, attachment_url, tags, views, channel, price_label, like_count, profiles ( username, email ), reply_count:replies(count)`).order('created_at', { ascending: false }).range(from, to);
+5471:                const { data: topic, error: topicErr } = await supabaseClient.from('topics').select(`id, title, content, created_at, updated_at, user_id, attachment_url, tags, views, channel, price_label, like_count, profiles ( username, email )`).eq('id', topicId).single();
+5521:                    likeBar.innerHTML = likeBtnHtml(topic, topic.like_count || 0);
+5723:                    t.like_count = payload.new.like_count ?? t.like_count;
+5725:                    document.querySelectorAll(`.topic-card[data-topic-id="${payload.new.id}"] .like-btn .like-count`).forEach(el => { el.textContent = payload.new.like_count ?? el.textContent; });
+5727:                    if (dl && currentTopicId === payload.new.id) dl.textContent = payload.new.like_count ?? dl.textContent;

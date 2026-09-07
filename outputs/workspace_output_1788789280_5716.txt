@@ -1,0 +1,72 @@
+4030:        const SUPABASE_URL = 'https://qyuczfpgydgqywgthgrz.supabase.co';
+4031:        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2NLEuDREplLS9DgUXeA8Tw_f8MJOhCq';
+4032:        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+---ALERTS---
+3899:                    if (p !== 'granted') { desktopToggle.checked = false; save('desktopNotif', false); alert('Desktop notifications were not enabled. You can allow them in your browser settings.'); }
+4213:        downloadDesktop.addEventListener('click', () => { alert('🚀 Desktop app download coming soon!\
+4215:        downloadMobile.addEventListener('click', () => { alert('📱 Mobile app download coming soon!\
+4867:            if (!currentUser) { alert('Please log in to create a new topic.'); openModal(); return; }
+4975:            if (!title || !content) { alert('Title and content are required.'); return; }
+4976:            if (!currentUser) { alert('You must be logged in to post.'); openModal(); return; }
+4981:                alert('Only admins can post to the Notes channel.');
+4986:                alert('Icon posts require an image attachment. Please attach an image file.');
+4991:                alert('Icon posts require an image file (PNG, JPG, SVG, etc.).');
+5027:            } catch (err) { console.error('Error creating topic:', err); alert('Failed to create topic: ' + err.message); }
+5101:                copyLinkBtn.onclick = function() { navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?topic=' + topicId).then(() => alert('Link copied!')).catch(() => alert('Copy failed.')); };
+5105:                    else navigator.clipboard.writeText(shareData.url).then(() => alert('Link copied!'));
+5112:            } catch (err) { console.error('Error loading topic detail:', err); alert('Failed to load topic details.'); }
+5129:            if (!currentUser) { alert('You must be logged in to reply.'); openModal(); return; }
+5136:            } catch (err) { console.error('Error posting reply:', err); alert('Failed to post reply: ' + err.message); }
+5172:            } catch (err) { console.error('Profile load error:', err); alert('Could not load profile.'); }
+---ESCAPE FN---
+3572:                document.getElementById('online-number').innerText = count;
+3574:                document.getElementById('online-number').innerText = '?';
+3851:            fontSizeVal.textContent = v + 'px';
+3868:            speedVal.textContent = (v / 1000) + 's';
+3962:                    cacheLabel.textContent = total > 0 ? '(' + (total / 1024).toFixed(1) + ' KB)' : '(empty)';
+3963:                } catch(e) { cacheLabel.textContent = '(empty)'; }
+3968:                bmLabel.textContent = bm.length + ' bookmark' + (bm.length === 1 ? '' : 's');
+3977:            if (fontSizeRange) { fontSizeRange.value = settings.fontSize; if (fontSizeVal) fontSizeVal.textContent = settings.fontSize + 'px'; }
+3981:            if (speedRange) { speedRange.value = settings.carouselSpeed; if (speedVal) speedVal.textContent = (settings.carouselSpeed / 1000) + 's'; }
+4219:        function showMessage(msg, type = 'error') { authMessage.textContent = msg; authMessage.className = 'message ' + type; }
+4220:        function hideMessage() { authMessage.className = 'message'; authMessage.textContent = ''; }
+4227:                loginBtnText.textContent = name;
+4228:                userAvatar.textContent = name.charAt(0).toUpperCase();
+4236:                loginBtnText.textContent = 'Login';
+4237:                userAvatar.textContent = '👤';
+4293:            if (isSignUp) { modalTitle.textContent = 'Create Account'; modalSub.textContent = 'Join the community'; authSubmitBtn.textContent = 'Sign Up'; toggleAuthMode.textContent = 'Sign In'; toggleText.textContent = 'Already a citizen?'; }
+4294:            else { modalTitle.textContent = 'Sign In'; modalSub.textContent = 'Enter your credentials to continue'; authSubmitBtn.textContent = 'Sign In'; toggleAuthMode.textContent = 'Sign Up'; toggleText.textContent = 'New citizen?'; }
+4341:            authSubmitBtn.disabled = true; authSubmitBtn.textContent = isSignUp ? 'Creating...' : 'Signing in...'; hideMessage();
+4342:            try { if (isSignUp) await handleSignUp(email, password); else await handleLogin(email, password); } catch (err) {} finally { authSubmitBtn.disabled = false; authSubmitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In'; }
+4385:            try { const { data, error } = await supabaseClient.from('forum_stats').select('total_views').eq('id', 1).single(); if (error) throw error; const el = document.getElementById('forumViewCount'); if (el) el.textContent = data.total_views || 0; } catch (err) { console.warn('Forum views fetch failed:', err); }
+---INNERHTML of user content---
+3913:            clearCacheBtn.innerHTML = '<i class="fas fa-check"></i> Cleared';
+3914:            setTimeout(() => { clearCacheBtn.innerHTML = '<i class="fas fa-broom"></i> Clear cache'; }, 1800);
+4365:                if (id && isBookmarked(id)) { btn.classList.add('bookmarked'); btn.innerHTML = '<i class="fas fa-bookmark"></i>'; }
+4366:                else { btn.classList.remove('bookmarked'); btn.innerHTML = '<i class="far fa-bookmark"></i>'; }
+4398:            for (const card of cards) { if (card.dataset.topicId == topicId) { const badge = card.querySelector('.views-badge'); if (badge) badge.innerHTML = `<i class="fas fa-eye"></i> ${newCount}`; break; } }
+4427:            tagCloudContent.innerHTML = sorted.map(([tag, count]) => `<span class="tag-cloud-item" data-tag="${tag}">${tag} <span class="tag-count">(${count})</span></span>`).join('');
+4456:            marqueeTrack.innerHTML = content + content;
+4465:            carouselTrack.innerHTML = '';
+4473:                slide.innerHTML = `<div class="slide-rank">${idx + 1}</div><div class="slide-content"><div class="slide-title">${topic.title}</div><div class="slide-meta"><span><i class="fas fa-reply"></i> ${topic.replyCount || 0}</span><span><i class="fas fa-eye"></i> ${topic.views || 0}</span>${hot}</div></div>${catLabel}`;
+4477:            carouselDots.innerHTML = '';
+4513:            if (!filtered.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No topics match your search for "${query}".</p>`;
+4604:                    forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-lock"></i></div><div class="ce-title">Subscribers Only</div><div class="ce-sub">This channel is for logged-in members only. Sign in to view and post exclusive content.</div><button class="ce-cta" onclick="openModal()"><i class="fas fa-sign-in-alt"></i> Sign In</button></div>`;
+4609:                if (!subTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-users"></i></div><div class="ce-title">No subscriber posts yet</div><div class="ce-sub">Be the first to share something exclusive with the community.</div></div>`;
+4617:                if (!iconTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-icons"></i></div><div class="ce-title">No icons yet</div><div class="ce-sub">Share free or paid icons for the community to download.</div></div>`;
+4625:                if (!noteTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-sticky-note"></i></div><div class="ce-title">No notes yet</div><div class="ce-sub">Project notes from the admin will appear here.</div></div>`;
+4633:                if (!feedTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-rss"></i></div><div class="ce-title">The feed is quiet</div><div class="ce-sub">Post something to the Feed channel to start the social stream.</div></div>`;
+4650:                if (!bookmarked.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No bookmarked topics yet. Click the bookmark icon on any topic to save it here.</p>`;
+4656:                if (!trending.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No trending topics right now. Topics with more replies and views will appear here.</p>`;
+4661:            if (!filtered.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No topics in this category yet. Be the first to post one!</p>`;
+4723:            if (!append) forumList.innerHTML = '';
+4724:            if (!sorted.length) { if (!append) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">${searchQuery ? 'No topics match your search.' : 'No topics yet. Be the first to start a discussion!'}</p>`; return; }
+4779:            else { forumList.innerHTML = html; forumList.appendChild(loadMoreBtn); }
+4799:            forumList.innerHTML = html;
+4818:                if (!append) forumList.innerHTML = `<p class="text-red-400 text-center py-8">Failed to load topics.</p>`;
+4861:            tagCheckboxes.innerHTML = html;
+5055:                detailMeta.innerHTML = `By ${displayName} · ${date} · 👁️ <span id="topicViewCount">${views}</span> views${detailBadges}`;
+5077:                    detailAttachment.innerHTML = html;
+5078:                } else detailAttachment.innerHTML = '';
+5081:                detailTags.innerHTML = tags.map(t => `<span class="tag-badge">${t}</span>`).join('');
+5083:                if (replies.length === 0) repliesList.innerHTML = `<p class="text-gray-400 text-sm">No replies yet. Be the first to respond!</p>`;

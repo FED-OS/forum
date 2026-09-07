@@ -1,0 +1,25 @@
+                myLikes[wasLiked ? 'add' : 'delete'](topicId);
+                countEl.textContent = current;
+                btnEl.classList.toggle('liked', wasLiked);
+                window.toast('Could not save your like: ' + err.message, 'error');
+            } finally {
+                btnEl.classList.remove('pending');
+            }
+        }
+
+        // ═══════════ FED-QUICK VIEW BADGE (hidden counts) ═══════════
+        function likeBtnHtml(topic, likeCount) {
+            const liked = myLikes.has(topic.id);
+            return `<button class="like-btn ${liked ? 'liked' : ''}" data-topic-id="${topic.id}" title="${liked ? 'Unlike' : 'Like this topic'}" aria-label="${liked ? 'Unlike topic' : 'Like topic'}" aria-pressed="${liked}"><i class="fas fa-heart"></i> <span class="like-count">${likeCount}</span></button>`;
+        }
+
+        // ── Marquee
+        let postSnippets = [];""",
+"likes system before marquee")
+
+=== ACTUAL HTML around postSnippets ===
+4432:        let postSnippets = [];
+4435:            if (stored) { try { postSnippets = JSON.parse(stored); } catch (e) { postSnippets = []; } }
+4436:            if (postSnippets.length === 0 || (postSnippets.length === 1 && postSnippets[0].includes('Welcome'))) {
+4438:                else { postSnippets = ['🚀 Welcome to FEDPromptly!', '💡 Share your thoughts with the community!', '📢 Stay tuned for the latest updates!', '✨ Post a topic to see it scroll here!']; saveSnippets(); }
+4442:        function saveSnippets() { localStorage.setItem('fedos_post_snippets', JSON.stringify(postSnippets)); }

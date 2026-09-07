@@ -1,0 +1,14 @@
+  adding: index.html (deflated 82%)
+  adding: supabase_migration_v1.sql (deflated 78%)
+  adding: UPGRADE_GUIDE.md (deflated 53%)
+  adding: index_original.html (deflated 82%)
+-rw-r--r-- 1 root root 107302 Sep  7 14:28 FEDPromptly-upgrade-v1.zip
+Archive:  FEDPromptly-upgrade-v1.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+   293439  2026-09-07 14:24   index.html
+    16881  2026-09-07 14:26   supabase_migration_v1.sql
+    10615  2026-09-07 14:27   UPGRADE_GUIDE.md
+   254967  2026-09-07 13:54   index_original.html
+---------                     -------
+   575902                     4 files

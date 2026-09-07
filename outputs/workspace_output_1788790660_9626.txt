@@ -1,0 +1,5 @@
+SYNTAX OK
+  ✓ [CSS additions]
+  ✓ [toast + confirm + helpers block]
+  ✓ [toastHost + confirmModal DOM]
+  ✗ [likes system before marquee] expected 1 match(es), found 0

@@ -1,0 +1,18 @@
+984:        .global-marquee {
+995:        .global-marquee .marquee-icon {
+1030:        .global-marquee:hover .marquee-track { animation-play-state: paused; }
+1695:        .tag-cloud {
+1702:        .tag-cloud h4 {
+1711:        .tag-cloud .tag-cloud-item {
+1723:        .tag-cloud .tag-cloud-item:hover {
+1728:        .tag-cloud .tag-cloud-item .tag-count {
+3251:            <div id="globalMarquee" class="global-marquee hidden">
+3364:            <div id="tagCloud" class="tag-cloud hidden">
+4790:            tagCloudContent.innerHTML = sorted.map(([tag, count]) => `<span class="tag-cloud-item" data-tag="${escapeHtml(tag)}">${escapeHtml(tag)} <span class="tag-count">(${count})</span></span>`).join('');
+4791:            document.querySelectorAll('.tag-cloud-item').forEach(el => { el.addEventListener('click', () => { searchInput.value = el.dataset.tag; filterTopics(el.dataset.tag); }); });
+4855:        function loadSnippets() {
+4859:                if (allTopics && allTopics.length > 0) { seedMarqueeWithTopics(allTopics); return; }
+4866:        function seedMarqueeWithTopics(topics) {
+4882:        function buildCarousel(topics) {
+5296:            if (!append && !searchQuery && allTopics.length) { buildCarousel(allTopics); seedMarqueeWithTopics(allTopics); }
+5813:        refreshForumViewCount(); loadDrafts(); loadSnippets(); likesAvailable();

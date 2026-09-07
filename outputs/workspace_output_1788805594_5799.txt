@@ -1,0 +1,28 @@
+4994:        function classifyTopic(topic) {
+5015:        function isTrending(topic) {
+        function classifyTopic(topic) {
+            // Channel-based classification takes priority
+            const ch = topic.channel;
+            if (ch === 'icons' || ch === 'notes' || ch === 'feed' || ch === 'subscribers') {
+                return ch;
+            }
+            // Heuristic classification for the original general-channel topics
+            const title = (topic.title || '').toLowerCase();
+            const content = (topic.content || '').toLowerCase();
+            const tags = (topic.tags || []).map(t => t.toLowerCase());
+            const text = title + ' ' + content + ' ' + tags.join(' ');
+
+            if (/\\b(announcement|launch|milestone|update|release|live now|beta|v1\\.0|desktop app|is here)\\b/.test(text) || title.includes('!!!') || title.includes('🎉'))
+                return 'announcements';
+            if (/\\b(question|how do|how to|help|error|issue|problem|why|can't|cannot|stuck|fix)\\b/.test(text))
+                return 'questions';
+            if (/\\b(guide|tutorial|journey|beginner|how-to|step by step|walkthrough|comprehensive|build|building)\\b/.test(text))
+                return 'guides';
+            return null; // falls into "all" / "trending"
+        }
+
+        function isTrending(topic) {
+            const score = (topic.replyCount || 0) * 2 + (topic.views || 0) * 0.1;
+            return score >= 5;
+        }
+

@@ -1,0 +1,10 @@
+rep("""        // ── Marquee
+        let postSnippets = [];""",
+"""        // ═══════════ FED-OS UPGRADE: topic likes (vote) system ═══════════
+        // Requires topic_likes table + toggle_topic_like RPC (see upgrade migration).
+        // UI degrades gracefully: if the RPC/table is missing, buttons render inert.
+===
+
+        // ── Marquee
+        let postSnippets = [];""",
+"likes system before marquee")

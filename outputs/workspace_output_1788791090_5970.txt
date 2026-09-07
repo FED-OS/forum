@@ -1,0 +1,1 @@
+fixes applied: ['loadTopics → fetchTopicsCompat', 'detail+replies → compat fns', 'topic edit: conditional updated_at', 'reply edit: conditional updated_at']

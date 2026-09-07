@@ -1,0 +1,36 @@
+4223:        function updateUIForUser(user) {
+4224-            if (user) {
+4225-                loginBtn.classList.add('logged-in');
+4226-                const name = user.email ? user.email.split('@')[0] : 'User';
+4227-                loginBtnText.textContent = name;
+4228-                userAvatar.textContent = name.charAt(0).toUpperCase();
+4229-                loginBtn.title = 'Click to logout';
+4230-                // Show subscribers tab for logged-in users
+4231-                if (subscribersTab) subscribersTab.style.display = '';
+4232-                // Check admin status asynchronously
+4233-                checkAdminStatus();
+4234-            } else {
+4235-                loginBtn.classList.remove('logged-in');
+4236-                loginBtnText.textContent = 'Login';
+4237-                userAvatar.textContent = '👤';
+4238-                loginBtn.title = 'Click to login';
+4239-                // Hide subscribers tab for logged-out users
+4240-                if (subscribersTab) subscribersTab.style.display = 'none';
+4241-                isAdmin = false;
+4242-                // If currently on subscribers tab, switch to all
+4243-                if (currentCategory === 'subscribers') {
+===CHECKADMIN===
+4254:        async function checkAdminStatus() {
+4255-            if (!currentUser) { isAdmin = false; updateChannelPillAvailability(); return; }
+4256-            try {
+4257-                const { data, error } = await supabaseClient.from('profiles').select('is_admin').eq('id', currentUser.id).single();
+4258-                if (error) { isAdmin = false; }
+4259-                else { isAdmin = !!(data && data.is_admin); }
+4260-            } catch (e) { isAdmin = false; }
+4261-            updateChannelPillAvailability();
+4262-        }
+4263-
+4264-        // Enable/disable channel pills in the new-topic form based on login & admin state
+===OPENMODAL===
+4221:        function openModal() { loginModal.classList.add('active'); hideMessage(); loginEmail.focus(); }
+4222:        function closeModalFunc() { loginModal.classList.remove('active'); hideMessage(); }

@@ -1,0 +1,33 @@
+                renderTopicList(allTopics, false);
+            };
+            form.querySelector('.save').addEventListener('click', async () => {
+                const newTitle = form.querySelector('.ed-title').value.trim();
+                const newContent = form.querySelector('.ed-content').value.trim();
+                if (!newTitle || !newContent) { window.toast('Title and content are required.', 'error'); return; }
+                if (!rateLimiter.check('edit-topic', 5000, 'Editing too fast —')) return;
+                form.querySelector('.save').disabled = true;
+                form.querySelector('.save').textContent = 'Saving…';
+                try {
+                    const { error } = await supabaseClient.from('topics').update({ title: newTitle, content: newContent, updated_at: new Date().toISOString() }).eq('id', topicId);
+                    if (error) throw error;
+                    window.toastSuccess('Topic updated');
+                    sessionStorage.removeItem(CACHE_KEY);
+                    resetAndLoad();
+                } catch (err) {
+                    window.toastError('Update failed: ' + err.message);
+=== reply edit save ===
+                const newContent = form.querySelector('textarea').value.trim();
+                if (!newContent) { window.toast('Reply cannot be empty.', 'error'); return; }
+                if (!rateLimiter.check('edit-reply', 5000, 'Editing too fast —')) return;
+                form.querySelector('.save').disabled = true;
+                form.querySelector('.save').textContent = 'Saving…';
+                try {
+                    const { error } = await supabaseClient.from('replies').update({ content: newContent, updated_at: new Date().toISOString() }).eq('id', replyId);
+                    if (error) throw error;
+                    window.toastSuccess('Reply updated');
+                    showTopicDetail(currentTopicId);
+                } catch (err) {
+                    window.toastError('Update failed: ' + err.message);
+                    body.innerHTML = origHtml;
+                }
+            });

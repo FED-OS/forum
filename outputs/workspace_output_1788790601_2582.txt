@@ -1,0 +1,3 @@
+4784:            forumList.querySelectorAll('.icon-download-btn').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); downloadIcon(btn.dataset.downloadUrl, btn.dataset.downloadName); }));
+4785:            forumList.querySelectorAll('.topic-card').forEach(card => card.addEventListener('click', () => showTopicDetail(card.dataset.topicId)));
+5170:                document.querySelectorAll('#profileContent .topic-card').forEach(card => card.addEventListener('click', () => showTopicDetail(card.dataset.topicId)));

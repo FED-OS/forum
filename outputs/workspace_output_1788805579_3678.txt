@@ -1,0 +1,57 @@
+5020:        function filterByCategory(cat) {
+        function filterByCategory(cat) {
+            currentCategory = cat;
+            if (searchHitsNote) searchHitsNote.style.display = 'none';
+            localStorage.setItem('fedos_category', cat);
+            document.querySelectorAll('.cat-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.cat === cat);
+            });
+
+            // ── Subscribers tab: requires login ──
+            if (cat === 'subscribers') {
+                if (!currentUser) {
+                    forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-lock"></i></div><div class="ce-title">Subscribers Only</div><div class="ce-sub">This channel is for logged-in members only. Sign in to view and post exclusive content.</div><button class="ce-cta" onclick="openModal()"><i class="fas fa-sign-in-alt"></i> Sign In</button></div>`;
+                    return;
+                }
+                const subTopics = allTopics.filter(t => t.channel === 'subscribers');
+                renderTopicList(subTopics, false);
+                if (!subTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-users"></i></div><div class="ce-title">No subscriber posts yet</div><div class="ce-sub">Be the first to share something exclusive with the community.</div></div>`;
+                return;
+            }
+
+            // ── Icons tab: only icon-channel topics ──
+            if (cat === 'icons') {
+                const iconTopics = allTopics.filter(t => t.channel === 'icons');
+                renderTopicList(iconTopics, false);
+                if (!iconTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-icons"></i></div><div class="ce-title">No icons yet</div><div class="ce-sub">Share free or paid icons for the community to download.</div></div>`;
+                return;
+            }
+
+            // ── Notes tab: only notes-channel topics (admin posts) ──
+            if (cat === 'notes') {
+                const noteTopics = allTopics.filter(t => t.channel === 'notes');
+                renderTopicList(noteTopics, false);
+                if (!noteTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-sticky-note"></i></div><div class="ce-title">No notes yet</div><div class="ce-sub">Project notes from the admin will appear here.</div></div>`;
+                return;
+            }
+
+            // ── Feed tab: only feed-channel topics (open social feed) ──
+            if (cat === 'feed') {
+                const feedTopics = allTopics.filter(t => t.channel === 'feed');
+                renderTopicList(feedTopics, false);
+                if (!feedTopics.length) forumList.innerHTML = `<div class="channel-empty"><div class="ce-icon"><i class="fas fa-rss"></i></div><div class="ce-title">The feed is quiet</div><div class="ce-sub">Post something to the Feed channel to start the social stream.</div></div>`;
+                return;
+            }
+
+            if (cat === 'all') {
+                // "All" shows general-channel topics (excludes icons/notes/feed/subscribers
+                // since those have their own dedicated tabs)
+                if (searchQuery) filterTopics(searchQuery);
+                else {
+                    const generalTopics = allTopics.filter(t => !t.channel || t.channel === 'general');
+                    renderTopicList(generalTopics, false);
+                }
+                return;
+            }
+            if (cat === 'bookmarks') {
+                const bookmarked = allTopics.filter(t => isBookmarked(t.id));

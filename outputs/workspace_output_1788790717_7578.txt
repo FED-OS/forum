@@ -1,0 +1,12 @@
+557:"detail attachment URL encode")
+558-
+559-rep("""                    detailAttachment.innerHTML = html;
+560-                } else detailAttachment.innerHTML = '';""",
+561-"""                    detailAttachment.innerHTML = html;
+562-                } else detailAttachment.innerHTML = '';
+563-
+=== ACTUAL ===
+4764:                    imageHtml = `<div class="image-preview" data-full="${topic.attachment_url}"><img src="${topic.attachment_url}" alt="Attachment preview" loading="lazy" /><div class="preview-overlay"><i class="fas fa-expand"></i></div><span class="file-badge"><i class="fas fa-image"></i> Preview</span></div>`;
+5068:                    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext)) html = `<img src="${url}" alt="Attachment" class="attachment-preview" loading="lazy" style="cursor:pointer;" onclick="openLightbox('${url}')" />`;
+5070:                    else if (ext === 'zip') html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file-archive"></i> Download ZIP</a>`;
+5071:                    else html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file"></i> Download attachment</a>`;

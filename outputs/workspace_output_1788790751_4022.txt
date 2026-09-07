@@ -1,0 +1,17 @@
+748-            if (searchHitsNote) searchHitsNote.style.display = 'none';
+749-            localStorage.setItem('fedos_category', cat);""",
+750:"hide hits note on category change")
+751-
+752-# ══════════════════════════ 9. loadTopics: like_count + updated_at select ══════════════════════════
+753-rep(".select(`id, title, content, created_at, user_id, attachment_url, tags, views, channel, price_label, profiles ( username, email ), reply_count:replies(count)`)",
+754-    ".select(`id, title, content, created_at, updated_at, user_id, attachment_url, tags, views, channel, price_label, like_count, profiles ( username, email ), reply_count:replies(count)`)",
+755-    "loadTopics: fetch like_count + updated_at")
+756-
+757-rep("""                const { data: topic, error: topicErr } = await supabaseClient.from('topics').select(`id, title, content, created_at, user_id, attachment_url, tags, views, channel, price_label, profiles ( username, email )`).eq('id', topicId).single();""",
+758-"""                const { data: topic, error: topicErr } = await supabaseClient.from('topics').select(`id, title, content, created_at, updated_at, user_id, attachment_url, tags, views, channel, price_label, like_count, profiles ( username, email )`).eq('id', topicId).single();""",
+=== ACTUAL filterByCategory ===
+4246:                    filterByCategory('all');
+4510:            if (!searchQuery) { filterByCategory(currentCategory); return; }
+4594:        function filterByCategory(cat) {
+4814:                if (searchQuery) filterTopics(searchQuery); else if (!append) filterByCategory(currentCategory); else renderTopicList(transformed, append);
+4829:            if (cached && cached.length > 0) { allTopics = cached; updateCategoryCounts(); filterByCategory(currentCategory); loadTopics(0, false); }

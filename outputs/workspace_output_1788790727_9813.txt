@@ -1,0 +1,6 @@
+                if (topic.attachment_url) {$
+                    const url = topic.attachment_url; const ext = url.split('.').pop().toLowerCase(); let html = '';$
+=== PATCH ===
+                        const url = topic.attachment_url; const ext = url.split('.').pop().toLowerCase(); let html = '';""",$
+"""                    if (topic.attachment_url) {$
+                        const url = encodeURI(topic.attachment_url); const ext = url.split('.').pop().toLowerCase(); let html = '';""",$

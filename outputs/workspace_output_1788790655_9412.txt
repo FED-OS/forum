@@ -1,0 +1,75 @@
+=== HEAD (1-30) ===
+#!/usr/bin/env python3
+"""Apply FEDPromptly gap-fix upgrades to index.html with per-edit verification."""
+import sys, re
+
+SRC = "fedpromptly-frontend/index.html"
+DST = "fedpromptly-frontend/index.html"
+
+with open(SRC, encoding="utf-8") as f:
+    h = f.read()
+
+def rep(old, new, label, count=1):
+    global h
+    found = h.count(old)
+    if found != count:
+        print(f"  ✗ [{label}] expected {count} match(es), found {found}")
+        sys.exit(1)
+    h = h.replace(old, new, count)
+    print(f"  ✓ [{label}]")
+
+# ══════════════════════════ 1. CSS ADDITIONS ══════════════════════════
+rep("    </style>",
+"""        /* ═══════════ FED-OS UPGRADE: like / vote UI ═══════════ */
+        .like-btn {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--surface-2); border: 1px solid var(--border);
+            color: var(--text-2); cursor: pointer; font-family: inherit;
+            padding: 5px 12px; border-radius: var(--radius-full);
+            font-size: 0.78rem; font-weight: 700; transition: var(--transition);
+            -webkit-user-select: none; user-select: none; line-height: 1.4;
+        }
+
+=== TAIL (last 40) ===
+        });
+        getOnlineCount();
+        setInterval(getOnlineCount, 60000);""",
+"Discord widget: live invite links + social constants")
+
+# fix socials: twitter → x.com
+rep('<a class="footer-social" href="https://twitter.com" target="_blank" rel="noopener" title="Twitter / X"><i class="fab fa-twitter"></i></a>',
+    '<a class="footer-social" href="https://x.com/fedpromptly" target="_blank" rel="noopener" title="Twitter / X"><i class="fab fa-x-twitter"></i></a>',
+    "footer twitter → x")
+
+rep('<a class="footer-social" href="https://github.com" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>',
+    '<a class="footer-social" href="https://github.com/fedpromptly" target="_blank" rel="noopener" title="GitHub"><i class="fab fa-github"></i></a>',
+    "footer github")
+
+# ══════════════════════════ 13. keyboard shortcut: L to like ══════════════════════════
+rep("""            if ((e.key === 'r' || e.key === 'R') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); replyContent.focus(); }""",
+"""            if ((e.key === 'r' || e.key === 'R') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); replyContent.focus(); }
+            if ((e.key === 'l' || e.key === 'L') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); const btn = document.querySelector('#detailLikeBar .like-btn'); if (btn) btn.click(); }""",
+    "keyboard: L to like")
+
+# ══════════════════════════ 14. topics realtime: update like counts live ══════════════════════════
+rep("window.topicsSubscription = supabaseClient.channel('public:topics').on('postgres_changes', { event: '*', schema: 'public', table: 'topics' }, () => { sessionStorage.removeItem(CACHE_KEY); resetAndLoad(); }).subscribe();",
+"""window.topicsSubscription = supabaseClient.channel('public:topics').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'topics' }, (payload) => {
+                // Live like-count sync without full reload
+                const t = allTopics.find(x => x.id === payload.new.id);
+                if (t) {
+                    t.like_count = payload.new.like_count ?? t.like_count;
+                    t.views = payload.new.views ?? t.views;
+                    document.querySelectorAll(`.topic-card[data-topic-id="${payload.new.id}"] .like-btn .like-count`).forEach(el => { el.textContent = payload.new.like_count ?? el.textContent; });
+                    const dl = document.querySelector('#detailLikeBar .like-count');
+                    if (dl && currentTopicId === payload.new.id) dl.textContent = payload.new.like_count ?? dl.textContent;
+                }
+            }).on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'topics' }, () => { sessionStorage.removeItem(CACHE_KEY); resetAndLoad(); })
+            .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'topics' }, () => { sessionStorage.removeItem(CACHE_KEY); resetAndLoad(); }).subscribe();""",
+    "topics realtime: granular handlers")
+
+with open(DST, "w", encoding="utf-8") as f:
+    f.write(h)
+
+print(f"\\nAll edits applied → {DST} ({len(h)} chars)")
+
+874 patch_forum.py

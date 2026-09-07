@@ -1,0 +1,16 @@
+        // ═══════════ FED-OS UPGRADE: topic likes (vote) system ═══════════
+        // Requires topic_likes table + toggle_topic_like RPC (see upgrade migration).
+        // UI degrades gracefully: if the RPC/table is missing, buttons render inert.
+        let likesReady = null; // tri-state: null unknown, true ready, false broken
+        async function likesAvailable() {
+            if (likesReady !== null) return likesReady;
+            try {
+                const { data, error } = await supabaseClient.rpc('get_my_likes');
+                if (error) throw error;
+                likesReady = true;
+                const ids = Array.isArray(data) ? data.map(r => r.topic_id) : [];
+                myLikes = new Set(ids);
+                return true;
+            } catch (e) {
+                likesReady = false;
+                console.warn('[likes] RPC not available — like buttons disabled.', e.message);

@@ -1,0 +1,84 @@
+        async function loadTopics(page = 0, append = false) {
+            if (isLoading) return;
+            isLoading = true; loadMoreBtn.disabled = true;
+            if (!append) showSkeletons(5);
+            try {
+                const from = page * PAGE_SIZE; const to = from + PAGE_SIZE - 1;
+                const { data: topics, error } = await supabaseClient.from('topics').select(`id, title, content, created_at, user_id, attachment_url, tags, views, channel, price_label, profiles ( username, email ), reply_count:replies(count)`).order('created_at', { ascending: false }).range(from, to);
+                if (error) throw error;
+                const transformed = topics.map(t => ({ ...t, replyCount: t.reply_count?.[0]?.count ?? 0 }));
+                if (append) allTopics = [...allTopics, ...transformed]; else allTopics = transformed;
+                hasMore = topics.length === PAGE_SIZE;
+                if (!append) setCachedTopics(allTopics);
+                if (searchQuery) filterTopics(searchQuery); else if (!append) filterByCategory(currentCategory); else renderTopicList(transformed, append);
+                loadMoreBtn.classList.toggle('hidden', !hasMore);
+            } catch (err) {
+                console.error('Error loading topics:', err);
+                if (!append) forumList.innerHTML = `<p class="text-red-400 text-center py-8">Failed to load topics.</p>`;
+            } finally {
+                isLoading = false; loadMoreBtn.disabled = false;
+                if (!hasMore) { loadMoreBtn.textContent = 'No more topics'; loadMoreBtn.disabled = true; }
+                else loadMoreBtn.textContent = 'Load more';
+            }
+        }
+
+        function resetAndLoad() {
+            currentPage = 0; hasMore = true; searchQuery = ''; searchInput.value = '';
+            const cached = getCachedTopics();
+            if (cached && cached.length > 0) { allTopics = cached; updateCategoryCounts(); filterByCategory(currentCategory); loadTopics(0, false); }
+            else loadTopics(0, false);
+            countForumView();
+        }
+
+        const CACHE_KEY = 'forum_topics_cache';
+        const CACHE_TTL = 5 * 60 * 1000;
+        function getCachedTopics() { try { const raw = sessionStorage.getItem(CACHE_KEY); if (!raw) return null; const { data, timestamp } = JSON.parse(raw); if (Date.now() - timestamp > CACHE_TTL) { sessionStorage.removeItem(CACHE_KEY); return null; } return data; } catch { return null; } }
+        function setCachedTopics(data) { try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() })); } catch (e) {} }
+
+        // Drafts
+        const DRAFT_KEY = 'fedos_draft';
+        const REPLY_DRAFT_KEY = 'fedos_reply_draft';
+        function loadDrafts() {
+            try {
+                const draft = JSON.parse(localStorage.getItem(DRAFT_KEY));
+                if (draft) { topicTitle.value = draft.title || ''; topicContent.value = draft.content || ''; if (draft.tags) document.querySelectorAll('input[name="tags"]').forEach(cb => cb.checked = draft.tags.includes(cb.value)); }
+                const replyDraft = localStorage.getItem(REPLY_DRAFT_KEY);
+                if (replyDraft) { replyContent.value = replyDraft; updateCharCounter(replyContent, replyCharCounter, 5000); }
+            } catch (e) {}
+        }
+        function saveDraft() { const tags = Array.from(document.querySelectorAll('input[name="tags"]:checked')).map(el => el.value); localStorage.setItem(DRAFT_KEY, JSON.stringify({ title: topicTitle.value, content: topicContent.value, tags })); }
+        function saveReplyDraft() { localStorage.setItem(REPLY_DRAFT_KEY, replyContent.value); }
+        function clearDrafts() { localStorage.removeItem(DRAFT_KEY); localStorage.removeItem(REPLY_DRAFT_KEY); }
+        topicTitle.addEventListener('input', saveDraft);
+        topicContent.addEventListener('input', saveDraft);
+        document.querySelectorAll('input[name="tags"]').forEach(cb => cb.addEventListener('change', saveDraft));
+        replyContent.addEventListener('input', saveReplyDraft);
+
+        function renderTagCheckboxes() {
+            let html = '';
+            PREDEFINED_TAGS.forEach(tag => html += `<label class="tag-checkbox"><input type="checkbox" name="tags" value="${tag}" />${tag}</label>`);
+            tagCheckboxes.innerHTML = html;
+            document.querySelectorAll('input[name="tags"]').forEach(cb => cb.addEventListener('change', saveDraft));
+        }
+        renderTagCheckboxes();
+
+        newTopicBtn.addEventListener('click', () => {
+            if (!currentUser) { alert('Please log in to create a new topic.'); openModal(); return; }
+            newTopicForm.classList.toggle('hidden');
+            if (!newTopicForm.classList.contains('hidden')) {
+                // Pre-select the channel based on the current active tab
+===EXTERNAL URLS===
+https://cdn.jsdelivr.net/npm/
+https://cdn.jsdelivr.net/npm/canvas-confetti
+https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css
+https://discord.com
+https://discord.com/api/guilds/
+https://fonts.googleapis.com/css2
+https://github.com
+https://ko-fi.com/fedpromptly
+https://ko-fi.com/fedpromptly/
+https://qyuczfpgydgqywgthgrz.supabase.co
+https://sites.super.myninja.ai/_assets/ninja-daytona-script.js
+https://twitter.com
+===BODY OPEN===
+2933:<body>

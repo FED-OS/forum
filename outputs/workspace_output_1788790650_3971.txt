@@ -1,0 +1,5 @@
+rep calls: 50
+h.replace calls: 10
+dynamic reps (f-string/format): 
+--- sys.exit/atomic write section:
+16:        sys.exit(1)

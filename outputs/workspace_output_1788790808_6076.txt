@@ -1,0 +1,19 @@
+5473:                const { data: replies, error: repliesErr } = await supabaseClient.from('replies').select(`id, content, created_at, updated_at, user_id, profiles ( username, email )`).eq('topic_id', topicId).order('created_at', { ascending: true });
+5584:                    const { error } = await supabaseClient.from('replies').update({ content: newContent, updated_at: new Date().toISOString() }).eq('id', replyId);
+5600:                    const { error } = await supabaseClient.from('replies').delete().eq('id', replyId);
+5627:                const { error } = await supabaseClient.from('replies').insert({ topic_id: currentTopicId, content, user_id: currentUser.id });
+5641:                const { data: replies, error: rErr } = await supabaseClient.from('replies').select('id, content, created_at, topic_id, topics(title)').eq('user_id', userId).order('created_at', { ascending: false }).limit(10);
+---
+4683:            try { const { data, error } = await supabaseClient.rpc('increment_forum_views'); if (error) throw error; sessionStorage.setItem('forum_viewed_session', 'true'); const el = document.getElementById('forumViewCount'); if (el) el.textContent = data ?? 0; } catch (err) { console.error('Forum view increment failed:', err); }
+4688:            try { const { data, error } = await supabaseClient.rpc('increment_topic_views', { p_topic_id: topicId }); if (error) throw error; sessionStorage.setItem(key, 'true'); const viewEl = document.getElementById('topicViewCount'); if (viewEl) viewEl.textContent = data ?? 0; updateTopicListViews(topicId, data ?? 0); } catch (err) { console.error('Topic view increment failed:', err); }
+4732:                const { data, error } = await supabaseClient.rpc('get_my_likes');
+4759:                const { data, error } = await supabaseClient.rpc('toggle_topic_like', { p_topic_id: topicId });
+---channels---
+4340:        let selectedChannel = 'general'; // current channel selected in the new-topic form
+4537:                if (currentCategory === 'subscribers') {
+4564:                if (ch === 'notes' && !isAdmin) {
+4928:            if (ch === 'icons' || ch === 'notes' || ch === 'feed' || ch === 'subscribers') {
+4960:            if (cat === 'subscribers') {
+4965:                const subTopics = allTopics.filter(t => t.channel === 'subscribers');
+4972:            if (cat === 'icons') {
+4973:                const iconTopics = allTopics.filter(t => t.channel === 'icons');

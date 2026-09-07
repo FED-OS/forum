@@ -1,0 +1,19 @@
+    })();
+    </script>
+
+    <!-- Main Forum Script (functionality preserved) -->
+    <script>
+        const SUPABASE_URL = 'https://qyuczfpgydgqywgthgrz.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2NLEuDREplLS9DgUXeA8Tw_f8MJOhCq';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+        let currentUser = null;
+        let isSignUp = false;
+3566:        const SERVER_ID = '1400235929154879490';
+4034:        let currentUser = null;
+4036:        let currentTopicId = null;
+4038:        const PAGE_SIZE = 20;
+4042:        let allTopics = [];
+4043:        let isAdmin = false;          // set true when logged-in user has is_admin flag
+4807:                const from = page * PAGE_SIZE; const to = from + PAGE_SIZE - 1;
+4812:                hasMore = topics.length === PAGE_SIZE;

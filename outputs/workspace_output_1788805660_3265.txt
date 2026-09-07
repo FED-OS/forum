@@ -1,0 +1,51 @@
+                    <button type="button" id="toggleAuthMode">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <main class="forum-main">
+        <div class="container">
+
+            <!-- Page Head -->
+            <div class="page-head">
+                <div>
+                    <h1><i class="fas fa-comments"></i> FED-OS Forum</h1>
+                    <div id="forumStats" class="forum-stats">
+                        <span><i class="fas fa-eye"></i> Total views: <span id="forumViewCount">0</span></span>
+                        <span>· <span id="topicCount">0</span> topics</span>
+                        <span id="lastUpdated" style="font-size:0.78rem; color:var(--text-3);"></span>
+                        <span id="activeUsersDisplay" style="font-size:0.78rem; color:var(--text-3);"></span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" placeholder="Search topics..." aria-label="Search topics" />
+                    </div>
+                    <select id="sortSelect" class="sort-select" aria-label="Sort topics">
+                        <option value="latest">Latest</option>
+                        <option value="hot" selected>Hot</option>
+                        <option value="top">Top (likes)</option>
+                        <option value="most_commented">Most commented</option>
+                    </select>
+                    <button id="newTopicBtn" class="btn-primary">
+                        <i class="fas fa-plus"></i> New Topic
+                    </button>
+                    <div id="discord-count">
+                        <span class="dc-dot"></span>
+                        <span id="online-number">…</span>
+                        <span>online</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ko-fi button -->
+            <div class="kofi-row">
+                <a href="https://ko-fi.com/fedpromptly" target="_blank" rel="noopener" class="kofi-link">
+                    <i class="fas fa-mug-hot"></i> Support on Ko-fi
+                </a>
+            </div>
+
+            <!-- Global Marquee -->

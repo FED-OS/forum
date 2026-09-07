@@ -1,0 +1,36 @@
+# FEDPromptly Forum — Gap-Fix Upgrade
+
+## Goal
+Apply the "what is it missing?" gap analysis to the user's actual FEDPromptly forum HTML
+(recovered to fedpromptly-frontend/index_original.html) and produce an upgraded,
+production-ready single-file build plus the required Supabase migration.
+
+## Tasks
+### 1. Recover & analyze original
+- [x] Extract full forum HTML from conversation transcript (254KB, 5289 lines)
+- [x] Map structure: renderTopicList, showTopicDetail, loadTopics, replyForm, alerts, innerHTML sinks
+
+### 2. Build upgraded index.html (copy of original + surgical upgrades)
+- [ ] XSS-safe rendering: esc() helper applied to all user-content innerHTML sinks
+- [ ] Toast notification system replacing all alert() calls
+- [ ] Like/vote UI on topic cards + detail view (topic_likes table, toggle RPC, optimistic UI, graceful degrade)
+- [ ] Edit/Delete for topics and replies (owner-or-admin, confirm modal, edited badges)
+- [ ] Client-side rate limiting (topics 30s, replies 10s, likes 0.8s)
+- [ ] Server-side search via ilike + client highlight of matches
+- [ ] Global error handlers (window.onerror / unhandledrejection → toast)
+- [ ] Real footer/About links (dynamic Discord invite from widget, Ko-fi, configurable constants)
+- [ ] CSP meta + security hardening notes
+- [ ] Syntax-check extracted JS with node
+
+### 3. Supabase migration SQL
+- [ ] topics/replies: updated_at columns, FK cascade fix
+- [ ] topic_likes table + RLS policies
+- [ ] is_admin() security-definer helper
+- [ ] toggle_topic_like RPC (atomic toggle + like_count maintenance)
+- [ ] UPDATE/DELETE policies (own content, admin override)
+- [ ] Full-text search index
+
+### 4. Documentation & delivery
+- [ ] UPGRADE_GUIDE.md (how to apply migration, deploy, feature list, rollback)
+- [ ] Verify upgraded page renders (local serve + screenshot)
+- [ ] Attach deliverables and complete

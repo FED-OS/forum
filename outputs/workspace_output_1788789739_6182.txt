@@ -1,0 +1,74 @@
+        downloadToggle.addEventListener('click', (e) => { e.stopPropagation(); downloadDropdown.classList.toggle('open'); });
+        document.addEventListener('click', () => downloadDropdown.classList.remove('open'));
+        downloadDropdown.addEventListener('click', (e) => e.stopPropagation());
+        downloadDesktop.addEventListener('click', () => { alert('🚀 Desktop app download coming soon!\
+Stay tuned for the FEDPromptly desktop client.'); downloadDropdown.classList.remove('open'); });
+        downloadMobile.addEventListener('click', () => { alert('📱 Mobile app download coming soon!\
+The FEDPromptly mobile app is in development.'); downloadDropdown.classList.remove('open'); });
+
+        // Auth
+        function showMessage(msg, type = 'error') { authMessage.textContent = msg; authMessage.className = 'message ' + type; }
+        function hideMessage() { authMessage.className = 'message'; authMessage.textContent = ''; }
+===LOGIN===
+        async function handleLogin(email, password) {
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) throw error;
+                showMessage(`✅ Welcome back, ${email.split('@')[0]}!`, 'success');
+                currentUser = data.user; updateUIForUser(currentUser);
+                setTimeout(closeModalFunc, 1000); resetAndLoad();
+            } catch (err) {
+                let msg = err.message;
+                if (err.message.includes('Invalid login credentials')) msg = 'Invalid email or password.';
+                else if (err.message.includes('Email not confirmed')) msg = 'Please verify your email address first.';
+                showMessage(msg, 'error'); throw err;
+            }
+        }
+        async function handleSignUp(email, password) {
+            try {
+                const { data, error } = await supabaseClient.auth.signUp({ email, password, options: { emailRedirectTo: window.location.origin + window.location.pathname } });
+                if (error) throw error;
+                if (data.user && data.user.identities && data.user.identities.length === 0) { showMessage('This email is already registered. Please sign in.', 'error'); return; }
+                if (!data.session) { showMessage('📧 Please check your email to confirm your account.', 'info'); }
+                else { showMessage(`✅ Account created! Welcome, ${email.split('@')[0]}!`, 'success'); currentUser = data.user; updateUIForUser(currentUser); setTimeout(closeModalFunc, 1000); resetAndLoad(); }
+            } catch (err) {
+                let msg = err.message;
+                if (err.message.includes('User already registered')) msg = 'This email is already registered. Please sign in.';
+                showMessage(msg, 'error'); throw err;
+            }
+        }
+
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = loginEmail.value.trim();
+            const password = loginPassword.value;
+            if (!email || !password) { showMessage('Please fill in all fields.', 'error'); return; }
+            authSubmitBtn.disabled = true; authSubmitBtn.textContent = isSignUp ? 'Creating...' : 'Signing in...'; hideMessage();
+            try { if (isSignUp) await handleSignUp(email, password); else await handleLogin(email, password); } catch (err) {} finally { authSubmitBtn.disabled = false; authSubmitBtn.textContent = isSignUp ? 'Sign Up' : 'Sign In'; }
+        });
+
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_IN' && session) { currentUser = session.user; updateUIForUser(currentUser); closeModalFunc(); resetAndLoad(); }
+            if (event === 'SIGNED_OUT') { currentUser = null; updateUIForUser(null); resetAndLoad(); }
+            if (event === 'USER_UPDATED' && session) { currentUser = session.user; updateUIForUser(currentUser); }
+        });
+
+        (async function checkSession() {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (session) { currentUser = session.user; updateUIForUser(currentUser); }
+                resetAndLoad();
+            } catch (err) { console.error('Session check error:', err); resetAndLoad(); }
+        })();
+
+        // Bookmark
+        function toggleBookmark(topicId) { const index = bookmarks.indexOf(topicId); if (index > -1) bookmarks.splice(index, 1); else bookmarks.push(topicId); localStorage.setItem('fedos_bookmarks', JSON.stringify(bookmarks)); updateBookmarkButtons(); }
+===SETTINGS ALERT===
+        if (desktopToggle) desktopToggle.addEventListener('change', () => {
+            save('desktopNotif', desktopToggle.checked);
+            if (desktopToggle.checked && 'Notification' in window) {
+                Notification.requestPermission().then(p => {
+                    if (p !== 'granted') { desktopToggle.checked = false; save('desktopNotif', false); alert('Desktop notifications were not enabled. You can allow them in your browser settings.'); }
+                });
+            }
+        });

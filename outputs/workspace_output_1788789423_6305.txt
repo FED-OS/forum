@@ -1,0 +1,128 @@
+    <script>
+        const SERVER_ID = '1400235929154879490';
+        async function getOnlineCount() {
+            try {
+                const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+                const data = await response.json();
+                const count = data.presence_count || 0;
+                document.getElementById('online-number').innerText = count;
+            } catch(error) {
+                document.getElementById('online-number').innerText = '?';
+            }
+        }
+        getOnlineCount();
+        setInterval(getOnlineCount, 60000);
+    </script>
+===MAIN SCRIPT HEAD===
+    <script>
+        const SUPABASE_URL = 'https://qyuczfpgydgqywgthgrz.supabase.co';
+        const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_2NLEuDREplLS9DgUXeA8Tw_f8MJOhCq';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
+        let currentUser = null;
+        let isSignUp = false;
+        let currentTopicId = null;
+        let currentPage = 0;
+        const PAGE_SIZE = 20;
+        let hasMore = true;
+        let isLoading = false;
+        let currentSort = 'hot';
+        let allTopics = [];
+        let isAdmin = false;          // set true when logged-in user has is_admin flag
+        let selectedChannel = 'general'; // current channel selected in the new-topic form
+        let selectedPriceLabel = null;   // 'Free', 'Paid', or a custom string (Icons only)
+        let bookmarks = JSON.parse(localStorage.getItem('fedos_bookmarks') || '[]');
+        let carouselTopics = [];
+        let currentSlide = 0;
+        let autoSlideInterval = null;
+        const CAROUSEL_AUTO_INTERVAL = 5000;
+        let carouselSpeedOverride = null;
+        function getCarouselInterval() { return carouselSpeedOverride || (window.getSettings && window.getSettings().carouselSpeed) || CAROUSEL_AUTO_INTERVAL; }
+        window.applyCarouselSpeedOverride = function(ms) { carouselSpeedOverride = ms; if (typeof startAutoSlide === 'function') startAutoSlide(); };
+        let searchQuery = '';
+
+        const loginBtn = document.getElementById('loginBtn');
+        const loginModal = document.getElementById('loginModal');
+        const closeModal = document.getElementById('closeModal');
+        const loginForm = document.getElementById('loginForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const authSubmitBtn = document.getElementById('authSubmitBtn');
+        const authMessage = document.getElementById('authMessage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalSub = document.getElementById('modalSub');
+        const toggleAuthMode = document.getElementById('toggleAuthMode');
+        const toggleText = document.getElementById('toggleText');
+        const forgotPassword = document.getElementById('forgotPassword');
+        const userAvatar = document.getElementById('userAvatar');
+        const loginBtnText = document.getElementById('loginBtnText');
+
+        const forumList = document.getElementById('forumList');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const sortSelect = document.getElementById('sortSelect');
+        const categoryTabs = document.getElementById('categoryTabs');
+        const etaLatestPost = document.getElementById('etaLatestPost');
+        const etaActivity = document.getElementById('etaActivity');
+        const etaTotalReplies = document.getElementById('etaTotalReplies');
+        const etaAvgRead = document.getElementById('etaAvgRead');
+        let currentCategory = localStorage.getItem('fedos_category') || 'all';
+        const newTopicBtn = document.getElementById('newTopicBtn');
+        const stickyNewTopic = document.getElementById('stickyNewTopic');
+        const newTopicForm = document.getElementById('newTopicForm');
+        const createTopicForm = document.getElementById('createTopicForm');
+        const topicTitle = document.getElementById('topicTitle');
+        const topicContent = document.getElementById('topicContent');
+        const topicCharCounter = document.getElementById('topicCharCounter');
+        const topicAttachment = document.getElementById('topicAttachment');
+        const cancelTopicBtn = document.getElementById('cancelTopicBtn');
+        const singleTopicView = document.getElementById('singleTopicView');
+        const backToForumBtn = document.getElementById('backToForumBtn');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailMeta = document.getElementById('detailMeta');
+        const detailContent = document.getElementById('detailContent');
+        const detailAttachment = document.getElementById('detailAttachment');
+        const detailTags = document.getElementById('detailTags');
+        const detailStats = document.getElementById('detailStats');
+        const repliesList = document.getElementById('repliesList');
+        const replyForm = document.getElementById('replyForm');
+        const replyContent = document.getElementById('replyContent');
+        const replyCharCounter = document.getElementById('replyCharCounter');
+        const tagCheckboxes = document.getElementById('tagCheckboxes');
+        const uploadError = document.getElementById('uploadError');
+        const channelSelectWrap = document.getElementById('channelSelectWrap');
+        const channelHint = document.getElementById('channelHint');
+        const priceFieldWrap = document.getElementById('priceFieldWrap');
+        const priceRadioGroup = document.getElementById('priceRadioGroup');
+        const priceCustomInput = document.getElementById('priceCustomInput');
+        const subscribersTab = document.getElementById('subscribersTab');
+        const profileView = document.getElementById('profileView');
+        const backFromProfileBtn = document.getElementById('backFromProfileBtn');
+        const profileContent = document.getElementById('profileContent');
+
+        const carouselContainer = document.getElementById('carouselContainer');
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselDots = document.getElementById('carouselDots');
+        const carouselPrev = document.getElementById('carouselPrev');
+        const carouselNext = document.getElementById('carouselNext');
+
+        const topicCountEl = document.getElementById('topicCount');
+        const lastUpdatedEl = document.getElementById('lastUpdated');
+        const backToTopBtn = document.getElementById('backToTop');
+        const searchInput = document.getElementById('searchInput');
+        const breadcrumbTopic = document.getElementById('breadcrumbTopic');
+        const breadcrumbReplies = document.getElementById('breadcrumbReplies');
+        const breadcrumbSepReplies = document.getElementById('breadcrumbSepReplies');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const wordCountDisplay = document.getElementById('wordCountDisplay');
+        const readingTimeDisplay = document.getElementById('readingTimeDisplay');
+        const keyboardHelp = document.getElementById('keyboardHelp');
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeDropdown = document.getElementById('themeDropdown');
+        const THEME_ICONS = {
+            dark: 'fas fa-moon', light: 'fas fa-sun', ocean: 'fas fa-water',
+            forest: 'fas fa-tree', sunset: 'fas fa-sun', midnight: 'fas fa-star',
+            rose: 'fas fa-heart'
+        };
+        const readingProgress = document.getElementById('readingProgress');

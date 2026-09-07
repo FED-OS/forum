@@ -1,0 +1,7 @@
+Total lines: 8
+Line 8 (user): contains HTML at offset 66581, content length 378317
+Wrote 254310 chars, 5289 lines to fedpromptly-frontend/index_original.html
+total 260
+drwxr-xr-x 2 root root   4096 Sep  7 13:54 .
+drwxr-xr-x 8 user user   4096 Sep  7 13:54 ..
+-rw-r--r-- 1 root root 254967 Sep  7 13:54 index_original.html

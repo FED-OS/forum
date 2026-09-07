@@ -1,0 +1,12 @@
+1442:        .topic-card {
+1482:        .topic-card .title {
+1553:        .topic-card .stats-col {
+1559:        .topic-card .icon-download-btn {
+1575:        .topic-card .icon-download-btn:hover {
+1579:        .topic-card .icon-download-btn i { font-size: 0.72rem; }
+1641:        .bookmark-btn {
+1651:        .bookmark-btn:hover { color: var(--text); transform: scale(1.15); }
+1652:        .bookmark-btn.bookmarked { color: var(--amber); }
+1653:        .bookmark-btn.bookmarked:hover { color: #f59e0b; }
+1874:        .reply-item {
+1882:        .reply-item:hover { border-left-color: var(--brand); }

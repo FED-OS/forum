@@ -1,0 +1,23 @@
+3207:                <form id="createTopicForm" enctype="multipart/form-data">
+3567:        async function getOnlineCount() {
+4084:        const createTopicForm = document.getElementById('createTopicForm');
+4254:        async function checkAdminStatus() {
+4283:        async function handleLogout() {
+4308:        async function handleLogin(email, password) {
+4322:        async function handleSignUp(email, password) {
+4351:        (async function checkSession() {
+4384:        async function refreshForumViewCount() {
+4387:        async function countForumView() {
+4391:        async function countTopicView(topicId) {
+4460:        function buildCarousel(topics) {
+4721:        function renderTopicList(topics, append = false) {
+4802:        async function loadTopics(page = 0, append = false) {
+4904:        cancelTopicBtn.addEventListener('click', () => { newTopicForm.classList.add('hidden'); createTopicForm.reset(); uploadError.classList.remove('show'); uploadError.textContent = ''; clearDrafts(); resetChannelForm(); updateCharCounter(topicContent, topicCharCounter, 10000); });
+4970:        createTopicForm.addEventListener('submit', async (e) => {
+5008:            const submitButton = createTopicForm.querySelector('button[type="submit"]');
+5026:                createTopicForm.reset(); newTopicForm.classList.add('hidden'); clearDrafts(); resetChannelForm(); sessionStorage.removeItem(CACHE_KEY); resetAndLoad();
+5031:        async function showTopicDetail(topicId) {
+5139:        async function showProfile(userId) {
+---
+4406:                case 'top': sorted.sort((a, b) => (b.like_count || 0) - (a.like_count || 0)); break;
+4408:                case 'hot': default: sorted.sort((a, b) => { const aAge = (now - new Date(a.created_at).getTime()) / (1000 * 60 * 60); const bAge = (now - new Date(b.created_at).getTime()) / (1000 * 60 * 60); const aScore = (a.like_count || 0) + (a.views || 0) / 10 - aAge / 4; const bScore = (b.like_count || 0) + (b.views || 0) / 10 - bAge / 4; return bScore - aScore; }); break;

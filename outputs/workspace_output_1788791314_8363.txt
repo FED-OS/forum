@@ -1,0 +1,39 @@
+ALL SECTIONS COMPLETE
+# FEDPromptly Forum — Gap-Fix Upgrade
+
+## Goal
+Apply the "what is it missing?" gap analysis to the user's actual FEDPromptly forum HTML
+(recovered to fedpromptly-frontend/index_original.html) and produce an upgraded,
+production-ready single-file build plus the required Supabase migration.
+
+## Tasks
+### 1. Recover & analyze original
+- [x] Extract full forum HTML from conversation transcript (254KB, 5289 lines)
+- [x] Map structure: renderTopicList, showTopicDetail, loadTopics, replyForm, alerts, innerHTML sinks
+
+### 2. Build upgraded index.html (copy of original + surgical upgrades)
+- [x] XSS-safe rendering: escapeHtml() applied to all user-content innerHTML sinks (23 applications)
+- [x] Toast notification system replacing all alert() calls (50/50 patch edits applied, node-verified)
+- [x] Like/vote UI on topic cards + detail view (toggle RPC, optimistic UI, graceful degrade)
+- [x] Edit/Delete for topics and replies (owner-or-admin, confirm modal, edited badges)
+- [x] Client-side rate limiting (topics 30s, replies 10s, likes 0.8s, edits 5s)
+- [x] Search: server ilike + client highlightQuery + hit counter + escaped query echo
+- [x] Global error handlers (window error / unhandledrejection → toast)
+- [x] Real footer/About links (live Discord invite via widget.json, x.com, github, FED_SOCIAL constants)
+- [x] Security hardening documented in UPGRADE_GUIDE (CSP meta guidance + Supabase-side notes)
+- [x] Syntax-check extracted JS with node — 4/4 blocks pass
+
+### 3. Supabase migration SQL
+- [x] topics/replies: updated_at columns (no trigger — set only by edit form, avoids false "(edited)")
+- [x] topic_likes table + RLS policies + count reconciliation
+- [x] is_admin() security-definer helper (reads existing profiles.is_admin)
+- [x] toggle_topic_like RPC (atomic toggle + like_count maintenance, returns integer)
+- [x] get_my_likes RPC (probe + my-likes set)
+- [x] UPDATE/DELETE policies (own content, admin override, fed_ prefixed)
+- [x] Full-text GIN index + channel/created_at + replies indexes + realtime publication
+
+### 4. Documentation & delivery
+- [x] UPGRADE_GUIDE.md (migration how-to, deploy steps, feature list, config, security notes, rollback, honest "still missing" list)
+- [x] Verify upgraded page renders — live serve + browser: 200 OK, all 10 real topics loaded from Supabase, legacy-mode fallback + inert like buttons confirmed working pre-migration
+- [x] Attach deliverables and complete
+

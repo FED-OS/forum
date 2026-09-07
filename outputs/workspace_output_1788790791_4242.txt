@@ -1,0 +1,4 @@
+outputs/jscheck/block_00.js:   OK
+outputs/jscheck/block_01.js:   OK
+outputs/jscheck/block_02.js:   OK
+outputs/jscheck/block_03.js:   OK
