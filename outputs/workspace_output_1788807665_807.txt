@@ -1,0 +1,15 @@
+	zip warning: FEDPromptly-upgrade-v2.zip not found or empty
+  adding: index.html (deflated 82%)
+  adding: fed_os_v2_admin_and_channels.sql (deflated 71%)
+  adding: supabase_migration_v1.sql (deflated 77%)
+  adding: UPGRADE_GUIDE.md (deflated 51%)
+-rw-r--r-- 1 root root 63787 Sep  7 19:01 FEDPromptly-upgrade-v2.zip
+Archive:  FEDPromptly-upgrade-v2.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+   302509  2026-09-07 18:57   index.html
+     4298  2026-09-07 19:00   fed_os_v2_admin_and_channels.sql
+    16881  2026-09-07 14:26   supabase_migration_v1.sql
+     5522  2026-09-07 19:01   UPGRADE_GUIDE.md
+---------                     -------
+   329210                     4 files

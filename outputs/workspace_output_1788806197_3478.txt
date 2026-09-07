@@ -1,0 +1,40 @@
+===== detail view header =====
+ type="button" id="cancelTopicBtn" class="btn-secondary">Cancel</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Single Topic View -->
+            <div id="singleTopicView" class="card hidden mt-4">
+                <button id="backToForumBtn" class="text-purple-600 hover:underline mb-4 flex items-center gap-1" style="background:none; border:none; cursor:pointer; font-size:0.92rem; font-weight:600;">
+                    <i class="fas fa-arrow-left"></i> Back to forum
+                </button>
+                <div class="breadcrumbs" id="breadcrumbs">
+                    <a href="#" id="breadcrumbForum">Forum</a>
+                    <span class="sep">›</span>
+                    <span class="current" id="breadcrumbTopic">Topic</span>
+                    <span class="sep" id="breadcrumbSepReplies" style="display:none;">›</span>
+                    <span class="current" id="breadcrumbReplies" style="display:none;">Replies</span>
+                </div>
+                <div id="topicDetail">
+                    <h3 id="detailTitle" class="tex
+
+===== keyboard help panel =====
+" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+
+    <div class="keyboard-help" id="keyboardHelp">
+        <kbd>N</kbd> New topic &nbsp;·&nbsp; <kbd>R</kbd> Reply &nbsp;·&nbsp; <kbd>?</kbd> Help
+    </div>
+
+    <!-- Discord Online Count -->
+    <script>
+        const SERVER_ID = '1400235929154879490';
+        window.FED_SOCIAL = {
+            twitter: 'https://x.com/fedpromptly',
+            github: 'https://github.com/fedpromptly',
+            kofi: 'https://ko-fi.com/fedpromptly'
+        };
+        async function getOnlineCount() {
+            try {
+                const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+                c

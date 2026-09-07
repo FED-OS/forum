@@ -1,0 +1,22 @@
+ll);
+            margin-left: 6px;
+        }
+        .channel-badge.ch-icons { background: var(--accent-soft); color: var(--accent); }
+        .channel-badge.ch-notes { background: var(--green-soft); color: var(--green); }
+        .channel-badge.ch-feed { background: var(--brand-soft); color: var(--brand); }
+        .channel-badge.ch-subscribers { background: rgba(251,191,36,0.12); color: var(--amber); }
+        .channel-badge.ch-general { background: var(--surface-2); color: var(--text-3); }
+        /* Price badge for Icons */
+        .topic-card .price-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: var(--radius-full);
+   
+
+ch-announcements 0
+ch-guides 0
+ch-questions 0

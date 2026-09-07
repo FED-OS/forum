@@ -1,0 +1,27 @@
+    <div class="keyboard-help" id="keyboardHelp">
+        <kbd>N</kbd> New topic &nbsp;·&nbsp; <kbd>R</kbd> Reply &nbsp;·&nbsp; <kbd>?</kbd> Help
+    </div>
+
+    <!-- Discord Online Count -->
+    <script>
+        const SERVER_ID = '1400235929154879490';
+        window.FED_SOCIAL = {
+            twitter: 'https://x.com/fedpromptly',
+            github: 'https://github.com/fedpromptly',
+            kofi: 'https://ko-fi.com/fedpromptly'
+        };
+        async function getOnlineCount() {
+            try {
+                const response = await fetch(`https://discord.com/api/guilds/${SERVER_ID}/widget.json`);
+=== applyShowMarquee ===
+3998:        function applyShowMarquee(on) {
+3999-            const m = document.getElementById('globalMarquee');
+4000-            if (m) m.style.display = on ? '' : 'none';
+4001-        }
+4002-        function applyShowTagCloud(on) {
+4003-            const t = document.getElementById('tagCloud');
+=== isImageUrl ===
+4975:        function isImageUrl(url) { if (!url) return false; const ext = url.split('.').pop().toLowerCase(); return ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'ico'].includes(ext); }
+4976-
+4977-        // ── Time-ago helper for ETA badges ──
+4978-        function timeAgo(dateStr) {

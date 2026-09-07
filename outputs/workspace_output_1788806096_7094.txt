@@ -1,0 +1,14 @@
+===== PILLS BLOCK =====
+ype="radio" name="channel" value="feed" />
+                                <i class="fas fa-rss"></i> Feed
+                            </label>
+                            <label class="channel-pill" data-channel="subscribers">
+                                <input type="radio" name="channel" value="subscribers" />
+                                <i class="fas fa-lock"></i> Subscribers
+                            </label>
+                        </div>
+                        <p class="text-xs text-gray-500" style="margin-top:6px;" id="channelHint">General posts appear in the main forum for everyone.</p>
+                    </div>
+                    <div class="mb-3">
+                        <label class="text-sm font-semibold text-gray-700" for="topicTitle" style="display:block; margin-bottom:6px;">Title</label>
+                        <input type="text" id="topicTitle" class="input-d

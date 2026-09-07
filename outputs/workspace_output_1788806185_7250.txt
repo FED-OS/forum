@@ -1,0 +1,21 @@
+===== updateCategoryCounts =====
+function updateCategoryCounts() {
+            const counts = { all: 0, trending: 0, announcements: 0, questions: 0, guides: 0, icons: 0, notes: 0, feed: 0, subscribers: 0, bookmarks: 0 };
+            allTopics.forEach(t => {
+                const ch = t.channel;
+                // "All" tab counts only general-channel topics
+                if (!ch || ch === 'general') {
+                    counts.all++;
+                    if (isTrending(t)) counts.trending++;
+                    const cat = classifyTopic(t);
+                    if (cat && counts[cat] !== undefined) counts[cat]++;
+                }
+                // Channel-specific counts
+                if (ch && counts[ch] !== undefined) counts[ch]++;
+                if (isBookmarked(t.id)) counts.bookmarks++;
+            });
+            document.getElementById('catCountAll').textContent = counts.all;
+            document.getElementById('catCountTrending').textContent = counts.trending;
+            document.getElementById('catCountAnnouncements').textContent = counts.announcements;
+            document.getElementById('catCountQuestions').textContent = counts.questions;
+            document.getElementById('catCountGuides').text

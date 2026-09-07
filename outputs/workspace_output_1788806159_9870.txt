@@ -1,0 +1,10 @@
+image-preview blocks: 2
+'.topic-card .image-preview {\n            margin-top: 14px;\n            border-radius: var(--radius-sm);\n            overflow: hidden;\n            position: relative;\n            background: var(--bg-s'
+
+'.topic-card .image-preview { max-height: 200px; }'
+
+img blocks: 2
+'.topic-card .image-preview img {\n            width: 100%;\n            height: 280px;\n            object-fit: cover;\n            transition: var(--transition);\n            display: block;\n        }'
+
+'.topic-card .image-preview img { height: 200px; }'
+

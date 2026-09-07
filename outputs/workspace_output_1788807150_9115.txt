@@ -1,0 +1,8 @@
+at 192161 : "       let currentSort = 'hot';\n        let allTopics = [];\n        let isAdmin = false;          // set true when logged-in user has is_admin flag\n        let selectedChannel = 'general'; // current channel selected in the new-topic form\n        let selectedPriceLabel = null;   "
+
+at 257844 : 'erySelector(`.channel-pill[data-channel="${currentCategory}"]`) : null;\n                if (pill && !pill.classList.contains(\'disabled\')) {\n                    selectedChannel = currentCategory;\n                    channelSelectWrap.querySelectorAll(\'.channel-pill\').forEach(p => '
+
+at 259449 : "pdateCharCounter(topicContent, topicCharCounter, 10000); });\n\n        // ── Channel selector interactivity ──\n        function resetChannelForm() {\n            selectedChannel = 'general';\n            selectedPriceLabel = null;\n            if (channelSelectWrap) {\n               "
+
+at 260844 : ".target.closest('.channel-pill');\n                if (!pill || pill.classList.contains('disabled')) return;\n                e.preventDefault();\n                selectedChannel = pill.dataset.channel;\n                channelSelectWrap.querySelectorAll('.channel-pill').forEach(p =>"
+

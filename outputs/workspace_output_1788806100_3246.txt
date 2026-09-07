@@ -1,0 +1,21 @@
+hints map occurrences: 2
+===== hints #1 at 258311 =====
+const hints = {
+                        icons: 'Icon posts require an image attachment. Choose Free or Paid below.',
+                        notes: 'Notes are admin-only project updates visible to everyone.',
+                        feed: 'Feed posts are part of the open social stream from everyone.',
+                        subscribers: 'Subscribers posts are only visible to logged-in users.'
+                    };
+                    if (channelHint) channelHint.textContent = hints[selectedChannel] || '';
+       
+
+===== hints #2 at 261389 =====
+const hints = {
+                    general: 'General posts appear in the main forum for everyone.',
+                    icons: 'Icon posts require an image attachment. Choose Free or Paid below.',
+                    notes: 'Notes are admin-only project updates visible to everyone.',
+                    feed: 'Feed posts are part of the open social stream from everyone.',
+                    subscribers: 'Subscribers posts are only visible to logged-in users.'
+                };
+                if (channelHint) ch
+

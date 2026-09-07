@@ -1,0 +1,46 @@
+
+=== v2 PATCH COMPLETE: 31 edits applied ===
+  OK pills: add announcements/guides/questions (1x)
+  OK hints map #1 extended (1x)
+  OK hints map #2 extended (1x)
+  OK classifyTopic: new channels (1x)
+  OK card channel badge maps (1x)
+  OK detail channel badge maps (1x)
+  OK All tab includes new channels (1x)
+  OK category counts for new channels (1x)
+  OK admin detection fallback (1x)
+  OK announcements pill admin gate (1x)
+  OK card image max-height 440px (1x)
+  OK card image height 420px (1x)
+  OK mobile card image 260px (1x)
+  OK mobile card image max 280px (1x)
+  OK detail attachment 620px (1x)
+  OK carousel slide thumbnails (1x)
+  OK marquee opt-in (1x)
+  OK marquee default off (1x)
+  OK applyShowMarquee toggle fix (1x)
+  OK tag cloud top 10 (1x)
+  OK eta panel compact (1x)
+  OK eta card compact (1x)
+  OK eta icon compact (1x)
+  OK isNewTopic helper (1x)
+  OK NEW badge in card (1x)
+  OK excerpt expand wiring (1x)
+  OK detail nav DOM (1x)
+  OK detail nav logic (1x)
+  OK keyboard: / search + Esc detail (1x)
+  OK keyboard help panel (1x)
+  OK v2 CSS block (1x)
+
+size: 292045 -> 301112 bytes (+9067)
+  marker 'data-channel="announcements"': 1x
+  marker 'data-channel="guides"': 1x
+  marker 'data-channel="questions"': 1x
+  marker 'slide-thumb': 4x
+  marker 'new-badge': 2x
+  marker 'detailNav': 4x
+  marker 'ch-announcements': 1x
+  marker 'isNewTopic': 2x
+  marker 'max-height: 440px': 1x
+  marker 'max-height: 620px': 1x
+  marker 'showMarquee: false': 1x

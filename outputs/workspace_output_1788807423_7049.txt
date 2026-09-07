@@ -1,0 +1,7 @@
+--- at 222436 ---
+function updateMarquee() {
+            if (postSnippets.length === 0) { globalMarquee.classList.add('hidden'); return; }
+            globalMarquee.classList.remove('hidden');
+            let content = postSnippets.map(s => `<span>${escapeHtml(s)}</span>`).join('');
+            ma
+

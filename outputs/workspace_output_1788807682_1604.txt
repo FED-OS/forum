@@ -1,0 +1,10 @@
+HTTP/2 302 
+content-length: 0
+location: https://super.myninja.ai/404
+server: CloudFront
+date: Mon, 07 Sep 2026 19:01:22 GMT
+cache-control: private, no-cache, no-store, max-age=0, must-revalidate
+pragma: no-cache
+x-cache: Miss from cloudfront
+---
+404

@@ -1,0 +1,28 @@
+===== excerpt CSS =====
+y-count i { font-size: 0.62rem; }
+        .topic-card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .topic-card .excerpt {
+            color: var(--text-2);
+            font-size: 0.9rem;
+            margin-top: 10px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.55;
+        }
+        .topic-card .views-badge {
+            font-size: 0.76rem;
+            color: var(--text-3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowr
+
+===== excerpt HTML in card (idx 250154) =====
+lBadgeHtml}${priceBadgeHtml}${catBadge}</div><div class="tags">${tagHtml}</div></div><div class="stats-col">${likeBtnHtml(topic, likeCount)}<span class="reply-count"><i class="fas fa-reply"></i> ${replyCount}</span><span class="views-badge"><i class="fas fa-eye"></i> ${views}</span></div></div><div class="excerpt" data-fulltext="${topic.id}">${highlightQuery(topic.content, searchQuery)}</div>${imageHtml}${iconDownloadHtml}${canEditTopic ? `<div class="mod-actions"><button class="btn-icon edit-topic" data-topic-id="${topic.id}"><i class="fas fa-pen"></i> Edit</button><button class="btn-icon danger delete-topic" data-topic-id="${topic.id}"><i class="fas fa-trash"></i> Delete</button></div>` : 

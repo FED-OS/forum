@@ -1,0 +1,8 @@
+'.btn-icon {' 14082
+'.btn-icon:hover {' 14536
+'.btn-icon {' 105697
+'.btn-icon.danger:hover {' 105771
+'.btn-icon.danger {' 105898
+
+image-preview img html idx: -1
+

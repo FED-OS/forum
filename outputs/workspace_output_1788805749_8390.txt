@@ -1,0 +1,19 @@
+5395:                    const hints = {
+5401:                    if (channelHint) channelHint.textContent = hints[selectedChannel] || '';
+5450:                const hints = {
+5457:                if (channelHint) channelHint.textContent = hints[selectedChannel] || '';
+                    const hints = {
+                        icons: 'Icon posts require an image attachment. Choose Free or Paid below.',
+                        notes: 'Notes are admin-only project updates visible to everyone.',
+                        feed: 'Feed posts are part of the open social stream from everyone.',
+                        subscribers: 'Subscribers posts are only visible to logged-in users.'
+                    };
+                    if (channelHint) channelHint.textContent = hints[selectedChannel] || '';
+                } else {
+                    resetChannelForm();
+                }
+            } else {
+                resetChannelForm();
+            }
+=== topic insert ===
+5529:                const { error } = await supabaseClient.from('topics').insert({ title, content, user_id: currentUser.id, attachment_url: attachmentUrl, tags: selectedTags.length ? selectedTags : null, channel: selectedChannel, price_label: priceLabel });

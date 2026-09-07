@@ -1,0 +1,12 @@
+===== wireModActions start =====
+function wireModActions() {
+            forumList.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.topic-card');
+                if (card && card.dataset.topicId) toggleLike(card.dataset.topicId, btn.querySelector('.like-count'), btn);
+            }));
+            forumList.querySelectorAll('.edit-topic').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); sta
+
+showMarquee: true count: 1
+slice(0, 20) count: 1
+carouselAutoplay: 7

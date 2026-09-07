@@ -1,0 +1,6 @@
+root         670  0.0  0.4  99608 19688 ?        S    18:15   0:00 python3 -m http.server 8901
+State  Recv-Q Send-Q Local Address:Port  Peer Address:PortProcess                                                                      
+LISTEN 0      511          0.0.0.0:5000       0.0.0.0:*    users:(("nginx",pid=643,fd=7),("nginx",pid=642,fd=7),("nginx",pid=641,fd=7))
+LISTEN 0      128        127.0.0.1:2222       0.0.0.0:*    users:(("ttyd",pid=667,fd=12))                                              
+LISTEN 0      5            0.0.0.0:8901       0.0.0.0:*    users:(("python3",pid=670,fd=3))                                            
+LISTEN 0      128          0.0.0.0:22         0.0.0.0:*    users:(("sshd",pid=640,fd=3))                                               

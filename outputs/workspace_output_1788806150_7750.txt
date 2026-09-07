@@ -1,0 +1,37 @@
+height: 280px; occurrences: 2
+--- #1 ---
+iew */
+        .topic-card .image-preview {
+            margin-top: 14px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            width: 100%;
+            max-height: 280px;
+        }
+        .topic-card .image-preview img {
+            width: 100%;
+            height: 280px;
+  
+
+--- #2 ---
+r(--radius-sm);
+            overflow: hidden;
+            position: relative;
+            background: var(--bg-soft);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            width: 100%;
+            max-height: 280px;
+        }
+        .topic-card .image-preview img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            transition: var(--transition);
+            display: block;
+   
+

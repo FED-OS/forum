@@ -1,0 +1,6 @@
+4 inline script blocks found
+  block 1: OK (2002 bytes)
+  block 2: OK (4867 bytes)
+  block 3: OK (17192 bytes)
+  block 4: OK (116112 bytes)
+FAILURES: 0

@@ -1,0 +1,13 @@
+1
+5149:        function wireModActions() {
+        function wireModActions() {
+            forumList.querySelectorAll('.like-btn').forEach(btn => btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const card = btn.closest('.topic-card');
+                if (card && card.dataset.topicId) toggleLike(card.dataset.topicId, btn.querySelector('.like-count'), btn);
+            }));
+            forumList.querySelectorAll('.edit-topic').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); startEditTopic(btn.dataset.topicId); }));
+            forumList.querySelectorAll('.delete-topic').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); deleteTopic(btn.dataset.topicId); }));
+        }
+=== Replies h4 count ===
+1

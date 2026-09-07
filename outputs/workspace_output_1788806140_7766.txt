@@ -1,0 +1,10 @@
+===== card title area =====
+archive';
+                    else if (ext === 'pdf') icon = 'fa-file-pdf';
+                    else if (['mp4', 'webm', 'ogg'].includes(ext)) icon = 'fa-file-video';
+                    else if (['mp3', 'wav'].includes(ext)) icon = 'fa-file-audio';
+                    imageHtml = `<div class="attachment-icon"><i class="fas ${icon}"></i> Attachment: ${topic.attachment_url.split('/').pop()}</div>`;
+                }
+
+                const canEditTopic = isAdmin || (currentUser && topic.user_id === currentUser.id);
+                html += `<div class="topic-card" data-topic-id="${topic.id}" data-user-id="${topic.user_id}"><div class="flex-row"><div><div class="title">${escapeHtml(topic.title)}<button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" data-topic-id="${topic.id}" title="Bookmark"><i class="${bookmarked ? 'fas' : 'far'} fa-bookmark"></i></button></div><div class="meta"><i class="fas fa-user" style="font-size:0.64rem;"></i><a href="#" class="profile-link" data-user-id="$

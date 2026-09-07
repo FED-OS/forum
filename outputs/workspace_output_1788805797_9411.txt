@@ -1,0 +1,39 @@
+                    const isFree = topic.price_label.toLowerCase() === 'free';
+                    priceBadgeHtml = `<span class="price-badge ${isFree ? 'free' : 'paid'}"><i class="fas ${isFree ? 'fa-gift' : 'fa-dollar-sign'}"></i> ${topic.price_label}</span>`;
+                }
+
+                // Download button for Icons channel (if there's an attachment)
+                let iconDownloadHtml = '';
+                if (ch === 'icons' && topic.attachment_url) {
+                    iconDownloadHtml = `<button class="icon-download-btn" data-download-url="${encodeURI(topic.attachment_url)}" data-download-name="${escapeHtml(topic.title.replace(/"/g, ''))}"><i class="fas fa-download"></i> Download Icon</button>`;
+                }
+
+                let imageHtml = '';
+                if (topic.attachment_url && isImageUrl(topic.attachment_url)) {
+                    imageHtml = `<div class="image-preview" data-full="${topic.attachment_url}"><img src="${topic.attachment_url}" alt="Attachment preview" loading="lazy" /><div class="preview-overlay"><i class="fas fa-expand"></i></div><span class="file-badge"><i class="fas fa-image"></i> Preview</span></div>`;
+                } else if (topic.attachment_url) {
+                    const ext = topic.attachment_url.split('.').pop().toLowerCase();
+                    let icon = 'fa-file';
+                    if (ext === 'zip') icon = 'fa-file-archive';
+                    else if (ext === 'pdf') icon = 'fa-file-pdf';
+                    else if (['mp4', 'webm', 'ogg'].includes(ext)) icon = 'fa-file-video';
+                    else if (['mp3', 'wav'].includes(ext)) icon = 'fa-file-audio';
+=== channelBadgeHtml ===
+5246:                let channelBadgeHtml = '';
+5247-                if (ch && ch !== 'general') {
+5248-                    const chLabels = { icons: 'Icons', notes: 'Notes', feed: 'Feed', subscribers: 'Subscribers' };
+5249-                    const chIcons = { icons: 'fa-icons', notes: 'fa-sticky-note', feed: 'fa-rss', subscribers: 'fa-lock' };
+5250:                    channelBadgeHtml = `<span class="channel-badge ch-${ch}"><i class="fas ${chIcons[ch] || 'fa-tag'}"></i> ${chLabels[ch] || ch}</span>`;
+5251-                }
+5252-
+5253-                // Price badge for Icons channel
+5254-                let priceBadgeHtml = '';
+5255-                if (ch === 'icons' && topic.price_label) {
+5256-                    const isFree = topic.price_label.toLowerCase() === 'free';
+5257-                    priceBadgeHtml = `<span class="price-badge ${isFree ? 'free' : 'paid'}"><i class="fas ${isFree ? 'fa-gift' : 'fa-dollar-sign'}"></i> ${topic.price_label}</span>`;
+5258-                }
+5259-
+5260-                // Download button for Icons channel (if there's an attachment)
+--
+5280:                html += `<div class="topic-card" data-topic-id="${topic.id}" data-user-id="${topic.user_id}"><div class="flex-row"><div><div class="title">${escapeHtml(topic.title)}<button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" data-topic-id="${topic.id}" title="Bookmark"><i class="${bookmarked ? 'fas' : 'far'} fa-bookmark"></i></button></div><div class="meta"><i class="fas fa-user" style="font-size:0.64rem;"></i><a href="#" class="profile-link" data-user-id="${topic.user_id}">${displayName}</a><i class="fas fa-calendar-alt" style="font-size:0.64rem; margin-left:4px;"></i> ${date}<span class="time-ago"><i class="fas fa-clock"></i> ${ago}</span>${readingLabel ? `<span class="reading-time">· ${readingLabel}</span>` : ''}${channelBadgeHtml}${priceBadgeHtml}${catBadge}</div><div class="tags">${tagHtml}</div></div><div class="stats-col">${likeBtnHtml(topic, likeCount)}<span class="reply-count"><i class="fas fa-reply"></i> ${replyCount}</span><span class="views-badge"><i class="fas fa-eye"></i> ${views}</span></div></div><div class="excerpt" data-fulltext="${topic.id}">${highlightQuery(topic.content, searchQuery)}</div>${imageHtml}${iconDownloadHtml}${canEditTopic ? `<div class="mod-actions"><button class="btn-icon edit-topic" data-topic-id="${topic.id}"><i class="fas fa-pen"></i> Edit</button><button class="btn-icon danger delete-topic" data-topic-id="${topic.id}"><i class="fas fa-trash"></i> Delete</button></div>` : ''}</div>`;
+5281-            });

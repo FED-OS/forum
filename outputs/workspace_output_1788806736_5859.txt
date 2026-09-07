@@ -1,0 +1,9 @@
+at 53557 : 'ont-size: 0.72rem; }\n\n        /* Image preview */\n        .topic-card .image-preview {\n            margin-top: 14px;\n            border-radius: var(--radius-sm)'
+at 53925 : 'h: 100%;\n            max-height: 280px;\n        }\n        .topic-card .image-preview img {\n            width: 100%;\n            height: 280px;\n            objec'
+at 54130 : 'ransition);\n            display: block;\n        }\n        .topic-card .image-preview:hover img { transform: scale(1.03); }\n        .topic-card .image-preview .p'
+at 54203 : 'age-preview:hover img { transform: scale(1.03); }\n        .topic-card .image-preview .preview-overlay {\n            position: absolute;\n            inset: 0;\n  '
+at 54582 : 'r: #fff;\n            font-size: 1.2rem;\n        }\n        .topic-card .image-preview:hover .preview-overlay { opacity: 1; }\n        .topic-card .image-preview .'
+at 54656 : 'ge-preview:hover .preview-overlay { opacity: 1; }\n        .topic-card .image-preview .file-badge {\n            position: absolute;\n            bottom: 8px;\n    '
+at 90465 : '     .download-toggle span { display: none; }\n            .topic-card .image-preview img { height: 200px; }\n            .topic-card .image-preview { max-height:'
+at 90527 : 'ic-card .image-preview img { height: 200px; }\n            .topic-card .image-preview { max-height: 200px; }\n            .keyboard-help { display: none; }\n      '
+at 250782 : ".appendChild(loadMoreBtn); }\n\n            forumList.querySelectorAll('.image-preview').forEach(el => el.addEventListener('click', (e) => { e.stopPropagation(); "

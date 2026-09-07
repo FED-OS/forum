@@ -1,0 +1,14 @@
+3441:            <div id="singleTopicView" class="card hidden mt-4">
+3442:                <button id="backToForumBtn" class="text-purple-600 hover:underline mb-4 flex items-center gap-1" style="background:none; border:none; cursor:pointer; font-size:0.92rem; font-weight:600;">
+3446:                    <a href="#" id="breadcrumbForum">Forum</a>
+4455:        const singleTopicView = document.getElementById('singleTopicView');
+4456:        const backToForumBtn = document.getElementById('backToForumBtn');
+4951:            if (singleTopicView.classList.contains('hidden')) { readingProgress.classList.remove('visible'); return; }
+5573:                document.getElementById('breadcrumbForum').addEventListener('click', (e) => { e.preventDefault(); backToForumBtn.click(); });
+5618:                singleTopicView.classList.remove('hidden');
+5683:        backToForumBtn.addEventListener('click', () => {
+5684:            singleTopicView.classList.add('hidden');
+5733:                singleTopicView.classList.add('hidden');
+5767:            const isDetail = !singleTopicView.classList.contains('hidden');
+=== keydown handler ===
+5783:            if (e.key === 'n' || e.key === 'N') { e.preventDefault(); if (!currentUser) { openModal(); return; } newTopicBtn.click(); }

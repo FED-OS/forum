@@ -1,0 +1,7 @@
+'<input type="text" id="searchInput" placeholder="Search topics..." aria-label="Search topics" />'
+id="searchInput" 119597
+---SQL check---
+245:-- Channel browsing (the channel pills filter + created_at ordering)
+246:CREATE INDEX IF NOT EXISTS idx_topics_channel_created
+247:    ON public.topics (channel, created_at DESC);
+324:--   DROP INDEX IF EXISTS idx_topics_channel_created;

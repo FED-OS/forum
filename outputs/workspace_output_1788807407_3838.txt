@@ -1,0 +1,4 @@
+  File "/workspace/patch_forum_v2.py", line 296
+    '${escapeHtml(topic.title)}${isNewTopic(topic) ? '<span class="new-badge">NEW</span>' : ''}<button class="bookmark-btn',
+                                                            ^^^^^
+SyntaxError: invalid syntax

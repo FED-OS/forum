@@ -1,0 +1,56 @@
+===== function applyShowMarquee (idx 168115) =====
+function applyShowMarquee(on) {
+            const m = document.getElementById('globalMarquee');
+            if (m) m.style.display = on ? '' : 'none';
+        }
+        function applyShowTagCloud(on) {
+            const t = document.getElementById('tagCloud');
+            if (t) { if (!on) t.classList.add('hidden'); else if (typeof refreshTagCloud === 'function') refreshTagCloud(); }
+        }
+        function applyDefaultSort(sort) {
+            const sel = document.getElementById('sortSelect');
+            if (sel) { sel.value = sort; if (typeof currentSort !== 'undefined') { currentSort = sort; localStorage.setItem('forum_sort', sort); } }
+        }
+
+        // ---- Wire up controls ----
+
+
+===== function updateMarquee (idx 222436) =====
+function updateMarquee() {
+            if (postSnippets.length === 0) { globalMarquee.classList.add('hidden'); return; }
+            globalMarquee.classList.remove('hidden');
+            let content = postSnippets.map(s => `<span>${escapeHtml(s)}</span>`).join('');
+            marqueeTrack.innerHTML = content + content;
+        }
+
+        // Carousel
+        function buildCarousel(topics) {
+            const sorted = [...topics].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            carouselTopics = sorted.slice(0, 10);
+            if (carouselTopics.length < 2) { carouselContainer.classList.add('hidden'); return; }
+            carouselContainer.classList.remove('hidden
+
+===== function loadSnippets (idx 220767) =====
+function loadSnippets() {
+            const stored = localStorage.getItem('fedos_post_snippets');
+            if (stored) { try { postSnippets = JSON.parse(stored); } catch (e) { postSnippets = []; } }
+            if (postSnippets.length === 0 || (postSnippets.length === 1 && postSnippets[0].includes('Welcome'))) {
+                if (allTopics && allTopics.length > 0) { seedMarqueeWithTopics(allTopics); return; }
+                else { postSnippets = ['🚀 Welcome to FEDPromptly!', '💡 Share your thoughts with the community!', '📢 Stay tuned for the latest updates!', '✨ Post a topic to see it scroll here!']; saveSnippets(); }
+            }
+            updateMarquee();
+        }
+        function
+
+===== function seedMarqueeWithTopics (idx 221793) =====
+function seedMarqueeWithTopics(topics) {
+            if (!topics || topics.length === 0) return;
+            const hasRealTopic = postSnippets.some(s => s.includes(' posted: "'));
+            if (hasRealTopic) return;
+            const newSnippets = topics.slice(0, 10).map(t => { const name = t.profiles?.username || t.profiles?.email || 'Someone'; return `${name} posted: "${t.title}"`; });
+            const filtered = newSnippets.filter(s => s && !s.includes('undefined'));
+            if (filtered.length > 0) { postSnippets = filtered; postSnippets.push('🚀 Welcome to FEDPromptly!'); saveSnippets(); updateMarquee(); }
+        }
+        function updateMarquee() {
+            if (postSnippets.l
+

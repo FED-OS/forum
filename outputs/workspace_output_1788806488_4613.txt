@@ -1,0 +1,13 @@
+function openLightbox( 201985
+function closeLightboxFn( 202131
+function openLightbox(src) { lightboxImage.src = src; lightboxOverlay.classList.add('active'); document.body.style.overflow = 'hidden'; }
+        function closeLightboxFn() { lightboxOverlay.classList.remove('active'); document.body.style.overflow = ''; }
+        closeLightbox.addEventListener('click', closeLightboxFn);
+        lightboxOverlay.addEventListener('click', (e) => { if (e.target === li
+
+===== sortTopics =====
+function sortTopics(topics, sortBy) {
+            const now = Date.now(); const sorted = [...topics];
+            switch (sortBy) {
+                case 'latest': sorted.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)); break;
+        

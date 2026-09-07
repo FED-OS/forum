@@ -1,0 +1,22 @@
+===== before checkAdminStatus =====
+'he current user\n        async function checkAdminStatus() {\n'
+
+===== keydown handler =====
+remove('visible'); return; }
+            if (window.scrollY > 300) stickyNewTopic.classList.add('visible');
+            else stickyNewTopic.classList.remove('visible');
+        }
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) backToTopBtn.classList.add('visible');
+            else backToTopBtn.classList.remove('visible');
+            updateStickyVisibility(); updateReadingProgress();
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'n' || e.key === 'N') { e.preventDefault(); if (!currentUser) { openModal(); return; } newTopicBtn.click(); }
+            if ((e.key === 'r' || e.key === 'R') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); replyContent.focus(); }
+            if ((e.key === 'l' || e.key === 'L') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); const btn = document.querySelector('#detailLikeBar .like-btn'); if (btn) btn.click(); }
+            if (e.key 

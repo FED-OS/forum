@@ -1,0 +1,14 @@
+backToForumBtn.click(); });
+
+                if (topic.attachment_url) {
+                    const url = encodeURI(topic.attachment_url); const ext = url.split('.').pop().toLowerCase(); let html = '';
+                    if (['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'].includes(ext)) html = `<img src="${url}" alt="Attachment" class="attachment-preview" loading="lazy" style="cursor:pointer;" onclick="openLightbox('${url}')" />`;
+                    else if (['mp4', 'webm', 'ogg'].includes(ext)) html = `<video controls class="attachment-preview" preload="metadata"><source src="${url}" type="video/${ext}"></video>`;
+                    else if (ext === 'zip') html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file-archive"></i> Download ZIP</a>`;
+                    else html = `<a href="${url}" target="_blank" class="attachment-link"><i class="fas fa-file"></i> Download attachment</a>`;
+                    // Add download button for Icons channel
+                    if (topic.channel === 'icons') {
+                        const dlName = topic.title.replace(/"/g, '').replace(/[^a-z0-9_\-\.]/gi, '_');
+                        html += `<button class="icon-download-btn" style="margin-top:12px; max-width:240px;" onclick="downloadIcon('${url}', '${dlName}')"><i class="fas fa-download"></i> Download Icon</button>`;
+                    }
+                    

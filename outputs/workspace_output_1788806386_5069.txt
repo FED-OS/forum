@@ -1,0 +1,39 @@
+:root {
+            /* Dark theme (default) */
+            --bg: #0e0e14;
+            --bg-soft: #15151f;
+            --surface: #1a1a26;
+            --surface-2: #20202e;
+            --surface-hover: #262636;
+            --border: #2a2a3a;
+            --border-strong: #363648;
+            --text: #ececf1;
+            --text-2: #a8a8bd;
+            --text-3: #6b6b82;
+            --brand: #7c5cfc;
+            --brand-soft: rgba(124, 92, 252, 0.12);
+            --brand-glow: rgba(124, 92, 252, 0.35);
+            --brand-hover: #6b4cf0;
+            --accent: #f472b6;
+            --accent-soft: rgba(244, 114, 182, 0.12);
+            --green: #10b981;
+            --green-soft: rgba(16, 185, 129, 0.12);
+            --amber: #fbbf24;
+            --red: #ef4444;
+            --blue: #3b82f6;
+            --radius: 14px;
+            --radius-sm: 10px;
+            --radius-xs: 8px;
+            --radius-full: 9999px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+            --shadow: 0 6px 24px rgba(0,0,0,0.35);
+            --shadow-lg: 0 20px 60px rgba(0,0,0,0.45);
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --maxw: 1180px;
+        }
+
+        [data-theme="light"]
+
+</style> count: 1
+red var: 12 | danger: 0 | green-soft: 13

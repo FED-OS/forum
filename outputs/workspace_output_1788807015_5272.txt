@@ -1,0 +1,15 @@
+confirmAction = action;
+            confirmModal.classList.add('active');
+        };
+        (function wireConfirmModal() {
+            if (!confirmModal) return;
+            const yes = document.querySelector('#confirmModal .confirm-yes');
+            const no = document.querySelector('#confirmModal .confirm-no');
+            const box = document.querySelector('#confirmModal .confirm-box');
+            if (yes) yes.addEventListener('click', () => {
+                confirmModal.classList.remove('active');
+                const fn = confirmAction; confirmAction = null;
+                if (fn) fn();
+            });
+            if (no) no.addEventListener('click', () => { confirmModal.classList.remove('active'); confirmAction = null; });
+            confirmModal.addEventListener('click', (e) 

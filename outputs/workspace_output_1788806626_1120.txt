@@ -1,0 +1,13 @@
+'.attachment-preview {\n            max-width: 100%;\n            max-height: 360px;\n            border-radius: var(--radius-sm);\n            margin-top: 8px;\n            border: 1px solid var(--border);\n            background: var(--surface-2);\n            min-height: 50px;\n            object-fit: contain;\n        }'
+
+99:-- 3. is_admin() HELPER  (security definer — safe against RLS recursion)
+100:--    Uses the existing profiles.is_admin boolean your frontend already reads.
+103:CREATE OR REPLACE FUNCTION public.is_admin()
+111:        (SELECT p.is_admin FROM public.profiles p WHERE p.id = auth.uid()),
+116:REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC;
+117:GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated, anon;
+205:    USING (auth.uid() = user_id OR public.is_admin())
+206:    WITH CHECK (auth.uid() = user_id OR public.is_admin());
+213:    USING (auth.uid() = user_id OR public.is_admin());
+220:    USING (auth.uid() = user_id OR public.is_admin())
+49:CREATE TABLE IF NOT EXISTS public.topic_likes (

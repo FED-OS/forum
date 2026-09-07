@@ -1,0 +1,11 @@
+=== detailAttachment render ===
+at 134860 : 'm text-gray-500 mb-4" style="margin-top:8px;"></p>\n                    <div id="detailAttachment" class="mb-4"></div>\n                    <div id="detailTags" class="mb-3 flex flex-wrap gap-1"></div>\n                    <div id="d'
+
+at 195613 : "  const detailContent = document.getElementById('detailContent');\n        const detailAttachment = document.getElementById('detailAttachment');\n        const detailTags = document.getElementById('detailTags');\n        const detail"
+
+at 195657 : "yId('detailContent');\n        const detailAttachment = document.getElementById('detailAttachment');\n        const detailTags = document.getElementById('detailTags');\n        const detailStats = document.getElementById('detailStats"
+
+at 271779 : 'wnload"></i> Download Icon</button>`;\n                    }\n                    detailAttachment.innerHTML = html;\n                } else detailAttachment.innerHTML = \'\';\n\n                // ── FED-OS UPGRADE: like button in detai'
+
+at 271837 : "}\n                    detailAttachment.innerHTML = html;\n                } else detailAttachment.innerHTML = '';\n\n                // ── FED-OS UPGRADE: like button in detail header ──\n                const likeBar = document.getEl"
+

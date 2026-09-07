@@ -1,0 +1,4 @@
+at 248096 : '                    imageHtml = `<div class="image-preview" data-full="${topic.attachment_url}"><img src="${topic.attachment_url}" alt="Atta'
+
+at 250170 : 'a-eye"></i> ${views}</span></div></div><div class="excerpt" data-fulltext="${topic.id}">${highlightQuery(topic.content, searchQuery)}</div>$'
+

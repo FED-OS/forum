@@ -1,0 +1,37 @@
+===== classifyTopic check =====
+     // If the topic has an explicit `channel` field (icons/notes/feed/subscribers),
+        // it maps directly to that tab. Otherwise fall back to title/tags/content heuristics
+        // for the original announcement/question/guide classification.
+        function classifyTopic(topic) {
+            // Channel-based classification takes priority
+            const ch = topic.channel;
+            if (ch === 'icons' || ch === 'notes' || ch === 'feed' || ch === 'subscribers') {
+                return ch;
+            }
+            // Heuristic classification for the original general-channel topics
+            const title = (topic.title || '').toLowerCase();
+            const content = (topic.content || '').toLowerCase();
+            const tags = (topic.tags || []).map(t => t.toLowerCase());
+            const text = title + ' ' + content + ' ' + tags.join(' ');
+
+            if (/\\b(announce
+
+chLabels occurrences: 2
+===== chLabels #1 at 246641 =====
+c.channel;
+                let channelBadgeHtml = '';
+                if (ch && ch !== 'general') {
+                    const chLabels = { icons: 'Icons', notes: 'Notes', feed: 'Feed', subscribers: 'Subscribers' };
+                    const chIcons = { icons: 'fa-icons', notes: 'fa-sticky-note', feed: 'fa-rss', subscribers: 'fa-lock' };
+                    channelBadgeHtml = `<span class="channel-badge ch-${ch}"><i class="fas ${chIcons[ch] || 'fa-tag'}"></i> ${chLabels[ch] || ch}</span>`;
+                }
+
+       
+
+===== chLabels #2 at 268399 =====
+         let detailBadges = '';
+                if (topic.channel && topic.channel !== 'general') {
+                    const chLabels = { icons: 'Icons', notes: 'Notes', feed: 'Feed', subscribers: 'Subscribers' };
+                    const chIcons = { icons: 'fa-icons', notes: 'fa-sticky-note', feed: 'fa-rss', subscribers: 'fa-lock' };
+                    detailBadges += ` <span class="channel-badge ch-${topic.channel}"><i class="fas ${chIcons[topic.channel] || 'fa-tag'}"></i> ${chLabels[topic.channel] || topic.ch
+

@@ -1,0 +1,36 @@
+
+        function updateStickyVisibility() {
+            const isDetail = !singleTopicView.classList.contains('hidden');
+            const isProfile = !profileView.classList.contains('hidden');
+            if (isDetail || isProfile) { stickyNewTopic.classList.remove('visible'); return; }
+            if (window.scrollY > 300) stickyNewTopic.classList.add('visible');
+            else stickyNewTopic.classList.remove('visible');
+        }
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 500) backToTopBtn.classList.add('visible');
+            else backToTopBtn.classList.remove('visible');
+            updateStickyVisibility(); updateReadingProgress();
+        });
+        backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'n' || e.key === 'N') { e.preventDefault(); if (!currentUser) { openModal(); return; } newTopicBtn.click(); }
+            if ((e.key === 'r' || e.key === 'R') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); replyContent.focus(); }
+            if ((e.key === 'l' || e.key === 'L') && !singleTopicView.classList.contains('hidden')) { e.preventDefault(); const btn = document.querySelector('#detailLikeBar .like-btn'); if (btn) btn.click(); }
+            if (e.key === '?' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); keyboardHelp.classList.toggle('visible'); setTimeout(() => keyboardHelp.classList.remove('visible'), 3000); }
+            if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) closeLightboxFn();
+            if (e.key === 'Escape' && shopModal.classList.contains('active')) closeShopModal();
+        });
+
+        if (window.topicsSubscription) window.topicsSubscription.unsubscribe();
+        window.topicsSubscription = supabaseClient.channel('public:topics').on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'topics' }, (payload) => {
+                // Live like-count sync without full reload
+                const t = allTopics.find(x => x.id === payload.new.id);
+                if (t) {
+                    t.like_count = payload.new.like_count ?? t.like_count;
+                    t.views = payload.new.views ?? t.views;
+                    document.querySelectorAll(`.topic-card[data-topic-id="${payload.new.id}"] .like-btn .like-count`).forEach(el => { el.textContent = payload.new.like_count ?? el.textContent; });
+                    const dl = document.querySelector('#detailLikeBar .like-count');
+                    if (dl && currentTopicId === payload.new.id) dl.textContent = payload.new.like_count ?? dl.textContent;

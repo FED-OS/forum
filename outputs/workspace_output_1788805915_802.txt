@@ -1,0 +1,14 @@
+5240:                const catBadge = cat ? `<span class="eta-badge"><i class="fas fa-tag"></i> ${cat}</span>` : '';
+5280:                html += `<div class="topic-card" data-topic-id="${topic.id}" data-user-id="${topic.user_id}"><div class="flex-row"><div><div class="title">${escapeHtml(topic.title)}<button class="bookmark-btn ${bookmarked ? 'bookmarked' : ''}" data-topic-id="${topic.id}" title="Bookmark"><i class="${bookmarked ? 'fas' : 'far'} fa-bookmark"></i></button></div><div class="meta"><i class="fas fa-user" style="font-size:0.64rem;"></i><a href="#" class="profile-link" data-user-id="${topic.user_id}">${displayName}</a><i class="fas fa-calendar-alt" style="font-size:0.64rem; margin-left:4px;"></i> ${date}<span class="time-ago"><i class="fas fa-clock"></i> ${ago}</span>${readingLabel ? `<span class="reading-time">· ${readingLabel}</span>` : ''}${channelBadgeHtml}${priceBadgeHtml}${catBadge}</div><div class="tags">${tagHtml}</div></div><div class="stats-col">${likeBtnHtml(topic, likeCount)}<span class="reply-count"><i class="fas fa-reply"></i> ${replyCount}</span><span class="views-badge"><i class="fas fa-eye"></i> ${views}</span></div></div><div class="excerpt" data-fulltext="${topic.id}">${highlightQuery(topic.content, searchQuery)}</div>${imageHtml}${iconDownloadHtml}${canEditTopic ? `<div class="mod-actions"><button class="btn-icon edit-topic" data-topic-id="${topic.id}"><i class="fas fa-pen"></i> Edit</button><button class="btn-icon danger delete-topic" data-topic-id="${topic.id}"><i class="fas fa-trash"></i> Delete</button></div>` : ''}</div>`;
+                const catBadge = cat ? `<span class="eta-badge"><i class="fas fa-tag"></i> ${cat}</span>` : '';
+                const likeCount = topic.like_count || 0;
+                const bookmarked = isBookmarked(topic.id);
+
+                // Channel badge for non-general channels
+                const ch = topic.channel;
+                let channelBadgeHtml = '';
+                if (ch && ch !== 'general') {
+                    const chLabels = { icons: 'Icons', notes: 'Notes', feed: 'Feed', subscribers: 'Subscribers' };
+=== profile back ===
+3443:                    <i class="fas fa-arrow-left"></i> Back to forum
+3482:                    <i class="fas fa-arrow-left"></i> Back to forum

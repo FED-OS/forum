@@ -1,0 +1,40 @@
+===== checkAdminStatus =====
+function checkAdminStatus() {
+            if (!currentUser) { isAdmin = false; updateChannelPillAvailability(); return; }
+            try {
+                const { data, error } = await supabaseClient.from('profiles').select('is_admin').eq('id', currentUser.id).single();
+                if (error) { isAdmin = false; }
+                else { isAdmin = !!(data && data.is_admin); }
+            } catch (e) { isAdmin = false; }
+            updateChannelPillAvailability();
+        }
+
+        // Enable/disable channel pills in the new-topic form based on login & admin state
+        function updateChannelPillAvailability() {
+            if (!channelSelectWrap) return;
+            channelSelectWrap.querySelectorAll('.channel-pill').forEach(pill => {
+                const ch = pill.dataset.channel;
+                // Notes channel requires admin
+                if (ch === 'notes' && !isAdmin) {
+  
+
+===== filterByCategory all =====
+      }
+
+            if (cat === 'all') {
+                // "All" shows general-channel topics (excludes icons/notes/feed/subscribers
+                // since those have their own dedicated tabs)
+                if (searchQuery) filterTopics(searchQuery);
+                else {
+                    const generalTopics = allTopics.filter(t => !t.channel || t.channel === 'general');
+                    renderTopicList(generalTopics, false);
+                }
+                return;
+            }
+            if (cat === 'bookmarks') {
+                const bookmarked = allTopics.filter(t => isBookmarked(t.id));
+                renderTopicList(bookmarked, false);
+                if (!bookmarked.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No bookmarked topics yet. Click the bookmark icon on any topic to save it here.</p>`;
+                return;
+            }
+   

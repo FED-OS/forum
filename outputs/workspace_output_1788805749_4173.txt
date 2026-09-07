@@ -1,0 +1,17 @@
+3910:            showMarquee: true,
+3911:            showTagCloud: true,
+4063:        const marqueeToggle = document.getElementById('settingShowMarquee');
+4064:        if (marqueeToggle) marqueeToggle.addEventListener('change', () => { save('showMarquee', marqueeToggle.checked); applyShowMarquee(marqueeToggle.checked); });
+4067:        if (tagCloudToggle) tagCloudToggle.addEventListener('change', () => { save('showTagCloud', tagCloudToggle.checked); applyShowTagCloud(tagCloudToggle.checked); });
+4171:            if (marqueeToggle) marqueeToggle.checked = settings.showMarquee;
+4172:            if (tagCloudToggle) tagCloudToggle.checked = settings.showTagCloud;
+4188:            applyShowMarquee(settings.showMarquee);
+4189:            applyShowTagCloud(settings.showTagCloud);
+=== attachment-preview CSS ===
+1852:        .attachment-preview {
+1853-            max-width: 100%;
+1854-            max-height: 360px;
+1855-            border-radius: var(--radius-sm);
+1856-            margin-top: 8px;
+1857-            border: 1px solid var(--border);
+1858-            background: var(--surface-2);

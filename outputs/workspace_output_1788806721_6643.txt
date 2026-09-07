@@ -1,0 +1,13 @@
+height: 280px; positions: [53880, 53983]
+max-height: 280px; count: 1
+--- at 53880: between = 'height: 280px;\n        }\n        .topic-card .image-preview img {\n            width: 100%;'
+--- at 53983: between = 'height: 280px;\n            object-fit: cover;\n            transition: var(--transition);\n '
+
+1 ×  const canEditTopic = isAdmin || (currentUser && topic.user_id === currentUser.id
+1 ×  forumList.querySelectorAll('.edit-topic')
+2 ×  if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) closeLig
+1 ×  setTimeout(() => { readingProgress.classList.add('visible'); updateReadingProgre
+1 ×  backToForumBtn.addEventListener
+2 ×  const chIcons = { icons: 'fa-icons', notes: 'fa-sticky-note', feed: 'fa-rss', su
+2 ×  subscribers: 'Subscribers posts are only visible to logged-in users.'
+1 ×  max-height: 360px;

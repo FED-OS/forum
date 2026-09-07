@@ -1,0 +1,29 @@
+===== updateChannelPillAvailability =====
+function updateChannelPillAvailability() {
+            if (!channelSelectWrap) return;
+            channelSelectWrap.querySelectorAll('.channel-pill').forEach(pill => {
+                const ch = pill.dataset.channel;
+                // Notes channel requires admin
+                if (ch === 'notes' && !isAdmin) {
+                    pill.classList.add('disabled');
+                    pill.style.opacity = '0.45';
+                    pill.style.cursor = 'not-allowed';
+                    pill.title = 'Only admins can post to Notes';
+                } else {
+                    pill.classList.remove('disabled');
+                    pill.style.opacity = '';
+                    pill.style.cursor = '';
+                    pill.title = '';
+                }
+            });
+        }
+        asyn
+
+===== insert channel =====
+ { if (uploadErr.message.includes('bucket not found')) { uploadError.textContent = 'Storage bucket "forum-attachments" not found. Please create it in Supabase dashboard.'; uploadError.classList.add('show'); submitButton.disabled = false; submitButton.textContent = 'Post Topic'; return; } throw uploadErr; }
+                    const { data: urlData } = supabaseClient.storage.from('forum-attachments').getPublicUrl(filePath);
+                    attachmentUrl = urlData.publicUrl;
+                }
+                const { error } = await supabaseClient.from('topics').insert({ title, content, user_id: currentUser.id, attachment_url: attachmentUrl, tags: selectedTags.length ? selectedTags : null, channel: selectedChannel, price_label: priceLabel });
+                if (error) throw error;
+      

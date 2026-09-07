@@ -1,0 +1,24 @@
+===== renderTopicList =====
+function renderTopicList(topics, append = false) {
+            const sorted = sortTopics(topics, currentSort);
+            if (!append) forumList.innerHTML = '';
+            if (!sorted.length) { if (!append) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">${searchQuery ? 'No topics match your search.' : 'No topics yet. Be the first to start a discussion!'}</p>`; return; }
+       
+
+===== showTopicDetail tail (idx 274386) =====
+ton></div>` : '';
+                        html += `<div class="reply-item" data-reply-id="${reply.id}" data-reply-user="${reply.user_id}"><div class="reply-meta"><span class="name">${replyName}</span><span>${replyDate}${replyEdited}</span></div><div class="reply-body">${escapeHtml(reply.content)}</div>${actionsHtml}</div>`;
+                    });
+                    repliesList.innerHTML = html;
+                    repliesList.querySelectorAll('.edit-reply').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); startEditReply(btn.dataset.replyId); }));
+                    repliesList.querySelectorAll('.delete-reply').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); deleteReply(btn.dataset.replyId); }));
+                }
+
+                forumList.style.display = 'none';
+                newTopicForm.classList.add('hidden');
+                singleTopicView.classList.remove('hidden');
+                profileView.classList.add('hidden');
+                carouselContainer.classList.add('hidden');
+                stickyNewTopic.classList.remove('visible');
+
+                copyLinkBtn.onclick = function() { navigator.clipboard.writeText(wi

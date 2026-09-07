@@ -1,0 +1,21 @@
+===== filterByCategory: bookmarks → end =====
+if (cat === 'bookmarks') {
+                const bookmarked = allTopics.filter(t => isBookmarked(t.id));
+                renderTopicList(bookmarked, false);
+                if (!bookmarked.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No bookmarked topics yet. Click the bookmark icon on any topic to save it here.</p>`;
+                return;
+            }
+            if (cat === 'trending') {
+                const trending = allTopics.filter(t => isTrending(t));
+                renderTopicList(trending, false);
+                if (!trending.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No trending topics right now. Topics with more replies and views will appear here.</p>`;
+                return;
+            }
+            const filtered = allTopics.filter(t => classifyTopic(t) === cat);
+            renderTopicList(filtered, false);
+            if (!filtered.length) forumList.innerHTML = `<p class="text-gray-400 text-center py-8">No topics in this category yet. Be the first to post one!</p>`;
+        }
+
+        function updateCategoryCounts() {
+            const counts = { all: 0, trending: 0, announcements: 0, questions: 0, guides: 0, icons: 0, notes: 0, feed: 0, subscribers: 0, bookmarks: 0 };
+            allTopics.forEach(t

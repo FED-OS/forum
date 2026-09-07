@@ -1,0 +1,25 @@
+        backToForumBtn.addEventListener('click', () => {
+            singleTopicView.classList.add('hidden');
+            forumList.style.display = 'block';
+            carouselContainer.classList.remove('hidden');
+            readingProgress.classList.remove('visible');
+            if (window.repliesSubscription) window.repliesSubscription.unsubscribe();
+            if (allTopics.length) renderTopicList(allTopics, false);
+            updateStickyVisibility();
+        });
+
+        replyForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const content = replyContent.value.trim();
+=== unique checks ===
+showMarquee: true:                                      1
+slice(0, 20):                                           1
+max-height: 280px;:                                     1
+height: 280px;:                                         2
+max-height: 360px;:                                     1
+const hot = (topic.replyCount || 0) >= 5:               1
+data-channel="icons":                                   1
+const chLabels = { icons:                               2
+if (ch === 'icons' || ch === 'notes':                   1
+if (!ch || ch === 'general') {:                         1
+const generalTopics = allTopics.filter:                 1

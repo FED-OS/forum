@@ -1,0 +1,27 @@
+--- at 202477 ---
+er('click', closeLightboxFn);
+        lightboxOverlay.addEventListener('click', (e) => { if (e.target === lightboxOverlay) closeLightboxFn(); });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) closeLightboxFn(); });
+        window.openLightbox = openLightbox;
+
+        // Download dropdown
+        downloadToggle.addEventListener('click', (e) => { e.stopPropagation(); do
+
+--- at 286250 ---
+         if (e.key === '?' && !e.ctrlKey && !e.metaKey) { e.preventDefault(); keyboardHelp.classList.toggle('visible'); setTimeout(() => keyboardHelp.classList.remove('visible'), 3000); }
+            if (e.key === 'Escape' && lightboxOverlay.classList.contains('active')) closeLightboxFn();
+            if (e.key === 'Escape' && shopModal.classList.contains('active')) closeShopModal();
+        });
+
+        if (window.topicsSubscription) window.topi
+
+===== let imageHtml =====
+let imageHtml = '';
+                if (topic.attachment_url && isImageUrl(topic.attachment_url)) {
+                    imageHtml = `<div class="image-preview" data-full="${topic.attachment_url}"><img src="${topic.attachment_url}" alt="Attachment preview" loading="lazy" /><div class="preview-overlay"><i class="fas fa-expand"></i></div><span class="file-badge"><i class="fas fa-image"></i> Preview</span></div>`;
+                } else if (topic.attachment_url) {
+                    const ext = topic.attachment_url.split('.').pop().toLowerCase();
+                    let icon = 'fa-file';
+                    if (ext === 'zip') icon = 'fa-file-archive';
+                    else if (ext === 'pdf') icon = 'fa-file-pdf';
+                    else if (['mp4', 'webm', 'ogg'].includes(ext)) icon = 'fa

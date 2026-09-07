@@ -1,0 +1,18 @@
+=== image wiring line ===
+"forumList.querySelectorAll('.image-preview').forEach(el => el.addEventListener('click', (e) => { e.stopPropagation(); const src = el.dataset.full; if (src) openLightbox(src); }));\n"
+
+countTopicView(topicId) count: 1
+await countTopicView count: 1
+.eta-icon.brand { 21329
+.eta-icon.accent { 21409
+.eta-icon.green { 21492
+.eta-icon.amber { 21572
+.slide-content CSS exists: True
+=== settings block ===
+utoplay: true,
+            carouselSpeed: 5000,
+            showEta: true,
+            showMarquee: true,
+            showTagCloud: true,
+            defaultSort: 'hot',
+          

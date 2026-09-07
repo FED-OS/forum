@@ -1,0 +1,30 @@
+===== showTopicDetail =====
+async function showTopicDetail(topicId) {
+            if (window.repliesSubscription) window.repliesSubscription.unsubscribe();
+            currentTopicId = topicId;
+            try {
+                const { data: topic, error: topicErr } = await fetchTopicDetailCompat(topicId);
+                if (topicErr) throw topicErr;
+                const { data: replies, error: repliesErr } = await fetchRepliesCompat(topicId);
+                if (repliesErr) throw repliesErr;
+
+                detailTitle.textContent = topic.title; // textContent — safe
+                const displayName = escapeHtml(topic.profiles?.username || topic.profiles?.email || 'Unknown');
+                const date = new Date(
+
+===== backToForumBtn listener =====
+               }
+            }, { title: 'Delete reply?', yesLabel: 'Delete' });
+        }
+
+        backToForumBtn.addEventListener('click', () => {
+            singleTopicView.classList.add('hidden');
+            forumList.style.display = 'block';
+            carouselContainer.classList.remove('hidden');
+            readingProgress.classList.remove('visible');
+            if (window.repliesSubscription) window.repliesSubscription.unsubscribe();
+            if (allTopics.length) renderTopicList(allTopics, false);
+            updateStickyVisibility();
+        });
+
+        replyForm.addEventList

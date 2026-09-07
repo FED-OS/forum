@@ -1,0 +1,5 @@
+Found 4 inline script blocks
+  block_00.js: 1988 chars, 35 lines
+  block_01.js: 4857 chars, 124 lines
+  block_02.js: 17182 chars, 315 lines
+  block_03.js: 116098 chars, 1704 lines

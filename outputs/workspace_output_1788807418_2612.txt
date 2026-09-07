@@ -1,0 +1,1 @@
+X ANCHOR MISMATCH [marquee opt-in]: expected 2, found 1

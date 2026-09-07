@@ -1,0 +1,28 @@
+=== showConfirm usage area ===
+last[key] = now;
+                return true;
+            }
+        };
+
+        // ═══════════ FED-OS UPGRADE: confirm modal helper ═══════════
+        const confirmModal = document.getElementById('confirmModal');
+        let confirmAction = null;
+        window.confirmDialog = function (message, action, opts = {}) {
+            if (!confirmModal) { if (window.confirm(message)) action(); return; }
+            const p = document.querySelector('#confirmModal .confirm-text');
+            if (p) p.textContent = message;
+            const title = document.querySelector('#confirmModal .confirm-title');
+            if (title) title.textContent = opts.title || 'Are you sure?';
+            const btn = document.querySelector('#confirmModal .confirm-yes');
+            if (btn) btn.textContent = opts.yesLabel || 'Delete';
+            confirmAction = action;
+            confirmModal.classList.add('ac
+
+class="confirm-modal" 112063
+id="confirmModal" 112085
+class="confirm-box" 112180
+class="confirm-title" 112217
+class="confirm-text" 112273
+class="actions confirm-actions" 112345
+class="cancel confirm-no" 112402
+class="danger confirm-yes" 112468

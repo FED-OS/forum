@@ -1,0 +1,38 @@
+# FEDPromptly Forum — v2 Upgrade (posting fix · UI reduce · UX + features · image previews)
+
+## Goal
+User feedback: can't post guides/notes/questions/announcements; reduce UI; upgrade UX + add features;
+bigger image previews per post; image previews in trending carousel.
+
+## Tasks
+### A. Investigate posting/channel architecture
+- [ ] Map channel pills, updateChannelPillAvailability, filterByCategory channel↔category mapping
+- [ ] Find why notes/announcements/guides/questions posting is blocked (admin flag? missing pills?)
+
+### B. Posting fix
+- [ ] Full channel set in new-topic form: general, announcements, guides, questions, feed, icons, notes (admin), subscribers
+- [ ] Admin detection fallback (username 'Admin') + SQL to set profiles.is_admin = true
+- [ ] Category tabs filter correctly for the new channels
+
+### C. Image previews
+- [ ] Bigger image preview on topic cards (full-width, taller, cover-fit)
+- [ ] Bigger attachment preview in topic detail
+- [ ] Image previews inside trending carousel slides (fallback styling for text-only)
+
+### D. UI reduction
+- [ ] Remove marquee ticker strip (redundant with carousel)
+- [ ] Compact the stats cards into a slimmer bar
+- [ ] Trim tag cloud to top tags, tighten spacing
+
+### E. UX + new features
+- [ ] `/` focuses search · Esc closes detail/lightbox/modals
+- shortcuts already present: R reply, L like
+- [ ] Back-to-top floating button
+- [ ] Prev/next topic navigation in detail view
+- [ ] NEW badge on fresh topics (< 48h)
+- [ ] Click-to-expand excerpts on cards
+
+### F. Verify & deliver
+- [ ] node --check all JS blocks
+- [ ] Serve + browser render verify (screenshot)
+- [ ] Update UPGRADE_GUIDE + migration (admin flag fix), zip, deliver

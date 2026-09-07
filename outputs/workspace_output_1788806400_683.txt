@@ -1,0 +1,12 @@
+===== showTopicDetail catch (idx 275767) =====
+} catch (err) { console.error('Error loading topic detail:', err); window.toast('Failed to load topic details.', 'error'); }
+        }
+
+        // ═══════════ FED-OS UPGRADE: reply edit / delete ═══════════
+        async function startEditReply(replyId) {
+            if (!currentUser) { window.toast('Please log in to edit.', 'info'); openModal(); return; }
+            const item = repliesList.querySelector(`.reply-item[data-reply-id="${replyId}"]`);
+            if (!item) return;
+            const body = item.querySelector('.reply-body');
+            const oldContent = body.textContent;
+      

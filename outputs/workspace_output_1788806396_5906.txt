@@ -1,0 +1,12 @@
+===== after copyLinkBtn (idx 274619) =====
+copyLinkBtn.onclick = function() { navigator.clipboard.writeText(window.location.origin + window.location.pathname + '?topic=' + topicId).then(() => window.toast('Link copied!', 'success', 2000)).catch(() => window.toast('Copy failed.', 'error')); };
+                shareBtn.onclick = function() {
+                    const shareData = { title: topic.title, text: topic.content.slice(0, 200) + '…', url: window.location.origin + window.location.pathname + '?topic=' + topicId };
+                    if (navigator.share) navigator.share(shareData).catch(() => {});
+                    else navigator.clipboard.writeText(shareData.url).then(() => window.toast('Link copied!', 'success', 2000));
+                };
+
+                await countTopicView(topicId);
+                setTimeout(() => { readingProgress.classList.add('visible'); updateReadingProgress(); }, 100);
+
+                window.repl
