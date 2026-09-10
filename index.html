@@ -2927,121 +2927,25 @@
             border-color: var(--brand);
             box-shadow: 0 0 0 3px var(--brand-glow, rgba(124,92,252,0.15));
         }
-    </style>
-<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
+    
+/* COMPLETE NEW COMPOSITION — legacy backend remains mounted underneath */
+body{background:#eef1ec!important;color:#17211b!important;font-family:Inter,system-ui,sans-serif!important}
+body>.forum-header,body>.forum-main,body>.site-footer{display:none!important}
+#newShell{min-height:100vh;display:grid;grid-template-columns:264px minmax(0,1fr);background:#eef1ec}
+.shell-nav{background:#17211b;color:#dfeade;padding:28px 18px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.shell-brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:18px;padding:4px 10px 28px;border-bottom:1px solid #304034}.shell-mark{display:grid;place-items:center;width:34px;height:34px;border-radius:11px;background:#c6f36b;color:#17211b}.shell-kicker{margin:34px 10px 10px;color:#879888;font-size:10px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.shell-nav button{display:flex;align-items:center;gap:11px;width:100%;padding:12px;border:0;border-radius:10px;background:transparent;color:#aebdaf;text-align:left;font-weight:600}.shell-nav button:hover,.shell-nav button.active{background:#2b392d;color:#fff}.shell-nav button.active{box-shadow:inset 3px 0 #c6f36b}.shell-nav b{margin-left:auto;color:#8fa18e}.shell-spacer{flex:1}.shell-user{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid #304034;border-radius:14px}.shell-avatar{display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:#5c49df;color:#fff;font-weight:800}.shell-user small{display:block;color:#90a292}
+.shell-content{padding:32px 46px 58px;min-width:0}.shell-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:44px;color:#68766a;font-size:13px}.shell-actions{display:flex;gap:8px}.shell-actions button,.shell-ghost{border:1px solid #d6dfd5;border-radius:10px;background:#fff;color:#17211b;padding:9px 12px}.shell-actions button:hover,.shell-ghost:hover{border-color:#17211b}.shell-hero{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;margin-bottom:22px}.shell-eyebrow{color:#5d854d;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}.shell-hero h1{max-width:750px;margin:14px 0 15px;font:800 clamp(42px,6vw,82px)/.96 Inter,sans-serif;letter-spacing:-.08em}.shell-hero p{max-width:620px;margin:0;color:#68766a;font-size:16px}.shell-spotlight{padding:28px;border-radius:26px;background:#5c49df;color:#fff;box-shadow:0 24px 60px #5c49df3d}.shell-spotlight h2{margin:0 0 60px;font-size:27px;line-height:1.05;letter-spacing:-.04em}.shell-spotlight strong{font-size:52px;line-height:1}.shell-spotlight span{display:block;margin-top:5px;color:#d7d1ff;font-size:12px}.shell-banner{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:15px 18px;margin-bottom:30px;border-radius:14px;background:#c6f36b}.shell-banner span{color:#556848;font-size:12px}.shell-work{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:28px}.shell-heading{display:flex;align-items:end;justify-content:space-between;margin-bottom:14px}.shell-heading h2{margin:0;font-size:24px;letter-spacing:-.05em}.shell-heading p{margin:4px 0 0;color:#68766a}.shell-filters{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}.shell-filter{padding:8px 12px;border:0;border-radius:99px;background:transparent;color:#68766a;font-weight:600}.shell-filter.active,.shell-filter:hover{background:#17211b;color:#fff}.shell-search{display:flex;align-items:center;gap:7px;margin-left:auto;padding:8px 11px;border:1px solid #d6dfd5;border-radius:10px;background:#fff}.shell-search input{width:150px;border:0;outline:0;color:#17211b}.shell-feed{display:grid;gap:12px}.shell-post{display:grid;grid-template-columns:48px minmax(0,1fr) 86px;gap:14px;padding:18px;border:1px solid #dce5dc;border-radius:17px;background:#fff;cursor:pointer;transition:.2s}.shell-post:hover{transform:translateY(-2px);box-shadow:0 13px 30px #22312615}.shell-post-icon{display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#ddf7e8;color:#4b9f6b;font-size:19px}.shell-post:nth-child(2) .shell-post-icon{background:#fff0de;color:#d66f28}.shell-post:nth-child(3) .shell-post-icon{background:#e9e4ff;color:#5c49df}.shell-post h3{margin:0 0 5px;font-size:16px;line-height:1.3}.shell-post p{margin:0;color:#68766a;font-size:13px}.shell-post-meta{margin-top:10px;color:#8a978b;font-size:11px}.shell-post-stat{text-align:right;color:#68766a;font-size:11px}.shell-post-stat strong{display:block;color:#17211b;font-size:21px}.shell-side{display:grid;align-content:start;gap:16px}.shell-card{padding:20px;border:1px solid #dce5dc;border-radius:18px;background:#fff}.shell-card h3{margin:0 0 14px;font-size:17px}.shell-trend{padding:11px 0;border-top:1px solid #e4ebe3}.shell-trend:first-of-type{border-top:0}.shell-trend strong{display:block;font-size:12px}.shell-trend span{color:#68766a;font-size:11px}.shell-tags{display:flex;flex-wrap:wrap;gap:7px}.shell-tag{padding:7px 10px;border-radius:99px;background:#eef1ec;color:#617060;font-size:11px}.shell-card.cta{background:#17211b;color:#fff}.shell-card.cta p{color:#aebcaf}.shell-card.cta button{width:100%;padding:11px;border:0;border-radius:10px;background:#c6f36b;color:#17211b;font-weight:800}.shell-footer{display:flex;justify-content:space-between;margin-top:52px;padding-top:18px;border-top:1px solid #d7e0d6;color:#68766a;font-size:12px}
+@media(max-width:900px){#newShell{display:block}.shell-nav{position:sticky;z-index:40;top:0;height:auto;padding:12px 16px;flex-direction:row;align-items:center}.shell-brand{padding:0;border:0}.shell-kicker,.shell-spacer,.shell-user{display:none}.shell-nav>div:nth-last-child(2){display:none}.shell-nav button{width:auto;padding:10px;font-size:0}.shell-nav button:first-letter{font-size:18px}.shell-content{padding:24px 18px 44px}.shell-top{margin-bottom:30px}.shell-hero{display:block}.shell-spotlight{margin-top:20px}.shell-work{display:block}.shell-side{margin-top:28px}}
+@media(max-width:600px){.shell-hero h1{font-size:48px}.shell-top{align-items:flex-start}.shell-actions{display:none}.shell-banner{align-items:flex-start;flex-direction:column}.shell-heading{display:block}.shell-heading .shell-ghost{display:none}.shell-filters{flex-wrap:nowrap;overflow:auto}.shell-filter{flex:0 0 auto}.shell-search{display:none}.shell-post{grid-template-columns:40px minmax(0,1fr)}.shell-post-icon{width:40px;height:40px;border-radius:11px}.shell-post-stat{grid-column:2;text-align:left}.shell-footer{display:block}.shell-footer span{display:block;margin-top:8px}}
 
-<style id="fedpromptly-overhaul-v3">
-/* FEDPromptly OVERHAUL v3 — self-contained replacement layer */
-:root { --ink:#141414; --paper:#f5f0e7; --paper2:#e9e1d4; --hot:#ff4f2e; --blue:#3f5cff; --muted:#706a60; --line:#bfb5a7; --card:#fffdf8; }
-html, body { background:var(--paper) !important; color:var(--ink) !important; font-family:Arial,Helvetica,sans-serif !important; }
-body { overflow-x:hidden; }
-body::before { content:'FEDPROMPTLY / COMMUNITY OPERATING SYSTEM'; position:fixed; top:0; left:0; z-index:999999; width:100%; height:26px; padding:6px 16px; background:var(--ink); color:#fff; font:700 10px/14px monospace; letter-spacing:.16em; }
-.liquid-bg,.ambient-bg,.reading-progress { display:none !important; }
-.container { max-width:1320px !important; padding-left:34px !important; padding-right:34px !important; }
-.forum-header { position:sticky !important; top:26px !important; height:92px !important; margin-top:26px; background:var(--paper) !important; border-bottom:3px solid var(--ink) !important; box-shadow:none !important; backdrop-filter:none !important; }
-.forum-header .container { height:100%; }
-.forum-header .logo { color:var(--ink) !important; font-size:1.3rem !important; font-weight:900 !important; text-transform:uppercase; letter-spacing:-.08em !important; }
-.forum-header .logo-icon { width:48px !important; height:48px !important; border-radius:50% !important; background:var(--hot) !important; color:#fff !important; box-shadow:5px 5px 0 var(--ink) !important; }
-.forum-header .logo-icon i { transform:rotate(-15deg); }
-.forum-header .right-actions { gap:8px !important; }
-.forum-header .download-toggle,.forum-header .theme-toggle,.forum-header .login-btn { height:44px !important; padding:0 16px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:transparent !important; color:var(--ink) !important; box-shadow:none !important; font-weight:800 !important; }
-.forum-header .download-toggle:hover,.forum-header .theme-toggle:hover,.forum-header .login-btn:hover { background:var(--ink) !important; color:#fff !important; border-color:var(--ink) !important; }
-.forum-header .login-btn { background:var(--hot) !important; color:#fff !important; }
-.theme-dropdown,.download-dropdown { border:2px solid var(--ink) !important; border-radius:12px !important; background:var(--card) !important; box-shadow:8px 8px 0 var(--ink) !important; }
 
-.forum-main { padding:0 0 120px !important; }
-.forum-main>.container { padding-top:0 !important; }
-.page-head { min-height:420px !important; margin:0 -34px !important; padding:70px 34px 36px !important; background:var(--hot) !important; border:0 !important; display:flex !important; flex-direction:column !important; justify-content:space-between !important; }
-.page-head::before { content:'NOISE / IDEAS / SHIPPED'; display:block; color:#fff; font:700 12px monospace; letter-spacing:.2em; }
-.page-head::after { content:'FED-OS'; right:34px; bottom:30px; color:var(--ink); font:900 clamp(5rem,16vw,15rem)/.7 Arial; letter-spacing:-.12em; opacity:.9; }
-.page-head h1 { position:relative; z-index:1; max-width:950px !important; font-size:clamp(4rem,10vw,10rem) !important; line-height:.77 !important; letter-spacing:-.12em !important; color:#fff !important; text-transform:uppercase; }
-.page-head h1::before { content:'THE'; display:block; font-size:.18em; line-height:1; letter-spacing:.12em; margin-bottom:22px; color:var(--ink); }
-.page-head h1 i { display:none !important; }
-.forum-stats { position:relative; z-index:2; margin:26px 0 0 !important; color:var(--ink) !important; font:700 11px monospace !important; text-transform:uppercase; }
-.forum-stats span { color:var(--ink) !important; }
-.page-head .controls { position:relative !important; z-index:3; left:auto !important; bottom:auto !important; display:flex; flex-wrap:wrap; gap:8px !important; }
-.search-bar { width:300px !important; }
-.search-bar input,.sort-select { height:48px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:#fff !important; color:var(--ink) !important; box-shadow:none !important; font-weight:700 !important; }
-.search-bar i { color:var(--hot) !important; }
-.btn-primary { min-height:48px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:var(--ink) !important; color:#fff !important; box-shadow:5px 5px 0 var(--blue) !important; font-weight:900 !important; }
-.btn-primary:hover { background:var(--blue) !important; color:#fff !important; box-shadow:5px 5px 0 var(--ink) !important; transform:translate(-2px,-2px) !important; }
-#discord-count { height:48px !important; border:0 !important; color:var(--ink) !important; font:700 11px monospace !important; text-transform:uppercase; }
-#discord-count .dc-dot { background:var(--ink) !important; box-shadow:0 0 0 4px rgba(20,20,20,.18) !important; }
-.kofi-row { height:0 !important; margin:0 !important; position:relative; z-index:5; }
-.kofi-link { transform:translateY(-44px); padding:10px 16px !important; background:var(--blue) !important; color:#fff !important; border:2px solid var(--ink) !important; border-radius:999px !important; font:900 11px monospace !important; text-transform:uppercase; }
-
-.global-marquee { margin:36px 0 26px !important; height:44px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:var(--card) !important; }
-.global-marquee .marquee-icon { border:0 !important; background:var(--ink) !important; color:var(--hot) !important; padding:0 18px !important; }
-.marquee-track span { color:var(--ink) !important; font:700 11px monospace !important; text-transform:uppercase; }
-
-.eta-panel { grid-template-columns:repeat(4,1fr) !important; gap:0 !important; border:2px solid var(--ink) !important; background:var(--ink) !important; border-radius:18px !important; overflow:hidden; margin:0 0 44px !important; }
-.eta-card { min-height:132px; padding:18px !important; background:var(--card) !important; border:0 !important; border-right:2px solid var(--ink) !important; border-radius:0 !important; display:block !important; }
-.eta-card:hover { background:var(--blue) !important; color:#fff !important; transform:none !important; }
-.eta-icon { width:auto !important; height:auto !important; margin-bottom:25px; background:transparent !important; color:var(--hot) !important; justify-content:flex-start !important; }
-.eta-card:hover * { color:#fff !important; }
-.eta-value { font:900 1.25rem monospace !important; }
-.eta-label { margin-top:8px; font:700 10px monospace !important; text-transform:uppercase; }
-
-.featured-row { grid-template-columns:1.5fr 1fr !important; gap:28px !important; margin-bottom:58px !important; }
-.panel,.card { border:2px solid var(--ink) !important; border-radius:18px !important; background:var(--card) !important; box-shadow:8px 8px 0 var(--ink) !important; overflow:hidden; }
-.panel-head { min-height:54px; padding:15px 20px !important; background:var(--ink) !important; border:0 !important; color:#fff !important; }
-.panel-head .ph-title { color:#fff !important; font:900 11px monospace !important; text-transform:uppercase; letter-spacing:.1em; }
-.panel-head .ph-icon { color:var(--hot) !important; }
-.trending-badge,.panel-head .ph-badge { background:var(--hot) !important; color:#fff !important; border-radius:999px !important; box-shadow:none !important; }
-.carousel-container,.shop-panel { background:var(--card) !important; }
-.carousel-container::before,.shop-panel::before,.shop-banner .banner-shine { display:none !important; }
-.carousel-slide { padding:28px !important; min-height:150px; }
-.slide-rank { width:52px !important; height:52px !important; border-radius:50% !important; background:var(--hot) !important; color:#fff !important; box-shadow:4px 4px 0 var(--ink) !important; font:900 1.2rem monospace !important; }
-.carousel-slide .slide-title { font-size:1.25rem !important; font-weight:900 !important; }
-.carousel-dots { border-top:2px solid var(--ink) !important; }
-.carousel-dots .dot.active { background:var(--hot) !important; box-shadow:none !important; }
-.shop-hero { padding:26px !important; }
-.shop-banner { height:110px !important; border-radius:12px !important; background:var(--blue) !important; }
-.shop-banner i { color:#fff !important; font-size:2.7rem !important; filter:none !important; }
-.shop-product-head .item-title { font-size:1.55rem !important; font-weight:900 !important; }
-.shop-cta-btn { padding:13px 18px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:var(--hot) !important; color:#fff !important; box-shadow:4px 4px 0 var(--ink) !important; }
-.shop-cta-btn:hover { background:var(--blue) !important; box-shadow:4px 4px 0 var(--ink) !important; transform:translate(-2px,-2px) !important; }
-
-.category-tabs { display:flex !important; flex-wrap:wrap; gap:8px !important; padding:0 !important; border:0 !important; margin:0 0 22px !important; background:transparent !important; }
-.cat-tab { padding:11px 15px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:transparent !important; color:var(--ink) !important; font:800 11px monospace !important; text-transform:uppercase; }
-.cat-tab:hover { background:var(--paper2) !important; color:var(--ink) !important; }
-.cat-tab.active { background:var(--ink) !important; color:#fff !important; box-shadow:4px 4px 0 var(--hot) !important; }
-.cat-tab:not(.active) .cat-count,.cat-tab.active .cat-count { background:transparent !important; color:inherit !important; padding:0 0 0 6px !important; }
-#forumList { border-top:4px solid var(--ink) !important; }
-.topic-card { display:grid !important; grid-template-columns:1fr auto !important; gap:12px 32px !important; padding:25px 18px !important; margin:0 !important; border:0 !important; border-bottom:2px solid var(--line) !important; border-radius:0 !important; background:var(--card) !important; animation:none !important; opacity:1 !important; }
-.topic-card:hover { background:var(--blue) !important; color:#fff !important; transform:none !important; }
-.topic-card::before { display:none !important; }
-.topic-card .title { font-size:1.35rem !important; font-weight:900 !important; letter-spacing:-.06em !important; }
-.topic-card .meta,.topic-card .excerpt,.topic-card .views-badge,.topic-card .reading-time { font:11px monospace !important; }
-.topic-card .excerpt { max-width:730px; margin-top:12px !important; color:var(--muted) !important; }
-.topic-card:hover .title,.topic-card:hover .meta,.topic-card:hover .excerpt,.topic-card:hover .views-badge,.topic-card:hover .reading-time { color:#fff !important; }
-.topic-card .reply-count { border:2px solid var(--ink) !important; border-radius:999px !important; background:transparent !important; color:var(--ink) !important; font:700 10px monospace !important; }
-.topic-card:hover .reply-count { border-color:#fff !important; color:#fff !important; }
-.topic-card .tags { grid-column:1/-1; }
-.topic-card .channel-badge,.topic-card .eta-badge,.topic-card .price-badge { border-radius:999px !important; font:700 10px monospace !important; }
-.topic-card .icon-download-btn { border:2px solid var(--ink) !important; border-radius:999px !important; background:var(--ink) !important; box-shadow:4px 4px 0 var(--hot) !important; }
-.topic-card:hover .icon-download-btn { background:#fff !important; color:var(--ink) !important; }
-#loadMoreBtn { margin-top:20px !important; border:2px solid var(--ink) !important; border-radius:999px !important; background:var(--ink) !important; color:#fff !important; font:800 11px monospace !important; text-transform:uppercase; }
-
-.site-footer { background:var(--ink) !important; border-top:12px solid var(--hot) !important; color:var(--paper) !important; }
-.footer-top { padding:60px 34px !important; }
-.footer-logo,.footer-col h4,.footer-newsletter h4 { color:var(--hot) !important; }
-.footer-tagline,.footer-col a,.footer-newsletter p,.footer-bottom { color:#aaa297 !important; }
-.footer-social { background:transparent !important; border:2px solid #544e47 !important; border-radius:50% !important; color:#aaa297 !important; }
-.footer-social:hover { background:var(--hot) !important; border-color:var(--hot) !important; color:#fff !important; transform:none !important; box-shadow:none !important; }
-.footer-stats { border-color:#544e47 !important; background:transparent !important; }
-.footer-stat .stat-value { color:var(--hot) !important; font:900 1.2rem monospace !important; }
-.footer-newsletter-form input { border:2px solid #544e47 !important; background:transparent !important; color:#fff !important; border-radius:999px !important; }
-.footer-newsletter-form button { background:var(--hot) !important; color:#fff !important; border-radius:999px !important; }
-#stickyNewTopic { background:var(--hot) !important; color:#fff !important; border:2px solid var(--ink) !important; box-shadow:5px 5px 0 var(--ink) !important; }
-#backToTop { background:var(--ink) !important; color:var(--hot) !important; border:2px solid var(--hot) !important; border-radius:50% !important; box-shadow:none !important; }
-
-@media(max-width:800px){ .page-head { min-height:470px !important; } .page-head .controls { margin-top:28px; } .featured-row { grid-template-columns:1fr !important; } .eta-panel { grid-template-columns:repeat(2,1fr) !important; } .eta-card { border-bottom:2px solid var(--ink) !important; } }
-@media(max-width:560px){ .container { padding-left:16px !important; padding-right:16px !important; } .forum-header { height:76px !important; } .forum-header .download-toggle span,.forum-header .login-btn #loginBtnText { display:none; } .page-head { margin:0 -16px !important; padding:52px 16px 28px !important; min-height:480px !important; } .page-head h1 { font-size:clamp(3.5rem,18vw,6rem) !important; } .page-head::after { right:16px; } .eta-panel { grid-template-columns:1fr 1fr !important; } .topic-card { grid-template-columns:1fr !important; padding:22px 12px !important; } .topic-card .reply-count { justify-self:start; } .footer-top { padding:42px 16px !important; } }
-
+.shell-post-image{display:block;width:100%;max-height:390px;object-fit:cover;margin-top:16px;border-radius:14px;border:1px solid #dce5dc;background:#eef1ec;cursor:zoom-in}.shell-post:has(.shell-post-image){grid-template-columns:48px minmax(0,1fr) 86px}.shell-post-image:hover{filter:brightness(1.04)}
+@media(max-width:600px){.shell-post-image{max-height:260px}}
 </style>
+<script src="https://sites.super.myninja.ai/_assets/ninja-daytona-script.js"></script>
 </head>
 <body>
+<div id="newShell"><aside class="shell-nav"><div><div class="shell-brand"><span class="shell-mark">✦</span> FEDPromptly</div><div class="shell-kicker">Workspace</div><button class="active" data-shell-filter="all">◈ <span>Overview</span><b>—</b></button><button data-shell-filter="trending">↗ <span>Trending</span><b>—</b></button><button data-shell-filter="announcements">▤ <span>Announcements</span><b>—</b></button><button data-shell-filter="questions">? <span>Questions</span><b>—</b></button><button data-shell-filter="bookmarks">♡ <span>Saved</span><b>—</b></button></div><div class="shell-spacer"></div><div class="shell-user"><div class="shell-avatar">A</div><div><strong>FED citizen</strong><small>Community member</small></div></div></aside><main class="shell-content"><header class="shell-top"><span>FED-OS / Community HQ</span><div class="shell-actions"><button id="shellSearchButton">⌘ K &nbsp; Search</button><button id="shellThemeButton">◐ Theme</button><button id="shellLoginButton">Sign in</button></div></header><section class="shell-hero"><div><span class="shell-eyebrow">● The builder network</span><h1>Make the next thing feel inevitable.</h1><p>A focused home for FED-OS builders, creative technologists, and people turning ambitious ideas into shipped products.</p></div><div class="shell-spotlight"><h2>What’s moving through the community.</h2><strong id="shellOnline">—</strong><span>members active right now across the network</span></div></section><div class="shell-banner"><strong>New here? Start with a conversation.</strong><span>Ask a question, share a build, or give the community something useful.</span><button class="shell-ghost" id="shellNewTopic">Create a post →</button></div><section class="shell-work"><div><div class="shell-heading"><div><h2>Community pulse</h2><p>The conversations worth catching up on.</p></div><button class="shell-ghost" id="shellRefresh">Refresh feed</button></div><div class="shell-filters"><button class="shell-filter active" data-shell-filter="all">Everything</button><button class="shell-filter" data-shell-filter="trending">Popular</button><button class="shell-filter" data-shell-filter="announcements">Announcements</button><button class="shell-filter" data-shell-filter="questions">Questions</button><label class="shell-search">⌕ <input id="shellSearch" placeholder="Search feed"></label></div><div id="shellFeed" class="shell-feed"><div class="shell-card">Loading live conversations…</div></div></div><aside class="shell-side"><div class="shell-card"><h3>Rising this week</h3><div class="shell-trend"><strong>Live topics from FED-OS</strong><span>Synced from the community feed</span></div><div class="shell-trend"><strong>Most discussed builds</strong><span>Open a post to join the thread</span></div><div class="shell-trend"><strong>Fresh ideas, daily</strong><span>New conversations appear here</span></div></div><div class="shell-card"><h3>Explore by signal</h3><div class="shell-tags"><span class="shell-tag">Artificial intelligence</span><span class="shell-tag">Web development</span><span class="shell-tag">Machine learning</span><span class="shell-tag">Creator tools</span><span class="shell-tag">Open source</span><span class="shell-tag">FED-OS</span></div></div><div class="shell-card cta"><h3>Keep the loop open.</h3><p>Sign in to post, reply, bookmark, and follow the conversations that matter.</p><button id="shellJoin">Sign in to participate →</button></div></aside></section><footer class="shell-footer"><span>© 2026 FEDPromptly · Built for curious people.</span><span>Guidelines · Contact · GitHub</span></footer></main></div>
 
     <!-- Animated liquid background canvas -->
     <canvas id="liquidBg" class="liquid-bg"></canvas>
@@ -5397,5 +5301,14 @@ The FEDPromptly mobile app is in development.'); downloadDropdown.classList.remo
 
         console.log('💬 FEDPromptly — redesigned with a calmer, more focused aesthetic.');
     </script>
-</body>
+<script>
+(function(){
+const legacy=()=>({list:document.getElementById('forumList'),search:document.getElementById('searchInput'),newTopic:document.getElementById('newTopicBtn'),login:document.getElementById('loginBtn'),refresh:document.getElementById('loadMoreBtn'),tabs:[...document.querySelectorAll('.cat-tab')]});
+const feed=document.getElementById('shellFeed'), search=document.getElementById('shellSearch'), online=document.getElementById('shellOnline');
+function sync(){const l=legacy(); if(!l.list)return; const cards=[...l.list.querySelectorAll('.topic-card')]; if(!cards.length)return; online.textContent=document.getElementById('online-number')?.textContent||'—'; feed.innerHTML=''; cards.slice(0,12).forEach(card=>{const clone=card.cloneNode(true);clone.className='shell-post';clone.removeAttribute('style');const title=clone.querySelector('.title')?.textContent||'Community topic';const excerpt=clone.querySelector('.excerpt')?.textContent||'';const meta=clone.querySelector('.meta')?.textContent||'';const stats=clone.querySelector('.stats-col')?.textContent||'';const preview=clone.querySelector('.image-preview img');const previewUrl=preview?.src||'';clone.innerHTML='<div class="shell-post-icon">✦</div><div><h3>'+title+'</h3><p>'+excerpt.slice(0,190)+'</p><div class="shell-post-meta">'+meta+'</div>'+(previewUrl?'<img class="shell-post-image" src="'+previewUrl+'" alt="Attachment preview">':'')+'</div><div class="shell-post-stat">'+stats+'</div>';clone.addEventListener('click',()=>card.click());feed.appendChild(clone)});}
+function filter(kind){document.querySelectorAll('[data-shell-filter]').forEach(x=>x.classList.toggle('active',x.dataset.shellFilter===kind));const l=legacy();const tab=l.tabs.find(x=>x.dataset.cat===kind);if(tab)tab.click();setTimeout(sync,180)}
+document.querySelectorAll('[data-shell-filter]').forEach(x=>x.addEventListener('click',()=>filter(x.dataset.shellFilter)));
+document.getElementById('shellNewTopic').onclick=()=>legacy().newTopic?.click();document.getElementById('shellJoin').onclick=()=>legacy().login?.click();document.getElementById('shellLoginButton').onclick=()=>legacy().login?.click();document.getElementById('shellRefresh').onclick=()=>{legacy().refresh?.click();setTimeout(sync,300)};document.getElementById('shellThemeButton').onclick=()=>document.getElementById('themeToggle')?.click();document.getElementById('shellSearchButton').onclick=()=>document.getElementById('searchInput')?.focus();search.oninput=()=>{const l=legacy();if(l.search){l.search.value=search.value;l.search.dispatchEvent(new Event('input',{bubbles:true}));setTimeout(sync,250)}};new MutationObserver(sync).observe(document.getElementById('forumList'),{childList:true,subtree:true});setTimeout(sync,900);setTimeout(sync,2200);
+})();
+</script></body>
 </html>
