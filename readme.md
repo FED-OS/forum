@@ -1,4 +1,6 @@
-<img width="2560" height="1440" alt="fed_poster_new_3" src="https://github.com/user-attachments/assets/84939463-b34d-4854-a7fa-e8aad6f42dc2" />
+<img width="807" height="450" alt="1776415148" src="https://github.com/user-attachments/assets/9fd89154-cc17-47a9-b82a-651cc09fc5cf" />
+
+https://www.fedpromptly.com/forum
 
 # 🚀 FEDPromptly
 
